@@ -1,9 +1,9 @@
 # FlowPlayer for SailfishOS / Experimental Fork
 
 **FlowPlayer is a feature-rich music player for SailfishOS.**
-<br />
 
-This is an experimental fork with moderately heavy use of LLMs. The fork is being developed for a Jolla Phone 2026 which I personally own.
+This is an **experimental** fork with moderately heavy use of LLMs. The fork is being developed for a Jolla Phone 2026 which I personally own.
+Do NOT take this as an example of good coding. It's used only for my own experiments. I'm sharing it here nevertheless.
 
 All credit to the original developers!
 
@@ -14,9 +14,9 @@ The scope of the fork exercise:
 
 Specifically to FlowPlayer:
 
-- Implement better track management in the player
-- Implement Lyrics 
-- Implement Radio Paradise support
+- [x] Implement better track management in the player (sort by track)
+- [ ] Implement Lyrics 
+- [ ] Implement Radio Paradise support
 
 
 ## Features
