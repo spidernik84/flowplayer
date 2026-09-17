@@ -19,12 +19,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/AboutPage.qml" line="95"/>
+        <location filename="../qml/pages/AboutPage.qml" line="97"/>
         <source>If you want to create a new translation or improve an extant one:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/AboutPage.qml" line="118"/>
+        <location filename="../qml/pages/AboutPage.qml" line="120"/>
         <source>You can support the original author of FlowPlayer by donating:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -219,19 +219,19 @@
     <name>CoverPage</name>
     <message>
         <location filename="../qml/pages/CoverPage.qml" line="35"/>
-        <source>Cover no found</source>
-        <translation>Omslag ikke fundet</translation>
+        <source>Cover not found</source>
+        <translation type="unfinished">Omslag ikke fundet</translation>
     </message>
 </context>
 <context>
     <name>DataReader</name>
     <message>
-        <location filename="../src/datareader.cpp" line="236"/>
+        <location filename="../src/datareader.cpp" line="232"/>
         <source>Unknown artist</source>
         <translation>Ukendt kunstner</translation>
     </message>
     <message>
-        <location filename="../src/datareader.cpp" line="237"/>
+        <location filename="../src/datareader.cpp" line="233"/>
         <source>Unknown album</source>
         <translation>Ukendt album</translation>
     </message>
@@ -333,8 +333,8 @@
     </message>
     <message>
         <location filename="../qml/pages/FullAlbumSearch.qml" line="134"/>
-        <source>There&apos;s no missing covers in your music collection</source>
-        <translation>Der er ingen manglende omslag i din musiksamling</translation>
+        <source>There are no missing covers in your music collection</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -679,17 +679,17 @@
 <context>
     <name>Missing</name>
     <message>
-        <location filename="../src/missing.cpp" line="75"/>
+        <location filename="../src/missing.cpp" line="74"/>
         <source>Various artists</source>
         <translation>Forskellige kunstnere</translation>
     </message>
     <message>
-        <location filename="../src/missing.cpp" line="79"/>
+        <location filename="../src/missing.cpp" line="78"/>
         <source>Unknown album</source>
         <translation>Ukendt album</translation>
     </message>
     <message>
-        <location filename="../src/missing.cpp" line="79"/>
+        <location filename="../src/missing.cpp" line="78"/>
         <source>Unknown artist</source>
         <translation>Ukendt kunstner</translation>
     </message>
@@ -823,27 +823,32 @@
         <translation>Søg efter station</translation>
     </message>
     <message>
-        <location filename="../qml/pages/OnlineRadios.qml" line="46"/>
+        <location filename="../qml/pages/OnlineRadios.qml" line="45"/>
+        <source>Radio Paradise – Main Mix</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/OnlineRadios.qml" line="51"/>
         <source>Radio stations</source>
         <translation>Radiostationer</translation>
     </message>
     <message>
-        <location filename="../qml/pages/OnlineRadios.qml" line="57"/>
+        <location filename="../qml/pages/OnlineRadios.qml" line="62"/>
         <source>Deleting</source>
         <translation>Sletter</translation>
     </message>
     <message>
-        <location filename="../qml/pages/OnlineRadios.qml" line="68"/>
+        <location filename="../qml/pages/OnlineRadios.qml" line="73"/>
         <source>Edit</source>
         <translation>Rediger</translation>
     </message>
     <message>
-        <location filename="../qml/pages/OnlineRadios.qml" line="75"/>
+        <location filename="../qml/pages/OnlineRadios.qml" line="80"/>
         <source>Remove</source>
         <translation>Fjern</translation>
     </message>
     <message>
-        <location filename="../qml/pages/OnlineRadios.qml" line="131"/>
+        <location filename="../qml/pages/OnlineRadios.qml" line="136"/>
         <source>No saved stations</source>
         <translation>Ingen gemte stationer</translation>
     </message>
@@ -872,7 +877,7 @@
 <context>
     <name>PlaylistManager</name>
     <message>
-        <location filename="../src/playlistmanager.cpp" line="345"/>
+        <location filename="../src/playlistmanager.cpp" line="346"/>
         <source>Custom playlists</source>
         <translation>Brugerdefinerede afspilningslister</translation>
     </message>
@@ -966,6 +971,34 @@
         <location filename="../qml/pages/Playlists.qml" line="100"/>
         <source>%1 tracks</source>
         <translation>%1 spor</translation>
+    </message>
+</context>
+<context>
+    <name>RadioParadisePage</name>
+    <message>
+        <location filename="../qml/pages/RadioParadisePage.qml" line="82"/>
+        <source>Radio Paradise – Main Mix</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/RadioParadisePage.qml" line="104"/>
+        <source>No cover</source>
+        <translation type="unfinished">Intet omslag</translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/RadioParadisePage.qml" line="115"/>
+        <source>Loading…</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/RadioParadisePage.qml" line="148"/>
+        <source>Pause</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/RadioParadisePage.qml" line="149"/>
+        <source>Play</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1367,24 +1400,24 @@
 <context>
     <name>Utils</name>
     <message>
-        <location filename="../src/utils.cpp" line="104"/>
-        <location filename="../src/utils.cpp" line="256"/>
-        <location filename="../src/utils.cpp" line="283"/>
-        <location filename="../src/utils.cpp" line="291"/>
-        <location filename="../src/utils.cpp" line="320"/>
-        <location filename="../src/utils.cpp" line="344"/>
-        <source>No lyrics founded</source>
-        <translation>Ingen tekster fundet</translation>
+        <location filename="../src/utils.cpp" line="70"/>
+        <location filename="../src/utils.cpp" line="222"/>
+        <location filename="../src/utils.cpp" line="249"/>
+        <location filename="../src/utils.cpp" line="257"/>
+        <location filename="../src/utils.cpp" line="286"/>
+        <location filename="../src/utils.cpp" line="310"/>
+        <source>No lyrics found</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/utils.cpp" line="209"/>
+        <location filename="../src/utils.cpp" line="175"/>
         <source>Error fetching lyrics</source>
         <translation>Fejl ved hentning af tekster</translation>
     </message>
     <message>
-        <location filename="../src/utils.cpp" line="235"/>
-        <source>Album cover not founded</source>
-        <translation>Albumomslag ikke fundet</translation>
+        <location filename="../src/utils.cpp" line="201"/>
+        <source>Album cover not found</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

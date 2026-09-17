@@ -40,6 +40,11 @@ Page {
                 text: qsTr("Search station")
                 onClicked: pageStack.push("SearchRadio.qml")
             }
+            // NEW: Radio Paradise shortcut
+            MenuItem {
+                text: qsTr("Radio Paradise – Main Mix")
+                onClicked: pageStack.push(Qt.resolvedUrl("RadioParadisePage.qml"))
+            }
         }
 
         header: Header {

@@ -3,7 +3,7 @@
 **FlowPlayer is a feature-rich music player for SailfishOS.**
 <br />
 
-This is an experimental fork with moderately heavy use of LLMs.
+This is an experimental fork with moderately heavy use of LLMs. The fork is being developed for a Jolla Phone 2026 which I personally own.
 
 All credit to the original developers!
 

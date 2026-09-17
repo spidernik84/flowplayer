@@ -118,3 +118,6 @@ HEADERS += \
     src/player.h \
     src/audioresource.h \
     src/audioresourceqt.h
+
+DISTFILES += \
+    qml/pages/RadioParadisePage.qml

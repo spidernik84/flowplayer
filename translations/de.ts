@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="de">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="de">
 <context>
     <name>AboutPage</name>
     <message>
@@ -17,12 +19,12 @@
         <translation>Beitragende:</translation>
     </message>
     <message>
-        <location filename="../qml/pages/AboutPage.qml" line="96"/>
+        <location filename="../qml/pages/AboutPage.qml" line="97"/>
         <source>If you want to create a new translation or improve an extant one:</source>
         <translation>Wenn Du eine neue Übersetzung erstellen oder eine bestehende verbessern möchtest:</translation>
     </message>
     <message>
-        <location filename="../qml/pages/AboutPage.qml" line="119"/>
+        <location filename="../qml/pages/AboutPage.qml" line="120"/>
         <source>You can support the original author of FlowPlayer by donating:</source>
         <translation>Du kannst den ursprünglichen Autor von FlowPlayer durch eine Spende unterstützen:</translation>
     </message>
@@ -224,12 +226,12 @@
 <context>
     <name>DataReader</name>
     <message>
-        <location filename="../src/datareader.cpp" line="236"/>
+        <location filename="../src/datareader.cpp" line="232"/>
         <source>Unknown artist</source>
         <translation>Unbekannter Künstler</translation>
     </message>
     <message>
-        <location filename="../src/datareader.cpp" line="237"/>
+        <location filename="../src/datareader.cpp" line="233"/>
         <source>Unknown album</source>
         <translation>Unbekanntes Album</translation>
     </message>
@@ -677,17 +679,17 @@
 <context>
     <name>Missing</name>
     <message>
-        <location filename="../src/missing.cpp" line="75"/>
+        <location filename="../src/missing.cpp" line="74"/>
         <source>Various artists</source>
         <translation>Diverse Künstler</translation>
     </message>
     <message>
-        <location filename="../src/missing.cpp" line="79"/>
+        <location filename="../src/missing.cpp" line="78"/>
         <source>Unknown album</source>
         <translation>Unbekanntes Album</translation>
     </message>
     <message>
-        <location filename="../src/missing.cpp" line="79"/>
+        <location filename="../src/missing.cpp" line="78"/>
         <source>Unknown artist</source>
         <translation>Unbekannter Künstler</translation>
     </message>
@@ -821,27 +823,32 @@
         <translation>Sender suchen</translation>
     </message>
     <message>
-        <location filename="../qml/pages/OnlineRadios.qml" line="46"/>
+        <location filename="../qml/pages/OnlineRadios.qml" line="45"/>
+        <source>Radio Paradise – Main Mix</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/OnlineRadios.qml" line="51"/>
         <source>Radio stations</source>
         <translation>Radiosender</translation>
     </message>
     <message>
-        <location filename="../qml/pages/OnlineRadios.qml" line="57"/>
+        <location filename="../qml/pages/OnlineRadios.qml" line="62"/>
         <source>Deleting</source>
         <translation>Löschen</translation>
     </message>
     <message>
-        <location filename="../qml/pages/OnlineRadios.qml" line="68"/>
+        <location filename="../qml/pages/OnlineRadios.qml" line="73"/>
         <source>Edit</source>
         <translation>Bearbeiten</translation>
     </message>
     <message>
-        <location filename="../qml/pages/OnlineRadios.qml" line="75"/>
+        <location filename="../qml/pages/OnlineRadios.qml" line="80"/>
         <source>Remove</source>
         <translation>Entfernen</translation>
     </message>
     <message>
-        <location filename="../qml/pages/OnlineRadios.qml" line="131"/>
+        <location filename="../qml/pages/OnlineRadios.qml" line="136"/>
         <source>No saved stations</source>
         <translation>Keine Sender vorhanden</translation>
     </message>
@@ -870,7 +877,7 @@
 <context>
     <name>PlaylistManager</name>
     <message>
-        <location filename="../src/playlistmanager.cpp" line="345"/>
+        <location filename="../src/playlistmanager.cpp" line="346"/>
         <source>Custom playlists</source>
         <translation>Eigene Playlisten</translation>
     </message>
@@ -964,6 +971,34 @@
         <location filename="../qml/pages/Playlists.qml" line="100"/>
         <source>%1 tracks</source>
         <translation>%1 Titel</translation>
+    </message>
+</context>
+<context>
+    <name>RadioParadisePage</name>
+    <message>
+        <location filename="../qml/pages/RadioParadisePage.qml" line="82"/>
+        <source>Radio Paradise – Main Mix</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/RadioParadisePage.qml" line="104"/>
+        <source>No cover</source>
+        <translation type="unfinished">Kein Cover</translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/RadioParadisePage.qml" line="115"/>
+        <source>Loading…</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/RadioParadisePage.qml" line="148"/>
+        <source>Pause</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/RadioParadisePage.qml" line="149"/>
+        <source>Play</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1365,22 +1400,22 @@
 <context>
     <name>Utils</name>
     <message>
-        <location filename="../src/utils.cpp" line="104"/>
-        <location filename="../src/utils.cpp" line="256"/>
-        <location filename="../src/utils.cpp" line="283"/>
-        <location filename="../src/utils.cpp" line="291"/>
-        <location filename="../src/utils.cpp" line="320"/>
-        <location filename="../src/utils.cpp" line="344"/>
+        <location filename="../src/utils.cpp" line="70"/>
+        <location filename="../src/utils.cpp" line="222"/>
+        <location filename="../src/utils.cpp" line="249"/>
+        <location filename="../src/utils.cpp" line="257"/>
+        <location filename="../src/utils.cpp" line="286"/>
+        <location filename="../src/utils.cpp" line="310"/>
         <source>No lyrics found</source>
         <translation>Kein Liedtext gefunden</translation>
     </message>
     <message>
-        <location filename="../src/utils.cpp" line="209"/>
+        <location filename="../src/utils.cpp" line="175"/>
         <source>Error fetching lyrics</source>
         <translation>Fehler beim Abruf der Songtexte</translation>
     </message>
     <message>
-        <location filename="../src/utils.cpp" line="235"/>
+        <location filename="../src/utils.cpp" line="201"/>
         <source>Album cover not found</source>
         <translation>Albumcover nicht gefunden</translation>
     </message>
