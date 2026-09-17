@@ -186,8 +186,8 @@ Page {
                     MenuItem { text: qsTr("Track number") }
                     MenuItem { text: qsTr("Filename") }
                 }
-                currentIndex: utils.readSettings("TrackOrder", "title")==="title"? 0 :
-                              utils.readSettings("TrackOrder", "title")==="number"? 1 : 2
+                currentIndex: utils.readSettings("TrackOrder", "number")==="title"? 0 :
+                              utils.readSettings("TrackOrder", "number")==="number"? 1 : 2
                 onCurrentItemChanged: {
                     if (!loaded) return
                     if (currentIndex == 0) {
@@ -201,7 +201,7 @@ Page {
                     }
                     if (lastGroup==="songs") {
                         misdatos.clearList()
-                        misdatos.loadSongs(utils.readSettings("TrackOrder", "title"))
+                        misdatos.loadSongs(utils.readSettings("TrackOrder", "number"))
                     }
                 }
             }

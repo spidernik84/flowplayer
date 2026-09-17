@@ -91,10 +91,10 @@ void PlaylistManager::addAlbumToList(QString list, QString artist, QString album
     if (!isDBOpened) openDatabase();
 
     QSettings sets(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/flowplayer.conf", QSettings::NativeFormat);
-    QString torder = sets.value("TrackOrder", "title").toString();
+    QString torder = sets.value("TrackOrder", "number").toString();
     QString order;
     if (torder=="title") order="title";
-    else if (torder=="number") order="tracknum";
+    else if (torder=="number") order="COALESCE(discnum,1), tracknum";
     else if (torder=="filename") order="url";
 
     QString qr;
@@ -433,26 +433,26 @@ void PlaylistManager::loadAlbum(QString artist, QString album, QString various)
     if (!isDBOpened) openDatabase();
 
     QSettings sets(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/flowplayer.conf", QSettings::NativeFormat);
-    QString torder = sets.value("TrackOrder", "title").toString();
+    QString torder = sets.value("TrackOrder", "number").toString();
     QString order;
     if (torder=="title") order="title";
-    else if (torder=="number") order="tracknum";
+    else if (torder=="number") order="COALESCE(discnum,1), tracknum";
     else if (torder=="filename") order="url";
 
 
     QString qr;
 
     if (artist=="ALL" && album=="ALL" && various=="ALL")
-        qr = QString("select artist, album, title, duration, url, tracknum, year, fav "
+        qr = QString("select artist, album, title, duration, url, tracknum, year, fav, discnum "
                      "from tracks order by %1 collate nocase").arg(order);
 
     else if (various=="1")
-        qr = QString("select artist, album, title, duration, url, tracknum, year, fav "
+        qr = QString("select artist, album, title, duration, url, tracknum, year, fav, discnum "
                      "from tracks where artist='%1' and album='%2' order by %3 collate nocase")
                     .arg(artist).arg(album).arg(order);
 
     else
-        qr = QString("select artist, album, title, duration, url, tracknum, year, fav "
+        qr = QString("select artist, album, title, duration, url, tracknum, year, fav, discnum "
                      "from tracks where album='%1' order by %2 collate nocase")
                      .arg(album).arg(order);
 
@@ -463,15 +463,16 @@ void PlaylistManager::loadAlbum(QString artist, QString album, QString various)
 
     while( query.next() )
     {
-        QString dato1, dato2, dato3, dato4, dato5, dato6, dato7, dato8;
-        dato1 = query.value(0).toString();
-        dato2 = query.value(1).toString();
-        dato3 = query.value(2).toString();
-        dato4 = query.value(3).toString();
-        dato5 = query.value(4).toString();
-        dato6 = query.value(5).toString();
-        dato7 = query.value(6).toString();
-        dato8 = query.value(7).toString();
+        QString dato1, dato2, dato3, dato4, dato5, dato6, dato7, dato8, dato9;
+        dato1 = query.value(0).toString();   // artist
+        dato2 = query.value(1).toString();   // album
+        dato3 = query.value(2).toString();   // title
+        dato4 = query.value(3).toString();   // duration
+        dato5 = query.value(4).toString();   // url
+        dato6 = query.value(5).toString();   // tracknum
+        dato7 = query.value(6).toString();   // year
+        dato8 = query.value(7).toString();   // fav
+        dato9 = query.value(8).toString();   // discnum
 
         if ( dato5!="") {
             QVariantMap map;
@@ -482,12 +483,12 @@ void PlaylistManager::loadAlbum(QString artist, QString album, QString various)
             map.insert("duration", dato4);
             map.insert("url", xmlout(dato5));
             map.insert("fav", dato8);
+            map.insert("tracknum", dato6.toInt());
+            map.insert("discnum", dato9.toInt());
 
             totaltime += dato4.toInt();
 
             emit addItemToAlbum(map);
         }
     }
-    emit albumLoaded(totaltime);
-
 }

@@ -22,8 +22,6 @@ Page {
     onStatusChanged: {
         if (status===PageStatus.Activating && !loaded) {
             console.log("Loading list: " + artist + " - " + album + " - " + artistcount)
-            //musicmodel.clearList()
-            //musicmodel.loadData(artist, album, artistcount)
             songListModel.clear()
             myplaylistmanager.loadAlbum(artist, album, artistcount)
             loaded = true
@@ -38,8 +36,6 @@ Page {
             if (artist===artistold && album===albumold) {
                 artist = artistnew
                 album = albumnew
-                //musicmodel.clearList()
-                //musicmodel.loadData(artist, album, artistcount)
                 songListModel.clear()
                 myplaylistmanager.loadAlbum(artist, album, artistcount)
             }
@@ -51,7 +47,8 @@ Page {
 
         onAddItemToAlbum: {
             songListModel.append({"index":songListModel.count, "artist":item.artist, "album":item.album, "title":item.title,
-                               "duration":item.duration, "url":item.url, "fav":item.fav})
+                               "duration":item.duration, "url":item.url, "fav":item.fav,
+                               "tracknum":item.tracknum, "discnum":item.discnum})
         }
 
         onAlbumLoaded: {
@@ -88,9 +85,6 @@ Page {
             MenuItem {
                 text: qsTr("Add to playlist")
                 onClicked: {
-                    /*helperList2.clear()
-                    for ( var i=0; i<songListModel.count; ++i )
-                        helperList2.append(songListModel.get(i))*/
                     filterArtist = root.artist
                     filterAlbum = root.album
                     filterSong = ""
@@ -110,6 +104,8 @@ Page {
             img: ""
             time: DT.getDuration(model.duration)
             cindex: index
+            tracknum: model.tracknum
+            discnum: model.discnum
             isplaying: decodeURIComponent(model.url) === decodeURIComponent(myPlayer.source)
             contentHeight: Theme.itemSizeSmall
 
@@ -180,7 +176,6 @@ Page {
         Column {
             id: column1
             width: parent.width
-            //spacing: Theme.paddingMedium
 
             Item {
                 width: parent.width

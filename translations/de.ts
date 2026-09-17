@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="de">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="de">
 <context>
     <name>AboutPage</name>
     <message>
@@ -17,12 +19,12 @@
         <translation>Beitragende:</translation>
     </message>
     <message>
-        <location filename="../qml/pages/AboutPage.qml" line="96"/>
+        <location filename="../qml/pages/AboutPage.qml" line="97"/>
         <source>If you want to create a new translation or improve an extant one:</source>
         <translation>Wenn Du eine neue Übersetzung erstellen oder eine bestehende verbessern möchtest:</translation>
     </message>
     <message>
-        <location filename="../qml/pages/AboutPage.qml" line="119"/>
+        <location filename="../qml/pages/AboutPage.qml" line="120"/>
         <source>You can support the original author of FlowPlayer by donating:</source>
         <translation>Du kannst den ursprünglichen Autor von FlowPlayer durch eine Spende unterstützen:</translation>
     </message>
@@ -98,7 +100,7 @@
 <context>
     <name>AlbumDelegate</name>
     <message>
-        <location filename="../qml/pages/AlbumDelegate.qml" line="41"/>
+        <location filename="../qml/pages/AlbumDelegate.qml" line="53"/>
         <source>Not found</source>
         <translation>Nicht gefunden</translation>
     </message>
@@ -224,12 +226,12 @@
 <context>
     <name>DataReader</name>
     <message>
-        <location filename="../src/datareader.cpp" line="236"/>
+        <location filename="../src/datareader.cpp" line="255"/>
         <source>Unknown artist</source>
         <translation>Unbekannter Künstler</translation>
     </message>
     <message>
-        <location filename="../src/datareader.cpp" line="237"/>
+        <location filename="../src/datareader.cpp" line="256"/>
         <source>Unknown album</source>
         <translation>Unbekanntes Album</translation>
     </message>
@@ -677,17 +679,17 @@
 <context>
     <name>Missing</name>
     <message>
-        <location filename="../src/missing.cpp" line="75"/>
+        <location filename="../src/missing.cpp" line="74"/>
         <source>Various artists</source>
         <translation>Diverse Künstler</translation>
     </message>
     <message>
-        <location filename="../src/missing.cpp" line="79"/>
+        <location filename="../src/missing.cpp" line="78"/>
         <source>Unknown album</source>
         <translation>Unbekanntes Album</translation>
     </message>
     <message>
-        <location filename="../src/missing.cpp" line="79"/>
+        <location filename="../src/missing.cpp" line="78"/>
         <source>Unknown artist</source>
         <translation>Unbekannter Künstler</translation>
     </message>
@@ -870,7 +872,7 @@
 <context>
     <name>PlaylistManager</name>
     <message>
-        <location filename="../src/playlistmanager.cpp" line="345"/>
+        <location filename="../src/playlistmanager.cpp" line="346"/>
         <source>Custom playlists</source>
         <translation>Eigene Playlisten</translation>
     </message>
@@ -1209,59 +1211,59 @@
 <context>
     <name>SongListView</name>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="71"/>
+        <location filename="../qml/pages/SongListView.qml" line="68"/>
         <source>Search cover</source>
         <translation>Cover suchen</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="72"/>
+        <location filename="../qml/pages/SongListView.qml" line="69"/>
         <source>Unknown artist</source>
         <translation>Unbekannter Künstler</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="72"/>
+        <location filename="../qml/pages/SongListView.qml" line="69"/>
         <source>Unknown album</source>
         <translation>Unbekanntes Album</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="79"/>
-        <location filename="../qml/pages/SongListView.qml" line="120"/>
+        <location filename="../qml/pages/SongListView.qml" line="76"/>
+        <location filename="../qml/pages/SongListView.qml" line="116"/>
         <source>Edit metadata</source>
         <translation>Metadaten bearbeiten</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="89"/>
-        <location filename="../qml/pages/SongListView.qml" line="130"/>
+        <location filename="../qml/pages/SongListView.qml" line="86"/>
+        <location filename="../qml/pages/SongListView.qml" line="126"/>
         <source>Add to playlist</source>
         <translation>Zur Playlist hinzufügen</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="139"/>
+        <location filename="../qml/pages/SongListView.qml" line="135"/>
         <source>Remove from favorites</source>
         <translation>Aus den Favoriten entfernen</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="139"/>
+        <location filename="../qml/pages/SongListView.qml" line="135"/>
         <source>Add to favorites</source>
         <translation>Zu den Favoriten hinzufügen</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="216"/>
+        <location filename="../qml/pages/SongListView.qml" line="211"/>
         <source>Cover not found</source>
         <translation>Cover nicht gefunden</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="224"/>
+        <location filename="../qml/pages/SongListView.qml" line="219"/>
         <source>Various artists</source>
         <translation>Diverse Künstler</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="228"/>
+        <location filename="../qml/pages/SongListView.qml" line="223"/>
         <source>1 track</source>
         <translation>1 Titel</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="228"/>
+        <location filename="../qml/pages/SongListView.qml" line="223"/>
         <source>%1 tracks</source>
         <translation>%1 Titel</translation>
     </message>
@@ -1365,22 +1367,22 @@
 <context>
     <name>Utils</name>
     <message>
-        <location filename="../src/utils.cpp" line="104"/>
-        <location filename="../src/utils.cpp" line="256"/>
-        <location filename="../src/utils.cpp" line="283"/>
-        <location filename="../src/utils.cpp" line="291"/>
-        <location filename="../src/utils.cpp" line="320"/>
-        <location filename="../src/utils.cpp" line="344"/>
+        <location filename="../src/utils.cpp" line="70"/>
+        <location filename="../src/utils.cpp" line="222"/>
+        <location filename="../src/utils.cpp" line="249"/>
+        <location filename="../src/utils.cpp" line="257"/>
+        <location filename="../src/utils.cpp" line="286"/>
+        <location filename="../src/utils.cpp" line="310"/>
         <source>No lyrics found</source>
         <translation>Kein Liedtext gefunden</translation>
     </message>
     <message>
-        <location filename="../src/utils.cpp" line="209"/>
+        <location filename="../src/utils.cpp" line="175"/>
         <source>Error fetching lyrics</source>
         <translation>Fehler beim Abruf der Songtexte</translation>
     </message>
     <message>
-        <location filename="../src/utils.cpp" line="235"/>
+        <location filename="../src/utils.cpp" line="201"/>
         <source>Album cover not found</source>
         <translation>Albumcover nicht gefunden</translation>
     </message>

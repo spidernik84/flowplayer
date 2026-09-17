@@ -24,6 +24,18 @@ ListItem
     property bool selected
     property bool showCover: false
     property alias textSize: thumb.textSize
+    property int tracknum: 0
+    property int discnum: 0
+
+    // Formats track number as "03"; prefixes disc as "2-03" when disc > 1.
+    function formatTrack(t, d) {
+        var n = parseInt(t)
+        if (!n || n <= 0) return ""
+        var s = n < 10 ? "0" + n : "" + n
+        var disc = parseInt(d)
+        if (disc && disc > 1) return disc + "-" + s
+        return s
+    }
 
     //height: 78
     width: parent.width
@@ -41,9 +53,23 @@ ListItem
         text: qsTr("Not found")
     }
 
-    Column {
+    Label
+    {
+        id: trackLabel
+        text: formatTrack(tracknum, discnum)
         anchors.left: img!="" || showCover? thumb.right : parent.left
         anchors.leftMargin: img!="" || showCover? Theme.paddingMedium : Theme.paddingLarge
+        anchors.verticalCenter: parent.verticalCenter
+        width: Theme.fontSizeMedium * 2.5
+        font.pixelSize: Theme.fontSizeMedium
+        horizontalAlignment: Text.AlignRight
+        truncationMode: TruncationMode.Fade
+        color: isplaying? Theme.highlightColor : Theme.secondaryColor
+    }
+
+    Column {
+        anchors.left: trackLabel.right
+        anchors.leftMargin: Theme.paddingSmall
         anchors.right: parent.right
         anchors.rightMargin: Theme.paddingLarge
         anchors.verticalCenter: parent.verticalCenter

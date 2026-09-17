@@ -119,7 +119,7 @@ Page {
                 else if (lastGroup=="artists")
                     misdatos.loadArtists()
                 else
-                    misdatos.loadSongs(utils.readSettings("TrackOrder", "title"))
+                    misdatos.loadSongs(utils.readSettings("TrackOrder", "number"))
             }
         }
     }
@@ -287,7 +287,7 @@ Page {
                         utils.setSettings("LastGroup", "songs")
                         lastGroup = "songs"
                         misdatos.clearList()
-                        misdatos.loadSongs(utils.readSettings("TrackOrder", "title"))
+                        misdatos.loadSongs(utils.readSettings("TrackOrder", "number"))
                         console.log("Pushing attached: " + lastGroup)
                         //pageStack.popAttached()
                         pageStack.pushAttached("SongsPage.qml")

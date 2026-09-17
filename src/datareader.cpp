@@ -18,6 +18,7 @@
 #include <mpcfile.h>
 #include <modfile.h>
 #include <xmfile.h>
+#include <tpropertymap.h>
 
 
 #include <QDir>
@@ -43,7 +44,8 @@ void DataReader::openDB()
     if (isDBOpened)
     {
         executeQuery("create table tracks (url text, artist text, album text, "
-                   "title text, year integer, tracknum integer, duration integer, fav integer)");
+            "title text, year integer, tracknum integer, discnum integer, "
+            "duration integer, fav integer)");
 
         executeQuery("create table playlists (playlist text, url text, artist text, album text, "
                    "title text, duration integer)");
@@ -54,14 +56,26 @@ void DataReader::openDB()
         executeQuery("create table temp (url text, artist text, album text, "
                    "title text, year integer, tracknum integer, duration integer, fav integer)");
 
-        //executeQuery(QString("delete from tracks"));
-
+        // Migration: ensure the "discnum" column exists on databases created
+        // by older versions of the app. CREATE TABLE above is a no-op when the
+        // table already exists, so we must ALTER older tables explicitly.
+        QSqlQuery info = getQuery("pragma table_info(tracks)");
+        bool hasDiscnum = false;
+        while (info.next()) {
+            if (info.value(1).toString() == "discnum") {
+                hasDiscnum = true;
+                break;
+            }
+        }
+        if (!hasDiscnum) {
+            qDebug() << "MIGRATING tracks table: adding discnum column";
+            executeQuery("alter table tracks add discnum integer");
+        }
     }
-
 }
 
 void DataReader::insertData(QString url, QString artist, QString album,
-                            QString title, int year, int tracknum, int duration)
+    QString title, int year, int tracknum, int discnum, int duration)
 {
 
     QVariantMap m;
@@ -71,6 +85,7 @@ void DataReader::insertData(QString url, QString artist, QString album,
     m.insert("title", title);
     m.insert("year", year);
     m.insert("tracknum", tracknum);
+    m.insert("discnum", discnum);
     m.insert("duration", duration);
 
     if (favFiles.indexOf(url)>-1)
@@ -85,13 +100,6 @@ void DataReader::insertData(QString url, QString artist, QString album,
         saveData();
         map.clear();
     }
-
-
-    //bool res = executeQuery(QString("insert into tracks values('%1','%2','%3','%4', %5, %6, %7)")
-    //                                  .arg(url).arg(artist).arg(album).arg(title).arg(year).arg(tracknum).arg(duration));
-
-    //qDebug() << "ADDING " << url << res;
-
 }
 
 void DataReader::saveData()
@@ -108,25 +116,27 @@ void DataReader::saveData()
         if (i==0)
         {
             qr += QString(" select '%1' as url, '%2' as artist, '%3' as album, '%4' as title, "
-                    "%5 as year, %6 as tracknum, %7 as duration, '%8' as fav")
+                    "%5 as year, %6 as tracknum, %7 as discnum, %8 as duration, '%9' as fav")
                     .arg(map.at(i).value("url","").toString())
                     .arg(map.at(i).value("artist","").toString())
                     .arg(map.at(i).value("album","").toString())
                     .arg(map.at(i).value("title","").toString())
                     .arg(map.at(i).value("year",0).toInt())
                     .arg(map.at(i).value("tracknum",0).toInt())
+                    .arg(map.at(i).value("discnum",0).toInt())
                     .arg(map.at(i).value("duration",0).toInt())
                     .arg(map.at(i).value("fav","").toString());
         }
         else
         {
-            qr += QString(" union select '%1', '%2','%3', '%4',%5, %6, %7, '%8'")
+            qr += QString(" union select '%1', '%2','%3', '%4',%5, %6, %7, %8, '%9'")
                           .arg(map.at(i).value("url","").toString())
                           .arg(map.at(i).value("artist","").toString())
                           .arg(map.at(i).value("album","").toString())
                           .arg(map.at(i).value("title","").toString())
                           .arg(map.at(i).value("year",0).toInt())
                           .arg(map.at(i).value("tracknum",0).toInt())
+                          .arg(map.at(i).value("discnum",0).toInt())
                           .arg(map.at(i).value("duration",0).toInt())
                           .arg(map.at(i).value("fav","").toInt());
         }
@@ -203,6 +213,23 @@ void DataReader::readFile(QString file)
             m_year = QString::number(tagFile->tag()->year());
             m_tracknum = QString::number(tagFile->tag()->track());
 
+            // Disc number: TagLib::Tag has no disc() accessor, so read it from
+            // the File's PropertyMap. Handles both Vorbis-style (DISCNUMBER)
+            // and ID3v2-style (TPOS = "disc/total") tags.
+            TagLib::PropertyMap props = tf->properties();
+            int discnum = 0;
+
+            if (props.contains("DISCNUMBER")) {
+                discnum = QString::fromStdString(
+                    props["DISCNUMBER"].toString().to8Bit(true)).toInt();
+            } else if (props.contains("TPOS")) {
+                QString tpos = QString::fromStdString(
+                    props["TPOS"].toString().to8Bit(true));
+                discnum = tpos.split("/").first().toInt();
+            }
+
+            m_discnum = QString::number(discnum);
+
             if (m_title=="") m_title = QFileInfo(file).baseName();
 
             // if we have artist and album, we check for a cover image.
@@ -211,13 +238,9 @@ void DataReader::readFile(QString file)
                 QDirIterator iterator(info.dir());
                 while (iterator.hasNext()) {
                     iterator.next();
-                    // we are explicit about two common factors, the type JPEG (ToDo: add PNG
-                    // throughout all C++ source files, see issue #78), and basename cover or folder
                     if (iterator.fileInfo().isFile()) {
                         if (  (iterator.fileInfo().suffix() == "jpeg" ||
                                iterator.fileInfo().suffix() == "jpg") &&
-                              // See ToDo above: (… ||
-                              //                  iterator.fileInfo().suffix() == "png") &&
                               (iterator.fileInfo().baseName() == "cover" ||
                                iterator.fileInfo().baseName() == "folder")  ) {
                             QString th2 = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) +
@@ -237,7 +260,8 @@ void DataReader::readFile(QString file)
             m_duration = QString::number(properties->length());
 
             insertData(reemplazar1(file), reemplazar1(m_artist), reemplazar1(m_album),
-                       reemplazar1(m_title), m_year.toInt(), m_tracknum.toInt(), m_duration.toInt());
+                       reemplazar1(m_title), m_year.toInt(), m_tracknum.toInt(),
+                       m_discnum.toInt(), m_duration.toInt());
 
         }
         else
@@ -332,7 +356,6 @@ void DataReader::run()
     for (int i=0; i<files.count(); ++i)
     {
         emit percent(i);
-        //qDebug() << "PROCESSING ITEM " << files.at(i);
         readFile(files.at(i));
 
         if (forceFinish) {

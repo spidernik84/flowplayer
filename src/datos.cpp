@@ -187,10 +187,10 @@ void Datos::loadSongs(QString order)
 
     QString norder;
     if (order=="title") norder="title";
-    else if (order=="number") norder="tracknum";
+    else if (order=="number") norder="album, COALESCE(discnum,1), tracknum";
     else if (order=="filename") norder="url";
 
-    QSqlQuery query = getQuery(QString("select artist, album, title, duration, url, tracknum, fav "
+    QSqlQuery query = getQuery(QString("select artist, album, title, duration, url, tracknum, fav, discnum "
                                                "from tracks order by %1 collate nocase").arg(norder));
 
     while( query.next() )
@@ -234,10 +234,10 @@ void Datos::addFilterToQueue()
 
     QString norder;
     QSettings settings(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/flowplayer.conf", QSettings::NativeFormat);
-    QString order = settings.value("TrackOrder", "title").toString();
+    QString order = settings.value("TrackOrder", "number").toString();
 
     if (order=="title") norder="title";
-    else if (order=="number") norder="tracknum";
+    else if (order=="number") norder="COALESCE(discnum,1), tracknum";
     else if (order=="filename") norder="url";
 
 

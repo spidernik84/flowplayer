@@ -25,7 +25,7 @@ void openDatabase()
 
     if (database.open()) {
         isDBOpened = true;
-        executeQuery("alter table tracks add fav integer");
+            executeQuery("alter table tracks add discnum integer");
     } else {
         qWarning() << "cannot open database" << database.databaseName() << database.lastError().text();
     }

@@ -19,12 +19,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/AboutPage.qml" line="95"/>
+        <location filename="../qml/pages/AboutPage.qml" line="97"/>
         <source>If you want to create a new translation or improve an extant one:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/AboutPage.qml" line="118"/>
+        <location filename="../qml/pages/AboutPage.qml" line="120"/>
         <source>You can support the original author of FlowPlayer by donating:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -100,7 +100,7 @@
 <context>
     <name>AlbumDelegate</name>
     <message>
-        <location filename="../qml/pages/AlbumDelegate.qml" line="41"/>
+        <location filename="../qml/pages/AlbumDelegate.qml" line="53"/>
         <source>Not found</source>
         <translation>Niet gevonden</translation>
     </message>
@@ -219,19 +219,19 @@
     <name>CoverPage</name>
     <message>
         <location filename="../qml/pages/CoverPage.qml" line="35"/>
-        <source>Cover no found</source>
-        <translation>Cover niet gevonden</translation>
+        <source>Cover not found</source>
+        <translation type="unfinished">Cover niet gevonden</translation>
     </message>
 </context>
 <context>
     <name>DataReader</name>
     <message>
-        <location filename="../src/datareader.cpp" line="236"/>
+        <location filename="../src/datareader.cpp" line="255"/>
         <source>Unknown artist</source>
         <translation>Onbekende artiest</translation>
     </message>
     <message>
-        <location filename="../src/datareader.cpp" line="237"/>
+        <location filename="../src/datareader.cpp" line="256"/>
         <source>Unknown album</source>
         <translation>Onbekende album</translation>
     </message>
@@ -333,8 +333,8 @@
     </message>
     <message>
         <location filename="../qml/pages/FullAlbumSearch.qml" line="134"/>
-        <source>There&apos;s no missing covers in your music collection</source>
-        <translation>Er ontbreekt geen covers in je muziek collectie</translation>
+        <source>There are no missing covers in your music collection</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -679,17 +679,17 @@
 <context>
     <name>Missing</name>
     <message>
-        <location filename="../src/missing.cpp" line="75"/>
+        <location filename="../src/missing.cpp" line="74"/>
         <source>Various artists</source>
         <translation>Diverse artiesten</translation>
     </message>
     <message>
-        <location filename="../src/missing.cpp" line="79"/>
+        <location filename="../src/missing.cpp" line="78"/>
         <source>Unknown album</source>
         <translation>Onbekende album</translation>
     </message>
     <message>
-        <location filename="../src/missing.cpp" line="79"/>
+        <location filename="../src/missing.cpp" line="78"/>
         <source>Unknown artist</source>
         <translation>Onbekende artiest</translation>
     </message>
@@ -872,7 +872,7 @@
 <context>
     <name>PlaylistManager</name>
     <message>
-        <location filename="../src/playlistmanager.cpp" line="345"/>
+        <location filename="../src/playlistmanager.cpp" line="346"/>
         <source>Custom playlists</source>
         <translation>Handmatige afspeellijsten</translation>
     </message>
@@ -1211,59 +1211,59 @@
 <context>
     <name>SongListView</name>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="71"/>
+        <location filename="../qml/pages/SongListView.qml" line="68"/>
         <source>Search cover</source>
         <translation>Zoek cover</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="72"/>
+        <location filename="../qml/pages/SongListView.qml" line="69"/>
         <source>Unknown artist</source>
         <translation>Onbekende artiest</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="72"/>
+        <location filename="../qml/pages/SongListView.qml" line="69"/>
         <source>Unknown album</source>
         <translation>Onbekende album</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="79"/>
-        <location filename="../qml/pages/SongListView.qml" line="120"/>
+        <location filename="../qml/pages/SongListView.qml" line="76"/>
+        <location filename="../qml/pages/SongListView.qml" line="116"/>
         <source>Edit metadata</source>
         <translation>Bewerk metadata</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="89"/>
-        <location filename="../qml/pages/SongListView.qml" line="130"/>
+        <location filename="../qml/pages/SongListView.qml" line="86"/>
+        <location filename="../qml/pages/SongListView.qml" line="126"/>
         <source>Add to playlist</source>
         <translation>Toevoegen aan afspeellijst </translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="139"/>
+        <location filename="../qml/pages/SongListView.qml" line="135"/>
         <source>Remove from favorites</source>
         <translation>Verwijder uit favorieten</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="139"/>
+        <location filename="../qml/pages/SongListView.qml" line="135"/>
         <source>Add to favorites</source>
         <translation>Voeg aan favorieten</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="216"/>
+        <location filename="../qml/pages/SongListView.qml" line="211"/>
         <source>Cover not found</source>
         <translation>Cover niet gevonden</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="224"/>
+        <location filename="../qml/pages/SongListView.qml" line="219"/>
         <source>Various artists</source>
         <translation>Diverse artiesten</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="228"/>
+        <location filename="../qml/pages/SongListView.qml" line="223"/>
         <source>1 track</source>
         <translation>1 track</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="228"/>
+        <location filename="../qml/pages/SongListView.qml" line="223"/>
         <source>%1 tracks</source>
         <translation>%1 tracks</translation>
     </message>
@@ -1367,24 +1367,24 @@
 <context>
     <name>Utils</name>
     <message>
-        <location filename="../src/utils.cpp" line="104"/>
-        <location filename="../src/utils.cpp" line="256"/>
-        <location filename="../src/utils.cpp" line="283"/>
-        <location filename="../src/utils.cpp" line="291"/>
-        <location filename="../src/utils.cpp" line="320"/>
-        <location filename="../src/utils.cpp" line="344"/>
-        <source>No lyrics founded</source>
-        <translation>Geen lyrics gevonden</translation>
+        <location filename="../src/utils.cpp" line="70"/>
+        <location filename="../src/utils.cpp" line="222"/>
+        <location filename="../src/utils.cpp" line="249"/>
+        <location filename="../src/utils.cpp" line="257"/>
+        <location filename="../src/utils.cpp" line="286"/>
+        <location filename="../src/utils.cpp" line="310"/>
+        <source>No lyrics found</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/utils.cpp" line="209"/>
+        <location filename="../src/utils.cpp" line="175"/>
         <source>Error fetching lyrics</source>
         <translation>Fout bij het ophalen van de lyrics</translation>
     </message>
     <message>
-        <location filename="../src/utils.cpp" line="235"/>
-        <source>Album cover not founded</source>
-        <translation>Album cover niet gevonden</translation>
+        <location filename="../src/utils.cpp" line="201"/>
+        <source>Album cover not found</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -31,7 +31,7 @@ Dialog {
             else if (lastGroup=="artists")
                 misdatos.loadArtists()
             else
-                misdatos.loadSongs(utils.readSettings("TrackOrder", "title"))
+                misdatos.loadSongs(utils.readSettings("TrackOrder", "number"))
         }
     }
 

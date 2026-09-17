@@ -39,6 +39,18 @@ int main(int argc, char *argv[])
     QSettings settings(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/flowplayer.conf", QSettings::NativeFormat);
     lang = settings.value("Language", "undefined").toString();
 
+    // One-time config migration: default TrackOrder changed from "title" to "number".
+    // Runs before any QML loads, so loadSongs() sees the new value on first launch.
+    if (!settings.contains("ConfigVersion")) {
+        const QString existingTrackOrder = settings.value("TrackOrder", "").toString();
+        if (existingTrackOrder.isEmpty() || existingTrackOrder == "title") {
+            settings.setValue("TrackOrder", "number");
+        }
+        settings.setValue("ConfigVersion", 1);
+        settings.sync();
+    }
+
+
     if (lang=="undefined")
     {
         lang=  QLocale().name();
