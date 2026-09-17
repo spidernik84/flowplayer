@@ -1,7 +1,24 @@
-# FlowPlayer for SailfishOS
+# FlowPlayer for SailfishOS / Experimental Fork
 
 **FlowPlayer is a feature-rich music player for SailfishOS.**
 <br />
+
+This is an experimental fork with moderately heavy use of LLMs.
+
+All credit to the original developers!
+
+The scope of the fork exercise:
+
+- play with the Sailfish SDK
+- play with development on Sailfish in general
+
+Specifically to FlowPlayer:
+
+- Implement better track management in the player
+- Implement Lyrics 
+- Implement Radio Paradise support
+
+
 ## Features
 
 #### Supported file formats
