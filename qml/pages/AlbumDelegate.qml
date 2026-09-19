@@ -10,10 +10,6 @@ ListItem
     id: itemcontainer
     property variant myData
 
-    //signal clicked
-    //signal pressAndHold
-    //signal doubleClicked
-
     property string name
     property string desc
     property string time
@@ -26,6 +22,12 @@ ListItem
     property alias textSize: thumb.textSize
     property int tracknum: 0
     property int discnum: 0
+    property bool showDiscHeader: false
+
+    readonly property bool _showHeader: showDiscHeader && discnum > 0
+    readonly property real _headerSectionHeight: _showHeader
+        ? Theme.paddingSmall + discHeaderLabel.implicitHeight + Theme.paddingSmall
+        : 0
 
     // Formats track number as "03"; prefixes disc as "2-03" when disc > 1.
     function formatTrack(t, d) {
@@ -37,85 +39,102 @@ ListItem
         return s
     }
 
-    //height: 78
     width: parent.width
     clip: true
+    contentHeight: Theme.itemSizeSmall + _headerSectionHeight
 
-    CoverArtList {
-        id: thumb
+    Label {
+        id: discHeaderLabel
+        visible: _showHeader
         x: Theme.paddingLarge
-        width: itemimg!="" || showCover? parent.height /*- Theme.paddingMedium*/ : 0
-        anchors.verticalCenter: parent.verticalCenter
-        height: width
-        itemimg: img
-        artist: desc
-        album: name
-        text: qsTr("Not found")
+        y: Theme.paddingSmall
+        width: parent.width - Theme.paddingLarge * 2
+        text: qsTr("Disc %1").arg(discnum)
+        font.pixelSize: Theme.fontSizeSmall
+        font.bold: true
+        color: Theme.secondaryColor
     }
 
-    Label
-    {
-        id: trackLabel
-        text: formatTrack(tracknum, discnum)
-        anchors.left: img!="" || showCover? thumb.right : parent.left
-        anchors.leftMargin: img!="" || showCover? Theme.paddingMedium : Theme.paddingLarge
-        anchors.verticalCenter: parent.verticalCenter
-        width: Theme.fontSizeMedium * 2.5
-        font.pixelSize: Theme.fontSizeMedium
-        horizontalAlignment: Text.AlignRight
-        truncationMode: TruncationMode.Fade
-        color: isplaying? Theme.highlightColor : Theme.secondaryColor
-    }
+    Item {
+        id: rowContainer
+        y: _headerSectionHeight
+        width: parent.width
+        height: Theme.itemSizeSmall
 
-    Column {
-        anchors.left: trackLabel.right
-        anchors.leftMargin: Theme.paddingSmall
-        anchors.right: parent.right
-        anchors.rightMargin: Theme.paddingLarge
-        anchors.verticalCenter: parent.verticalCenter
-        spacing: parent.height===Theme.itemSizeSmall? 0 : Theme.paddingSmall
+        CoverArtList {
+            id: thumb
+            x: Theme.paddingLarge
+            width: itemimg!="" || showCover? parent.height : 0
+            anchors.verticalCenter: parent.verticalCenter
+            height: width
+            itemimg: img
+            artist: desc
+            album: name
+            text: qsTr("Not found")
+        }
 
         Label
         {
-            text: name
+            id: trackLabel
+            text: formatTrack(tracknum, discnum)
+            anchors.left: img!="" || showCover? thumb.right : parent.left
+            anchors.leftMargin: img!="" || showCover? Theme.paddingMedium : Theme.paddingLarge
+            anchors.verticalCenter: parent.verticalCenter
+            width: Theme.fontSizeMedium * 2.5
             font.pixelSize: Theme.fontSizeMedium
-            color: isplaying? Theme.highlightColor : Theme.primaryColor
-            textFormat: Text.RichText
+            horizontalAlignment: Text.AlignRight
             truncationMode: TruncationMode.Fade
-            width: parent.width
+            color: isplaying? Theme.highlightColor : Theme.secondaryColor
         }
 
-        Item {
-            width: parent.width
-            height: descText.height
+        Column {
+            anchors.left: trackLabel.right
+            anchors.leftMargin: Theme.paddingSmall
+            anchors.right: parent.right
+            anchors.rightMargin: Theme.paddingLarge
+            anchors.verticalCenter: parent.verticalCenter
+            spacing: parent.height===Theme.itemSizeSmall? 0 : Theme.paddingSmall
 
             Label
             {
-                id: descText
-                text: desc
-                anchors.top: parent.top
-                anchors.left: parent.left
-                truncationMode: TruncationMode.Fade
-                width: parent.width -timeText.paintedWidth -Theme.paddingLarge
-                font.pixelSize: Theme.fontSizeExtraSmall
+                text: name
+                font.pixelSize: Theme.fontSizeMedium
+                color: isplaying? Theme.highlightColor : Theme.primaryColor
                 textFormat: Text.RichText
-                color: isplaying? Theme.secondaryHighlightColor : Theme.secondaryColor
-            }
-
-            Label
-            {
-                id: timeText
-                text: time
-                anchors.right: parent.right
-                anchors.top: parent.top
-                horizontalAlignment: Text.AlignRight
+                truncationMode: TruncationMode.Fade
                 width: parent.width
-                font.pixelSize: Theme.fontSizeExtraSmall
-                color: isplaying? Theme.secondaryHighlightColor : Theme.secondaryColor
             }
+
+            Item {
+                width: parent.width
+                height: descText.height
+
+                Label
+                {
+                    id: descText
+                    text: desc
+                    anchors.top: parent.top
+                    anchors.left: parent.left
+                    truncationMode: TruncationMode.Fade
+                    width: parent.width -timeText.paintedWidth -Theme.paddingLarge
+                    font.pixelSize: Theme.fontSizeExtraSmall
+                    textFormat: Text.RichText
+                    color: isplaying? Theme.secondaryHighlightColor : Theme.secondaryColor
+                }
+
+                Label
+                {
+                    id: timeText
+                    text: time
+                    anchors.right: parent.right
+                    anchors.top: parent.top
+                    horizontalAlignment: Text.AlignRight
+                    width: parent.width
+                    font.pixelSize: Theme.fontSizeExtraSmall
+                    color: isplaying? Theme.secondaryHighlightColor : Theme.secondaryColor
+                }
+            }
+
         }
-
     }
-
-
 }

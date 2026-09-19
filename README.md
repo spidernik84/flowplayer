@@ -14,7 +14,9 @@ The scope of the fork exercise:
 
 Specifically to FlowPlayer:
 
-- [x] Implement better track management in the player (sort by track)
+- [ ] Implement better track management in the player
+    - [x] sort by track number
+    - [ ] handle multi-cd albums
 - [ ] Implement Lyrics 
 - [ ] Implement Radio Paradise support
 

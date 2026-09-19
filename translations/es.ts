@@ -100,7 +100,12 @@
 <context>
     <name>AlbumDelegate</name>
     <message>
-        <location filename="../qml/pages/AlbumDelegate.qml" line="53"/>
+        <location filename="../qml/pages/AlbumDelegate.qml" line="52"/>
+        <source>Disc %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AlbumDelegate.qml" line="73"/>
         <source>Not found</source>
         <translation>No se encontró</translation>
     </message>
@@ -226,12 +231,12 @@
 <context>
     <name>DataReader</name>
     <message>
-        <location filename="../src/datareader.cpp" line="255"/>
+        <location filename="../src/datareader.cpp" line="272"/>
         <source>Unknown artist</source>
         <translation>Artista desconocido</translation>
     </message>
     <message>
-        <location filename="../src/datareader.cpp" line="256"/>
+        <location filename="../src/datareader.cpp" line="273"/>
         <source>Unknown album</source>
         <translation>Album desconocido</translation>
     </message>
@@ -1211,59 +1216,59 @@
 <context>
     <name>SongListView</name>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="68"/>
+        <location filename="../qml/pages/SongListView.qml" line="99"/>
         <source>Search cover</source>
         <translation>Buscar carátula</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="69"/>
+        <location filename="../qml/pages/SongListView.qml" line="100"/>
         <source>Unknown artist</source>
         <translation>Artista desconocido</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="69"/>
+        <location filename="../qml/pages/SongListView.qml" line="100"/>
         <source>Unknown album</source>
         <translation>Album desconocido</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="76"/>
-        <location filename="../qml/pages/SongListView.qml" line="116"/>
+        <location filename="../qml/pages/SongListView.qml" line="107"/>
+        <location filename="../qml/pages/SongListView.qml" line="147"/>
         <source>Edit metadata</source>
         <translation>Editar etiquetas</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="86"/>
-        <location filename="../qml/pages/SongListView.qml" line="126"/>
+        <location filename="../qml/pages/SongListView.qml" line="117"/>
+        <location filename="../qml/pages/SongListView.qml" line="157"/>
         <source>Add to playlist</source>
         <translation>Agregar a lista de reproducción</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="135"/>
+        <location filename="../qml/pages/SongListView.qml" line="166"/>
         <source>Remove from favorites</source>
         <translation>Eliminar de favoritos</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="135"/>
+        <location filename="../qml/pages/SongListView.qml" line="166"/>
         <source>Add to favorites</source>
         <translation>Agregar a favoritos</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="211"/>
+        <location filename="../qml/pages/SongListView.qml" line="242"/>
         <source>Cover not found</source>
         <translation>Carátula no encontrada</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="219"/>
+        <location filename="../qml/pages/SongListView.qml" line="250"/>
         <source>Various artists</source>
         <translation>Artistas varios</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="223"/>
+        <location filename="../qml/pages/SongListView.qml" line="254"/>
         <source>1 track</source>
         <translation>1 canción</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="223"/>
+        <location filename="../qml/pages/SongListView.qml" line="254"/>
         <source>%1 tracks</source>
         <translation>%1 canciones</translation>
     </message>

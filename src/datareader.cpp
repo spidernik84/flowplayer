@@ -214,22 +214,39 @@ void DataReader::readFile(QString file)
             m_tracknum = QString::number(tagFile->tag()->track());
 
             // Disc number: TagLib::Tag has no disc() accessor, so read it from
-            // the File's PropertyMap. Handles both Vorbis-style (DISCNUMBER)
-            // and ID3v2-style (TPOS = "disc/total") tags.
+            // the File's PropertyMap. TagLib normalises ID3v2's TPOS frame to
+            // the key "DISCNUMBER", but keeps the raw "N/M" value, so always
+            // take the part before the slash.
             TagLib::PropertyMap props = tf->properties();
-            int discnum = 0;
-
-            if (props.contains("DISCNUMBER")) {
-                discnum = QString::fromStdString(
-                    props["DISCNUMBER"].toString().to8Bit(true)).toInt();
-            } else if (props.contains("TPOS")) {
-                QString tpos = QString::fromStdString(
-                    props["TPOS"].toString().to8Bit(true));
-                discnum = tpos.split("/").first().toInt();
+            qDebug() << "=== DISC DEBUG" << file;
+            qDebug() << "  props.isEmpty():" << props.isEmpty();
+            for (auto it = props.begin(); it != props.end(); ++it) {
+                const TagLib::StringList &values = it->second;
+                QString joined;
+                for (const auto &v : values) {
+                    if (!joined.isEmpty()) joined += " | ";
+                    joined += QString::fromStdString(v.to8Bit(true));
+                }
+                qDebug() << "   key:"
+                         << QString::fromStdString(it->first.to8Bit(true))
+                         << "= " << joined;
             }
 
-            m_discnum = QString::number(discnum);
 
+            QString discStr;
+            if (props.contains("DISCNUMBER"))
+                discStr = QString::fromStdString(props["DISCNUMBER"].toString().to8Bit(true));
+            else if (props.contains("TPOS"))
+                discStr = QString::fromStdString(props["TPOS"].toString().to8Bit(true));
+
+            int discnum = 0;
+            if (!discStr.isEmpty())
+                discnum = discStr.split("/").first().trimmed().toInt();
+
+            qDebug() << "=== PARSED discnum =" << discnum
+                     << "from discStr =" << discStr;
+
+            m_discnum = QString::number(discnum);
             if (m_title=="") m_title = QFileInfo(file).baseName();
 
             // if we have artist and album, we check for a cover image.

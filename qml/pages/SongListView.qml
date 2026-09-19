@@ -19,6 +19,35 @@ Page {
 
     ListModel { id: songListModel }
 
+    // After all tracks are loaded, walk the model once and decide which
+    // entries should carry a "Disc N" header above them. A header is shown:
+    //   - for every disc number > 1 (definite disc change), AND
+    //   - for disc 1 if the album turns out to be multi-disc.
+    // Single-disc albums get no headers at all.
+    function updateDiscHeaders() {
+        console.log("updateDiscHeaders: model count =", songListModel.count)
+        var multiDisc = false
+        for (var i = 0; i < songListModel.count; i++) {
+            if (songListModel.get(i).discnum > 1) {
+                multiDisc = true
+                break
+            }
+        }
+        console.log("updateDiscHeaders: multiDisc =", multiDisc)
+
+        var prevDisc = -1
+        for (var j = 0; j < songListModel.count; j++) {
+            var d = songListModel.get(j).discnum || 0
+            var show = false
+            if (d > 0 && d !== prevDisc) {
+                if (d > 1 || multiDisc) show = true
+            }
+            console.log("  track", j, "discnum =", d, "show =", show)
+            songListModel.setProperty(j, "showDiscHeader", show)
+            prevDisc = d
+        }
+    }
+
     onStatusChanged: {
         if (status===PageStatus.Activating && !loaded) {
             console.log("Loading list: " + artist + " - " + album + " - " + artistcount)
@@ -48,12 +77,14 @@ Page {
         onAddItemToAlbum: {
             songListModel.append({"index":songListModel.count, "artist":item.artist, "album":item.album, "title":item.title,
                                "duration":item.duration, "url":item.url, "fav":item.fav,
-                               "tracknum":item.tracknum, "discnum":item.discnum})
+                               "tracknum":item.tracknum, "discnum":item.discnum,
+                               "showDiscHeader":false})
         }
 
         onAlbumLoaded: {
             console.log("Album loaded. Time: " + totaltime)
             totalTime = DT.getDuration(totaltime)
+            updateDiscHeaders()
         }
 
     }
@@ -106,8 +137,8 @@ Page {
             cindex: index
             tracknum: model.tracknum
             discnum: model.discnum
+            showDiscHeader: model.showDiscHeader
             isplaying: decodeURIComponent(model.url) === decodeURIComponent(myPlayer.source)
-            contentHeight: Theme.itemSizeSmall
 
             menu: ContextMenu {
                 visible: model.name !== "00000000000000000000"
