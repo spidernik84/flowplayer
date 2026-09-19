@@ -1,3 +1,6 @@
+* sat 19 sep 2026 spidernik84 <spidernik84@users.noreply.github.com> - 0.5.0
+- Implement cover art loading from files, fallback to manual download via FlowPlayer
+
 * sat 19 sep 2026 spidernik84 <spidernik84@users.noreply.github.com> - 0.4.0
 - Track management fixes: cd-number aware + default sort by track nr.
 
