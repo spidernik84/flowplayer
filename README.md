@@ -14,10 +14,17 @@ The scope of the fork exercise:
 
 Specifically to FlowPlayer:
 
-- [ ] Implement better track management in the player
+**High Prio**
+
+- [x] Implement better track management in the player
     - [x] sort by track number
-    - [ ] handle multi-cd albums
-- [ ] Implement Lyrics 
+    - [x] handle multi-cd albums
+- [ ] fix cover loading from file
+- [ ] implement headphones event (play/pause/next track)
+
+**Low Prio**
+
+- [ ] Implement Lyrics download
 - [ ] Implement Radio Paradise support
 
 
