@@ -1,3 +1,6 @@
+* sat 19 sep 2026 spidernik84 <spidernik84@users.noreply.github.com> - 0.6.1
+- Fix regression with lists not matching which file is played
+
 * sat 19 sep 2026 spidernik84 <spidernik84@users.noreply.github.com> - 0.6.0
 - Update bluetooth events response implementation
 
