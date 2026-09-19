@@ -33,9 +33,9 @@ Page {
                 break
             }
         }
-        console.log("updateDiscHeaders: multiDisc =", multiDisc)
 
         var prevDisc = -1
+        console.log("=== multiDisc =", multiDisc)
         for (var j = 0; j < songListModel.count; j++) {
             var d = songListModel.get(j).discnum || 0
             var show = false
@@ -79,14 +79,21 @@ Page {
                                "duration":item.duration, "url":item.url, "fav":item.fav,
                                "tracknum":item.tracknum, "discnum":item.discnum,
                                "showDiscHeader":false})
+            headerTimer.restart()
         }
 
         onAlbumLoaded: {
             console.log("Album loaded. Time: " + totaltime)
             totalTime = DT.getDuration(totaltime)
+            headerTimer.stop()
             updateDiscHeaders()
         }
+    }
 
+    Timer {
+        id: headerTimer
+        interval: 100
+        onTriggered: updateDiscHeaders()
     }
 
     SilicaListView {
@@ -267,5 +274,7 @@ Page {
         }
 
     }
+    Component.onCompleted: console.log("SongListView page ready; updateDiscHeaders is",
+                                        typeof updateDiscHeaders)
 
 }

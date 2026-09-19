@@ -41,7 +41,7 @@ ListItem
 
     width: parent.width
     clip: true
-    contentHeight: Theme.itemSizeSmall + _headerSectionHeight
+    height: Theme.itemSizeSmall + _headerSectionHeight
 
     Label {
         id: discHeaderLabel
@@ -137,4 +137,8 @@ ListItem
 
         }
     }
+    Component.onCompleted: console.log("AlbumDelegate:",
+        "discnum =", discnum,
+        "showDiscHeader =", showDiscHeader,
+        "height =", height)
 }

@@ -1216,59 +1216,59 @@
 <context>
     <name>SongListView</name>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="99"/>
+        <location filename="../qml/pages/SongListView.qml" line="106"/>
         <source>Search cover</source>
         <translation>Rechercher pochette</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="100"/>
+        <location filename="../qml/pages/SongListView.qml" line="107"/>
         <source>Unknown artist</source>
         <translation>Artiste inconnu</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="100"/>
+        <location filename="../qml/pages/SongListView.qml" line="107"/>
         <source>Unknown album</source>
         <translation>Album inconnu</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="107"/>
-        <location filename="../qml/pages/SongListView.qml" line="147"/>
+        <location filename="../qml/pages/SongListView.qml" line="114"/>
+        <location filename="../qml/pages/SongListView.qml" line="154"/>
         <source>Edit metadata</source>
         <translation>Editer métadonnées</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="117"/>
-        <location filename="../qml/pages/SongListView.qml" line="157"/>
+        <location filename="../qml/pages/SongListView.qml" line="124"/>
+        <location filename="../qml/pages/SongListView.qml" line="164"/>
         <source>Add to playlist</source>
         <translation>Ajouter une playlist</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="166"/>
+        <location filename="../qml/pages/SongListView.qml" line="173"/>
         <source>Remove from favorites</source>
         <translation>Retirer des favoris</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="166"/>
+        <location filename="../qml/pages/SongListView.qml" line="173"/>
         <source>Add to favorites</source>
         <translation>Ajouter aux favoris</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="242"/>
+        <location filename="../qml/pages/SongListView.qml" line="249"/>
         <source>Cover not found</source>
         <translation>Pochette non trouvée</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="250"/>
+        <location filename="../qml/pages/SongListView.qml" line="257"/>
         <source>Various artists</source>
         <translation>Artistes divers</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="254"/>
+        <location filename="../qml/pages/SongListView.qml" line="261"/>
         <source>1 track</source>
         <translation>1 piste</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="254"/>
+        <location filename="../qml/pages/SongListView.qml" line="261"/>
         <source>%1 tracks</source>
         <translation>%1 piste</translation>
     </message>
