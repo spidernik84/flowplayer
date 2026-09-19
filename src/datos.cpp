@@ -237,7 +237,7 @@ void Datos::addFilterToQueue()
     QString order = settings.value("TrackOrder", "number").toString();
 
     if (order=="title") norder="title";
-    else if (order=="number") norder="COALESCE(discnum,1), tracknum";
+    else if (order=="number") norder="album, COALESCE(discnum,1), tracknum";
     else if (order=="filename") norder="url";
 
 

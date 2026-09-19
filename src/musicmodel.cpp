@@ -61,7 +61,7 @@ void MusicModel::loadData(QString artist, QString album, QString various)
     QString torder = sets.value("TrackOrder", "number").toString();
     QString order;
     if (torder=="title") order="title";
-    else if (torder=="number") order="COALESCE(discnum,1), tracknum";
+    else if (torder=="number") order="album, COALESCE(discnum,1), tracknum";
     else if (torder=="filename") order="url";
 
 
