@@ -3,7 +3,7 @@ import Sailfish.Silica 1.0
 import FlowPlayer 1.0
 //import QtMultimedia 5.0
 import org.nemomobile.mpris 1.0
-import com.jolla.mediaplayer 1.0
+//import com.jolla.mediaplayer 1.0
 import "pages"
 
 ApplicationWindow
@@ -169,7 +169,7 @@ ApplicationWindow
             }
         }
         mprisPlayer.localMetadata = metadata
-        bluetoothMediaPlayer.metadata = metadata
+//        bluetoothMediaPlayer.metadata = metadata
     }
 
 
@@ -433,7 +433,7 @@ ApplicationWindow
         supportedMimeTypes: ["audio/x-wav", "audio/mp4", "audio/mpeg", "audio/x-vorbis+ogg", "audio/ogg", "audio/opus"]
 
         // Mpris2 Player Interface
-        canControl: currentSongInfo !== []
+        canControl: currentSongInfo && currentSongInfo.url !== undefined
         canGoNext: queueList.count>1 && currentSongInfo!==[]
         canGoPrevious: queueList.count>1 && currentSongInfo!==[]
         canPause: queueList.count>0 && currentSongInfo!==[]
@@ -517,49 +517,49 @@ ApplicationWindow
         id: mediaKeys
     }
 
-    BluetoothMediaPlayer {
-        id: bluetoothMediaPlayer
+//    BluetoothMediaPlayer {
+//        id: bluetoothMediaPlayer
 
-        status: {
-            if (myPlayer.state===1) {
-                return BluetoothMediaPlayer.Playing
-            } else if (myPlayer.state===2) {
-                return BluetoothMediaPlayer.Paused
-            } else {
-                return BluetoothMediaPlayer.Stopped
-            }
-        }
+//        status: {
+//            if (myPlayer.state===1) {
+//                return BluetoothMediaPlayer.Playing
+//            } else if (myPlayer.state===2) {
+//                return BluetoothMediaPlayer.Paused
+//            } else {
+//                return BluetoothMediaPlayer.Stopped
+//            }
+//        }
 
-        onStatusChanged: console.log("BT PLAYBACK STATUS: " + status + " - Player state: " + myPlayer.state)
+//        onStatusChanged: console.log("BT PLAYBACK STATUS: " + status + " - Player state: " + myPlayer.state)
 
-        repeat: appWindow.repeat
-                    ? BluetoothMediaPlayer.RepeatAllTracks
-                    : BluetoothMediaPlayer.RepeatOff
+//        repeat: appWindow.repeat
+//                    ? BluetoothMediaPlayer.RepeatAllTracks
+//                    : BluetoothMediaPlayer.RepeatOff
 
-        shuffle: appWindow.shuffle
-                    ? BluetoothMediaPlayer.ShuffleAllTracks
-                    : BluetoothMediaPlayer.ShuffleOff
+//        shuffle: appWindow.shuffle
+//                    ? BluetoothMediaPlayer.ShuffleAllTracks
+//                    : BluetoothMediaPlayer.ShuffleOff
 
-        position: myPlayer.position
+//        position: myPlayer.position
 
-        metadata: {} //currentSongInfo
+//        metadata: currentSongInfo
 
-        onChangeRepeat: {
-            if (repeat == BluetoothMediaPlayer.RepeatOff) {
-                appWindow.repeat = false
-            } else if (repeat == BluetoothMediaPlayer.RepeatAllTracks) {
-                appWindow.repeat = true
-            }
-        }
+//        onChangeRepeat: {
+//            if (repeat == BluetoothMediaPlayer.RepeatOff) {
+//                appWindow.repeat = false
+//            } else if (repeat == BluetoothMediaPlayer.RepeatAllTracks) {
+//                appWindow.repeat = true
+//            }
+//        }
 
-        onChangeShuffle: {
-            if (shuffle == BluetoothMediaPlayer.ShuffleOff) {
-                appWindow.shuffle = false
-            } else if (shuffle == BluetoothMediaPlayer.ShuffleAllTracks) {
-                appWindow.shuffle = true
-            }
-        }
-    }
+//        onChangeShuffle: {
+//            if (shuffle == BluetoothMediaPlayer.ShuffleOff) {
+//                appWindow.shuffle = false
+//            } else if (shuffle == BluetoothMediaPlayer.ShuffleAllTracks) {
+//                appWindow.shuffle = true
+//            }
+//        }
+//    }
 
 
     function replaceText(text, str) {
