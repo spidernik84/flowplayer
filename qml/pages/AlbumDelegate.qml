@@ -29,14 +29,11 @@ ListItem
         ? Theme.paddingSmall + discHeaderLabel.implicitHeight + Theme.paddingSmall
         : 0
 
-    // Formats track number as "03"; prefixes disc as "2-03" when disc > 1.
-    function formatTrack(t, d) {
+    // Formats track number as "xx"
+    function formatTrack(t) {
         var n = parseInt(t)
         if (!n || n <= 0) return ""
-        var s = n < 10 ? "0" + n : "" + n
-        var disc = parseInt(d)
-        if (disc && disc > 1) return disc + "-" + s
-        return s
+        return n < 10 ? "0" + n : "" + n
     }
 
     width: parent.width
@@ -76,7 +73,7 @@ ListItem
         Label
         {
             id: trackLabel
-            text: formatTrack(tracknum, discnum)
+            text: formatTrack(tracknum)
             anchors.left: img!="" || showCover? thumb.right : parent.left
             anchors.leftMargin: img!="" || showCover? Theme.paddingMedium : Theme.paddingLarge
             anchors.verticalCenter: parent.verticalCenter

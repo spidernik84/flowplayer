@@ -25,7 +25,6 @@ Page {
     //   - for disc 1 if the album turns out to be multi-disc.
     // Single-disc albums get no headers at all.
     function updateDiscHeaders() {
-        console.log("updateDiscHeaders: model count =", songListModel.count)
         var multiDisc = false
         for (var i = 0; i < songListModel.count; i++) {
             if (songListModel.get(i).discnum > 1) {
@@ -35,14 +34,12 @@ Page {
         }
 
         var prevDisc = -1
-        console.log("=== multiDisc =", multiDisc)
         for (var j = 0; j < songListModel.count; j++) {
             var d = songListModel.get(j).discnum || 0
             var show = false
             if (d > 0 && d !== prevDisc) {
                 if (d > 1 || multiDisc) show = true
             }
-            console.log("  track", j, "discnum =", d, "show =", show)
             songListModel.setProperty(j, "showDiscHeader", show)
             prevDisc = d
         }
@@ -50,7 +47,6 @@ Page {
 
     onStatusChanged: {
         if (status===PageStatus.Activating && !loaded) {
-            console.log("Loading list: " + artist + " - " + album + " - " + artistcount)
             songListModel.clear()
             myplaylistmanager.loadAlbum(artist, album, artistcount)
             loaded = true
@@ -76,14 +72,13 @@ Page {
 
         onAddItemToAlbum: {
             songListModel.append({"index":songListModel.count, "artist":item.artist, "album":item.album, "title":item.title,
-                               "duration":item.duration, "url":item.url, "fav":item.fav,
-                               "tracknum":item.tracknum, "discnum":item.discnum,
-                               "showDiscHeader":false})
+                                     "duration":item.duration, "url":item.url, "fav":item.fav,
+                                     "tracknum":item.tracknum, "discnum":item.discnum,
+                                     "showDiscHeader":false})
             headerTimer.restart()
         }
 
         onAlbumLoaded: {
-            console.log("Album loaded. Time: " + totaltime)
             totalTime = DT.getDuration(totaltime)
             headerTimer.stop()
             updateDiscHeaders()
@@ -274,7 +269,6 @@ Page {
         }
 
     }
-    Component.onCompleted: console.log("SongListView page ready; updateDiscHeaders is",
-                                        typeof updateDiscHeaders)
+
 
 }
