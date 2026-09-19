@@ -231,12 +231,12 @@
 <context>
     <name>DataReader</name>
     <message>
-        <location filename="../src/datareader.cpp" line="272"/>
+        <location filename="../src/datareader.cpp" line="356"/>
         <source>Unknown artist</source>
         <translation>Artista sconosciuto</translation>
     </message>
     <message>
-        <location filename="../src/datareader.cpp" line="273"/>
+        <location filename="../src/datareader.cpp" line="357"/>
         <source>Unknown album</source>
         <translation>Album sconosciuto</translation>
     </message>

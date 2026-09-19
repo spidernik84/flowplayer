@@ -1,6 +1,12 @@
 #include "datareader.h"
 #include "globalutils.h"
 
+#include <id3v2tag.h>
+#include <attachedpictureframe.h>
+#include <flacpicture.h>
+#include <mp4tag.h>
+#include <mp4coverart.h>
+
 #include <mpegfile.h>
 #include <flacfile.h>
 #include <tlist.h>
@@ -195,6 +201,57 @@ TagLib::File* DataReader::getFileByMimeType(QString file)
     return 0;
 }
 
+
+// Extract the first embedded cover image from a TagLib::File, if any.
+// Returns an empty ByteVector when the file has no embedded art, or when
+// the format isn't one we handle. Support is intentionally limited to the
+// three formats that carry art in a way TagLib exposes cleanly: MP3,
+// FLAC, and MP4/M4A. Vorbis, Opus, WMA, WAV, AIFF and the tracker
+// formats return nothing here; folder-cover fallback still applies to them.
+static TagLib::ByteVector extractEmbeddedCover(TagLib::File* tf)
+{
+    // MP3: ID3v2 APIC frame
+    if (auto* mpeg = dynamic_cast<TagLib::MPEG::File*>(tf)) {
+        if (TagLib::ID3v2::Tag* tag = mpeg->ID3v2Tag()) {
+            TagLib::ID3v2::FrameList apic = tag->frameList("APIC");
+            if (!apic.isEmpty()) {
+                auto* frame = dynamic_cast<TagLib::ID3v2::AttachedPictureFrame*>(apic.front());
+                if (frame)
+                    return frame->picture();
+            }
+        }
+        return TagLib::ByteVector();
+    }
+
+    // FLAC: native PICTURE metadata block
+    if (auto* flac = dynamic_cast<TagLib::FLAC::File*>(tf)) {
+        const TagLib::List<TagLib::FLAC::Picture*>& pics = flac->pictureList();
+        if (!pics.isEmpty() && pics.front())
+            return pics.front()->data();
+        return TagLib::ByteVector();
+    }
+
+    // MP4 / M4A: "covr" atom
+    if (auto* mp4 = dynamic_cast<TagLib::MP4::File*>(tf)) {
+        if (TagLib::MP4::Tag* tag = mp4->tag()) {
+            TagLib::MP4::ItemMap items = tag->itemMap();
+            auto it = items.find("covr");
+            if (it != items.end()) {
+                TagLib::MP4::CoverArtList covers = it->second.toCoverArtList();
+                if (!covers.isEmpty())
+                    return covers.front().data();
+            }
+        }
+        return TagLib::ByteVector();
+    }
+
+    return TagLib::ByteVector();
+}
+
+
+
+
+
 void DataReader::readFile(QString file)
 {
     file.remove("file://");
@@ -249,21 +306,48 @@ void DataReader::readFile(QString file)
             m_discnum = QString::number(discnum);
             if (m_title=="") m_title = QFileInfo(file).baseName();
 
-            // if we have artist and album, we check for a cover image.
+            // Cover art priority: embedded > cover.jpg/folder.jpg > user-downloaded.
+            // "User-downloaded" happens later from the UI, and only if we don't leave
+            // anything in the cache slot here.
             if (m_artist != "" && m_album != "") {
-                QFileInfo info(file);
-                QDirIterator iterator(info.dir());
-                while (iterator.hasNext()) {
-                    iterator.next();
-                    if (iterator.fileInfo().isFile()) {
-                        if (  (iterator.fileInfo().suffix() == "jpeg" ||
-                               iterator.fileInfo().suffix() == "jpg") &&
-                              (iterator.fileInfo().baseName() == "cover" ||
-                               iterator.fileInfo().baseName() == "folder")  ) {
-                            QString th2 = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) +
-                                          "/media-art/album-" + doubleHash(m_artist, m_album) + ".jpeg";
-                            qDebug() << "COPYING FILE ART: " << iterator.filePath() << m_artist << m_album;
-                            QFile::copy(iterator.filePath(), th2);
+                const QString cacheDir = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
+                const QString dest = cacheDir + "/media-art/album-" + doubleHash(m_artist, m_album) + ".jpeg";
+
+                // Only populate the slot on first sight; leave existing (possibly
+                // downloaded) art untouched across re-scans.
+                if (!QFile::exists(dest)) {
+                    bool wrote = false;
+
+                    // 1. Embedded art
+                    TagLib::ByteVector art = extractEmbeddedCover(tf);
+                    if (!art.isEmpty()) {
+                        QFile f(dest);
+                        if (f.open(QIODevice::WriteOnly)) {
+                            f.write(art.data(), art.size());
+                            f.close();
+                            wrote = true;
+                            qDebug() << "EXTRACTED EMBEDDED ART:" << file << m_artist << m_album
+                                     << art.size() << "bytes";
+                        } else {
+                            qDebug() << "FAILED TO WRITE EMBEDDED ART TO" << dest;
+                        }
+                    }
+
+                    // 2. Folder fallback
+                    if (!wrote) {
+                        QFileInfo info(file);
+                        QDirIterator iterator(info.dir());
+                        while (iterator.hasNext()) {
+                            iterator.next();
+                            if (iterator.fileInfo().isFile() &&
+                                (iterator.fileInfo().suffix() == "jpeg" ||
+                                 iterator.fileInfo().suffix() == "jpg") &&
+                                (iterator.fileInfo().baseName() == "cover" ||
+                                 iterator.fileInfo().baseName() == "folder")) {
+                                qDebug() << "COPYING FILE ART:" << iterator.filePath() << m_artist << m_album;
+                                QFile::copy(iterator.filePath(), dest);
+                                break;
+                            }
                         }
                     }
                 }
