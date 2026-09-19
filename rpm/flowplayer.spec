@@ -10,7 +10,7 @@ Name:       flowplayer
 Summary:    Music Player for SailfishOS
 # The <version> tag must adhere to semantic versioning: Among multiple other
 # reasons due to its use for `qmake5` in line 104.  See https://semver.org/
-Version:    0.3.7
+Version:    0.4.0
 # The <release> tag comprises one of {alpha,beta,rc,release} postfixed with a
 # natural number greater or equal to 1 (e.g., "beta3") and may additionally be
 # postfixed with a plus character ("+"), the name of the packager and a release
@@ -26,7 +26,7 @@ Release:    release5
 # https://github.com/mer-tools/spectacle/blob/master/data/GROUPS
 Group:      Applications/Multimedia
 License:    MPL-2.0-no-copyleft-exception
-URL:        https://github.com/sailfishos-applications/%{name}
+URL:        https://github.com/spidernik84/%{name}
 # Altering the `Vendor:` field breaks the update path on SailfishOS, see
 # https://en.opensuse.org/SDB:Vendor_change_update#Disabling_Vendor_stickiness
 #Vendor:     meego
@@ -60,7 +60,7 @@ BuildRequires:  desktop-file-utils
 FlowPlayer is a music player for SailfishOS with lyrics support, online radio and 10-band equalizer.
 
 %if 0%{?_chum}
-Title: FlowPlayer for SailfishOS
+Title: FlowPlayer for SailfishOS / Experimental fork
 Type: desktop-application
 Categories:
  - AudioVideo
@@ -74,7 +74,7 @@ Categories:
  - Player
  - Qt
  - Viewer
-DeveloperName: CepiPerez, olf, dcaliste, smokku, flypig, rubdos, poetaster
+DeveloperName: CepiPerez, olf, dcaliste, smokku, flypig, rubdos, poetaster, spidernik84
 Custom:
   Repo: %{url}
 PackageIcon: %{url}/raw/master/flowplayer.png
