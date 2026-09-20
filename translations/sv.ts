@@ -19,12 +19,12 @@
         <translation>Bidragande parter:</translation>
     </message>
     <message>
-        <location filename="../qml/pages/AboutPage.qml" line="97"/>
+        <location filename="../qml/pages/AboutPage.qml" line="98"/>
         <source>If you want to create a new translation or improve an extant one:</source>
         <translation>Om du vill skapa en ny översättning eller förbättra en befintlig:</translation>
     </message>
     <message>
-        <location filename="../qml/pages/AboutPage.qml" line="120"/>
+        <location filename="../qml/pages/AboutPage.qml" line="121"/>
         <source>You can support the original author of FlowPlayer by donating:</source>
         <translation>Du kan stödja den ursprungliga utvecklaren av FlowPlayer genom att donera:</translation>
     </message>

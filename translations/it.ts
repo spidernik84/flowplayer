@@ -19,12 +19,12 @@
         <translation>Contributori:</translation>
     </message>
     <message>
-        <location filename="../qml/pages/AboutPage.qml" line="97"/>
+        <location filename="../qml/pages/AboutPage.qml" line="98"/>
         <source>If you want to create a new translation or improve an extant one:</source>
         <translation>Se vuoi creare una nuova traduzione o migliorare una già esistente:</translation>
     </message>
     <message>
-        <location filename="../qml/pages/AboutPage.qml" line="120"/>
+        <location filename="../qml/pages/AboutPage.qml" line="121"/>
         <source>You can support the original author of FlowPlayer by donating:</source>
         <translation>Puoi supportare l&apos;autore originale di FlowPlayer con una donazione:</translation>
     </message>

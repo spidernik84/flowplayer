@@ -10,10 +10,10 @@
 #include <QDebug>
 #include <QDateTime>
 #include <QStandardPaths>
-#include <QJsonDocument>
 #include <QJsonArray>
+#include <QJsonDocument>
+#include <QString>
 #include <QJsonObject>
-
 
 QString hmacSha1(QByteArray key, QByteArray baseString)
 {
@@ -156,15 +156,10 @@ void WebThread::checkAll()
     QString album = files[0][1];
 
 
-    // LAST.FM
-    //QString url = "http://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=7f338c7458e7d1a9a6204221ff904ba1";
-
-    QString url = "https://itunes.apple.com/search?";
-    url += "term=" + QUrl::toPercentEncoding(artist + " " + album) + "&entity=album&limit=1";
- 
-    //AMAZON - SIMPLE
-    //QString url = "http://www.amazon.com/gp/search?search-alias=popular";
-    //url += "&field-artist="+QUrl::toPercentEncoding(artist)+"&field-title="+QUrl::toPercentEncoding(album)+"&sort=relevancerank";
+    QString url = "http://ws.audioscrobbler.com/2.0/?method=album.getinfo";
+    url += "&api_key=7f338c7458e7d1a9a6204221ff904ba1";
+    url += "&artist=" + QUrl::toPercentEncoding(artist);
+    url += "&album=" + QUrl::toPercentEncoding(album);
 
     action = "link";
     QNetworkRequest req{QUrl(url)};
@@ -178,86 +173,122 @@ void WebThread::downloaded(QNetworkReply *respuesta)
     if (canceled)
         return;
 
-    QString datos1;
-
     int current = 0;
-
-    if (files.count()>0)
+    if (files.count() > 0)
         current = files[0][2].toInt();
     else
         current = curImageIndex;
 
-    if (respuesta->error() != QNetworkReply::NoError)
+    // --- Stage 1: last.fm query ---
+    if (action == "link")
     {
-        if (files.count()>0) {
-            current = files[0][2].toInt();
-            qDebug() << "error: " << files[0][0] << files[0][1] << respuesta->error();
+        bool gotLink = false;
+
+        if (respuesta->error() == QNetworkReply::NoError) {
+            QString body = QString::fromUtf8(respuesta->readAll());
+            QString mega;
+            int x = body.indexOf("<image size=\"mega\">");
+            if (x >= 0) {
+                body.remove(0, x + 19);
+                x = body.indexOf("<");
+                if (x >= 0)
+                    body.remove(x, body.length() - x);
+                mega = body.trimmed();
+            }
+            if (!mega.isEmpty() && mega.startsWith("http")) {
+                qDebug() << "last.fm link for" << files[0][0] << files[0][1] << mega;
+                downloadImage(mega);   // sets action = "image"
+                gotLink = true;
+            }
+        } else {
+            qDebug() << "last.fm error:" << files[0][0] << files[0][1]
+                     << respuesta->error();
         }
-        emit imgLoaded("ERROR", current);
 
-        if (files.count()>0)
-            files.removeAt(0);
-
-        if (files.count()>0)
-            checkAll();
-        else
-            emit downloadDone();
+        if (!gotLink) {
+            qDebug() << "last.fm miss, trying iTunes for"
+                     << files[0][0] << files[0][1];
+            QString url = "https://itunes.apple.com/search?";
+            url += "term=" + QUrl::toPercentEncoding(files[0][0] + " " + files[0][1])
+                   + "&entity=album&limit=1";
+            action = "link-fallback";
+            QNetworkRequest req{QUrl(url)};
+            req.setHeader(QNetworkRequest::UserAgentHeader, "FlowPlayer/1.0");
+            wdatos->get(req);
+        }
+        return;
     }
-    else
-    {
 
-        if (action == "link")
-        {
+    // --- Stage 2: iTunes fallback query ---
+    if (action == "link-fallback")
+    {
+        bool gotLink = false;
+
+        if (respuesta->error() == QNetworkReply::NoError) {
             QJsonDocument doc = QJsonDocument::fromJson(respuesta->readAll());
             QJsonArray results = doc.object().value("results").toArray();
-
             if (!results.isEmpty()) {
                 QString art = results.first().toObject()
                                    .value("artworkUrl100").toString();
-                // Swap the 100x100 variant for a larger one
                 art.replace("100x100bb", "600x600bb");
                 art.replace("100x100", "600x600");
-                qDebug() << "Link for" << files[0][0] << files[0][1] << art;
-                downloadImage(art);
-            } else {
-                emit imgLoaded("ERROR", current);
-                qDebug() << "Not found: " << files[0][0] << files[0][1];
-                files.removeAt(0);
-                if (files.count() > 0)
-                    checkAll();
-                else
-                    emit downloadDone();
+                if (!art.isEmpty()) {
+                    qDebug() << "iTunes link for" << files[0][0] << files[0][1] << art;
+                    downloadImage(art);   // sets action = "image"
+                    gotLink = true;
+                }
             }
+        } else {
+            qDebug() << "iTunes error:" << files[0][0] << files[0][1]
+                     << respuesta->error();
         }
-        else if (action == "image")
-        {
-            qDebug() << "Saving image for" << files[0][0] << files[0][1];
 
-            QString tmp = saveToDisk(respuesta);
-
-            emit imgLoaded(tmp, current);
-
+        if (!gotLink) {
+            qDebug() << "both sources failed for" << files[0][0] << files[0][1];
+            emit imgLoaded("ERROR", current);
             files.removeAt(0);
-
-            if (files.count()>0)
-            {
+            if (files.count() > 0)
                 checkAll();
-            }
             else
                 emit downloadDone();
         }
-        else if (action == "imageextern")
-        {
-            qDebug() << "Saving image for" << curImage;
-            QString tmp = saveToDiskExtern(respuesta);
-            emit imgLoaded(tmp, current);
-        }
-
-
+        return;
     }
 
+    // --- Stage 3: image download (unchanged, but the error path now lives here) ---
+    if (action == "image")
+    {
+        if (respuesta->error() != QNetworkReply::NoError) {
+            qDebug() << "image download failed:" << files[0][0] << files[0][1]
+                     << respuesta->error();
+            emit imgLoaded("ERROR", current);
+            files.removeAt(0);
+            if (files.count() > 0)
+                checkAll();
+            else
+                emit downloadDone();
+            return;
+        }
 
+        qDebug() << "saving image for" << files[0][0] << files[0][1];
+        QString tmp = saveToDisk(respuesta);
+        emit imgLoaded(tmp, current);
+        files.removeAt(0);
+        if (files.count() > 0)
+            checkAll();
+        else
+            emit downloadDone();
+        return;
+    }
 
+    // --- Stage 4: external image download (used by artist images) ---
+    if (action == "imageextern")
+    {
+        qDebug() << "saving image for" << curImage;
+        QString tmp = saveToDiskExtern(respuesta);
+        emit imgLoaded(tmp, current);
+        return;
+    }
 }
 
 void WebThread::cancel()
