@@ -10,6 +10,9 @@
 #include <QDebug>
 #include <QDateTime>
 #include <QStandardPaths>
+#include <QJsonDocument>
+#include <QJsonArray>
+#include <QJsonObject>
 
 
 QString hmacSha1(QByteArray key, QByteArray baseString)
@@ -156,17 +159,17 @@ void WebThread::checkAll()
     // LAST.FM
     //QString url = "http://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=7f338c7458e7d1a9a6204221ff904ba1";
 
-    // QUASAR
-    QString url = "https://coverart.katastrophos.net/query.php?";
-    url += "&artist="+QUrl::toPercentEncoding(artist)+"&album="+QUrl::toPercentEncoding(album)+"&mode=imageurls&limit=1";
-
+    QString url = "https://itunes.apple.com/search?";
+    url += "term=" + QUrl::toPercentEncoding(artist + " " + album) + "&entity=album&limit=1";
  
     //AMAZON - SIMPLE
     //QString url = "http://www.amazon.com/gp/search?search-alias=popular";
     //url += "&field-artist="+QUrl::toPercentEncoding(artist)+"&field-title="+QUrl::toPercentEncoding(album)+"&sort=relevancerank";
 
     action = "link";
-    wdatos->get(QNetworkRequest(QUrl(url)));
+    QNetworkRequest req{QUrl(url)};
+    req.setHeader(QNetworkRequest::UserAgentHeader, "FlowPlayer/1.0");
+    wdatos->get(req);
 
 }
 
@@ -205,34 +208,26 @@ void WebThread::downloaded(QNetworkReply *respuesta)
 
         if (action == "link")
         {
-            datos1 = QString::fromUtf8(respuesta->readAll());
+            QJsonDocument doc = QJsonDocument::fromJson(respuesta->readAll());
+            QJsonArray results = doc.object().value("results").toArray();
 
-            QString tmp = datos1;
-
-            //QUASAR
-            if (tmp.startsWith("http"))
-            {
-                qDebug() << "Link for" << files[0][0] << files[0][1] << tmp;
-
-                downloadImage(tmp);
-                //emit imgLoaded(tmp, current);
-            }
-            else
-            {
+            if (!results.isEmpty()) {
+                QString art = results.first().toObject()
+                                   .value("artworkUrl100").toString();
+                // Swap the 100x100 variant for a larger one
+                art.replace("100x100bb", "600x600bb");
+                art.replace("100x100", "600x600");
+                qDebug() << "Link for" << files[0][0] << files[0][1] << art;
+                downloadImage(art);
+            } else {
                 emit imgLoaded("ERROR", current);
-
                 qDebug() << "Not found: " << files[0][0] << files[0][1];
-
                 files.removeAt(0);
-
-                if (files.count()>0)
-                {
+                if (files.count() > 0)
                     checkAll();
-                }
                 else
                     emit downloadDone();
             }
-
         }
         else if (action == "image")
         {

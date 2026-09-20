@@ -20,7 +20,8 @@ Specifically to FlowPlayer:
     - [x] sort by track number
     - [x] handle multi-cd albums
 - [x] cover loading from file first (prefer embedded, fallback to manual)
-- [x] implement headphones event (play/pause/next track) // NOTE: implemented already, removed some spurious code
+- [x] bulk cover loading fix
+- [ ] implement headphones event (play/pause/next track) // NOTE: implemented already at system level but still problematic, removed some spurious code and tested workaround
 - [ ] implement resume from last state
 
 **Low Prio**

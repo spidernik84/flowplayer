@@ -1,13 +1,19 @@
-* Sat sep 19 2026 spidernik84 <spidernik84@users.noreply.github.com> - 0.6.1
+* Sun Sep 20 2026 spidernik84 <spidernik84@users.noreply.github.com> - 0.6.2
+- Fixed bulk cover fetching due to unreachable old API
+
+* Sun Sep 20 2026 spidernik84 <spidernik84@users.noreply.github.com> - 0.6.2
+- More workarounds for bt issues
+
+* Sat Sep 19 2026 spidernik84 <spidernik84@users.noreply.github.com> - 0.6.1
 - Fix regression with lists not matching which file is played
 
-* Sat sep 19 2026 spidernik84 <spidernik84@users.noreply.github.com> - 0.6.0
+* Sat Sep 19 2026 spidernik84 <spidernik84@users.noreply.github.com> - 0.6.0
 - Update bluetooth events response implementation
 
-* Sat sep 19 2026 spidernik84 <spidernik84@users.noreply.github.com> - 0.5.0
+* Sat Sep 19 2026 spidernik84 <spidernik84@users.noreply.github.com> - 0.5.0
 - Implement cover art loading from files, fallback to manual download via FlowPlayer
 
-* Sat sep 19 2026 spidernik84 <spidernik84@users.noreply.github.com> - 0.4.0
+* Sat Sep 19 2026 spidernik84 <spidernik84@users.noreply.github.com> - 0.4.0
 - Track management fixes: cd-number aware + default sort by track nr.
 
 * Sun Dec 01 2024 olf <Olf0@users.noreply.github.com> - 0.3.7

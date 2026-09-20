@@ -44,7 +44,7 @@ Page {
                     Label {
                         id: main
                         color: Theme.highlightColor
-                        text: "<b>FlowPlayer</b>"
+                        text: "<b>FlowPlayer Experimental Fork</b>"
                         font.pixelSize: Theme.fontSizeMedium
                         textFormat: Text.RichText
                     }
@@ -78,7 +78,8 @@ Page {
 
             Label {
                 color: Theme.secondaryColor
-                text: "(C) 2022-2024 olf (Olf0)" + "<br />" +
+                text: "(C) 2026 spidernik84 (spidernik84)" + "<br />" +
+                      "(C) 2022-2024 olf (Olf0)" + "<br />" +
                       "(C) 2023, 2024 Damien Caliste (dcaliste)" + "<br />" +
                       "(C) 2024 Tomasz Sterna (smokku)" + "<br />" +
                       "(C) 2024 David Llewellyn-Jones (llewelld / flypig)" + "<br />" +
