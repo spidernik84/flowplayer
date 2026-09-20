@@ -1372,22 +1372,22 @@
 <context>
     <name>Utils</name>
     <message>
-        <location filename="../src/utils.cpp" line="70"/>
-        <location filename="../src/utils.cpp" line="222"/>
-        <location filename="../src/utils.cpp" line="249"/>
+        <location filename="../src/utils.cpp" line="78"/>
+        <location filename="../src/utils.cpp" line="230"/>
         <location filename="../src/utils.cpp" line="257"/>
-        <location filename="../src/utils.cpp" line="286"/>
-        <location filename="../src/utils.cpp" line="310"/>
+        <location filename="../src/utils.cpp" line="265"/>
+        <location filename="../src/utils.cpp" line="294"/>
+        <location filename="../src/utils.cpp" line="318"/>
         <source>No lyrics found</source>
         <translation>Testo non trovato</translation>
     </message>
     <message>
-        <location filename="../src/utils.cpp" line="175"/>
+        <location filename="../src/utils.cpp" line="183"/>
         <source>Error fetching lyrics</source>
         <translation>Errore nel recuperare il testo</translation>
     </message>
     <message>
-        <location filename="../src/utils.cpp" line="201"/>
+        <location filename="../src/utils.cpp" line="209"/>
         <source>Album cover not found</source>
         <translation>Copertina album non trovata</translation>
     </message>
@@ -1395,12 +1395,12 @@
 <context>
     <name>flowplayer</name>
     <message>
-        <location filename="../qml/flowplayer.qml" line="162"/>
+        <location filename="../qml/flowplayer.qml" line="176"/>
         <source>(radio)</source>
         <translation>(radio)</translation>
     </message>
     <message>
-        <location filename="../qml/flowplayer.qml" line="321"/>
+        <location filename="../qml/flowplayer.qml" line="353"/>
         <source>Cover not found</source>
         <translation>Copertina non trovata</translation>
     </message>

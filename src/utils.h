@@ -13,6 +13,10 @@
 #include <QSqlQuery>
 #include <QSqlRecord>
 
+// Workaround for bluetooth headphones playback control issues
+#include <QProcess>
+
+
 #include "globalutils.h"
 #include "mydatabase.h"
 
@@ -84,6 +88,8 @@ public:
     //QMetaDataWriterControl *mcontrol;
 
 public slots:
+
+    void restartMprisProxy();    // Workaround for bluetooth headphones playback control issues
     void getAlbumArt(QString artist, QString album);
     void removePreview();
     void Finished(int requestId, bool error);

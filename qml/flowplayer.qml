@@ -2,6 +2,7 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 import FlowPlayer 1.0
 //import QtMultimedia 5.0
+import Nemo.DBus 2.0
 import org.nemomobile.mpris 1.0
 //import com.jolla.mediaplayer 1.0
 import "pages"
@@ -15,10 +16,15 @@ ApplicationWindow
 
     onApplicationActiveChanged: {
         if (appWindow.applicationActive) {
+            mprisProxyNudged = false
             startPage.startTimers()
         } else {
             startPage.stopTimers()
         }
+    }
+
+    Component.onCompleted: {
+        nudgeMprisProxy()
     }
 
     property int lastArtistItem
@@ -70,6 +76,12 @@ ApplicationWindow
         }
     }
 
+    // Workaround mpris-proxy issues when system media players takes over BT events control
+    function nudgeMprisProxy() {
+        systemdUser.call("RestartUnit", ["mpris-proxy.service", "replace"])
+    }
+
+
     //signal metadataChanged(string artist, string album)
     signal albumMetadataChanged(string artistold, string artistnew,
                                 string albumold, string albumnew,
@@ -78,6 +90,8 @@ ApplicationWindow
     property variant currentSongInfo: []
 
     property string currentListOrder: utils.order
+
+    property bool mprisProxyNudged: false     // Workaround for bluetooth headphones playback control issues
 
     property string lastGroup
 
@@ -169,6 +183,16 @@ ApplicationWindow
             }
         }
         mprisPlayer.localMetadata = metadata
+
+        // Workaround for bluetooth headphones playback control issues
+        if (!mprisProxyNudged && currentSongInfo.url !== undefined) {
+            mprisProxyNudged = true
+            console.log("=== Nudging mpris-proxy for BT election")
+            nudgeMprisProxy()
+            console.log("=== Nudge dispatched")
+        }
+
+
 //        bluetoothMediaPlayer.metadata = metadata
     }
 
@@ -185,6 +209,14 @@ ApplicationWindow
     Datos { id: misdatos } //NOSPARQL
     LFM { id: lfm }
     Radios { id: radios }
+
+    DBusInterface {
+        id: systemdUser
+        bus: DBus.SessionBus
+        service: "org.freedesktop.systemd1"
+        path: "/org/freedesktop/systemd1"
+        iface: "org.freedesktop.systemd1.Manager"
+    }
 
 
     /*Connections {
@@ -456,11 +488,11 @@ ApplicationWindow
 
         onPauseRequested: myPlayer.pause()
         onPlayRequested: myPlayer.resume()
+
         onPlayPauseRequested: {
-            if (myPlayer.state===2)
-                myPlayer.resume()
-            else
-                myPlayer.pause()
+            console.log("=== FLOWPLAYER MPRIS: PlayPause")
+            if (myPlayer.state===2) myPlayer.resume()
+            else myPlayer.pause()
         }
         onStopRequested: myPlayer.stop()
 

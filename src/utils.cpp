@@ -6,6 +6,7 @@
 #include <QNetworkConfigurationManager>
 #include <QSettings>
 #include <QStandardPaths>
+
 //#include <MGConfItem>
 
 QString albumArtUrl, albumArtArtist, albumArtAlbum;
@@ -13,6 +14,13 @@ QString currentArtist, currentSong;
 QString searchServer;
 
 //extern bool isDBOpened;
+
+// Workaround for bluetooth headphones playback control issues
+void Utils::restartMprisProxy()
+{
+    QProcess::startDetached("systemctl",
+        QStringList() << "--user" << "restart" << "mpris-proxy");
+}
 
 Utils::Utils(QQuickItem *parent)
     : QQuickItem(parent)
