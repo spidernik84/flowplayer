@@ -67,6 +67,7 @@ public slots:
     void applyEqualizer();
 
     void onAcquiredChanged();
+    void onBlueZPropertiesChanged(QString iface, QVariantMap changed, QStringList invalidated); // catch sink events change to pause/play
 
     void savePreset(QString name, bool current);
 
@@ -89,6 +90,8 @@ private:
     GstPad *pad, *ghost_pad;
     GstBus *bus;
     GstMessage *msg;
+
+    bool m_pausedByBT = false; // used to track if playback paused by BT event
 
     AudioResourceQt::AudioResource m_audio_resource;
 };

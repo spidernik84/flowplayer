@@ -6,6 +6,10 @@
 #include <QStandardPaths>
 #include "QVariantMap"
 
+#include <QDBusConnection>
+#include <QDBusMessage>
+#include <QVariantMap>
+
 extern bool databaseWorking;
 extern bool isDBOpened;
 
@@ -176,6 +180,38 @@ void Player::backend_init (int *argc,
     gst_object_unref (bus);
 
     m_audio_resource.acquire();
+
+    // workaround to detect play/pause from bluetooth headphones
+    QDBusConnection::systemBus().connect(
+        "org.bluez",
+        QString(),
+        "org.freedesktop.DBus.Properties",
+        "PropertiesChanged",
+        this,
+        SLOT(onBlueZPropertiesChanged(QString, QVariantMap, QStringList))
+    );
+}
+
+// workaround to detect play/pause from bluetooth headphones using BlueZ state change
+void Player::onBlueZPropertiesChanged(QString iface, QVariantMap changed, QStringList /*invalidated*/)
+{
+    if (iface != "org.bluez.MediaTransport1")
+        return;
+    if (!changed.contains("State"))
+        return;
+
+    const QString state = changed.value("State").toString();
+    qDebug() << "BT transport state:" << state << "player state:" << m_state
+             << "pausedByBT:" << m_pausedByBT;
+
+    if (state == "idle" && m_state == 1) {
+        qDebug() << "BT paused — pausing player";
+        m_pausedByBT = true;
+        pause();
+    } else if (state == "active" && m_state == 2 && m_pausedByBT) {
+        qDebug() << "BT resumed — resuming player";
+        resume();
+    }
 }
 
 void Player::onAcquiredChanged()
@@ -335,11 +371,11 @@ void Player::pause()
 
 void Player::resume()
 {
+    m_pausedByBT = false;
     gst_element_set_state (pipeline, GST_STATE_PLAYING);
     m_state = 1;
     emit stateChanged();
     timer->start(1000);
-    //m_audio_resource.acquire();
 }
 
 void Player::seek(int val)

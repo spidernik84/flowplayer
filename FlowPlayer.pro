@@ -1,6 +1,6 @@
 TARGET = flowplayer
 
-QT += core network sql xml
+QT += core network sql xml dbus
 
 DEFINES += VERSION=\\\"$${VERSION}\\\"
 

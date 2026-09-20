@@ -21,13 +21,18 @@ Specifically to FlowPlayer:
     - [x] handle multi-cd albums
 - [x] cover loading from file first (prefer embedded, fallback to manual)
 - [x] bulk cover loading fix
-- [ ] implement headphones event (play/pause/next track) // NOTE: implemented already at system level but still problematic, removed some spurious code and tested workaround
+- [x] implement headphones event (play/pause/next track) // NOTE: see remark on bt below
 - [ ] implement resume from last state
 
 **Low Prio**
 
 - [ ] Implement Lyrics download
 - [ ] Implement Radio Paradise support
+
+
+**Note on bluetooth play/stop events via headphones**
+
+A crude fix has been implemented by bypassing MPRIS events. Instead, BlueZ state changes are monitored. This needs to be redone since it would prevent Flowplayer to pick events from wired headphones and other media devices.
 
 
 ## Features
