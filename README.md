@@ -35,6 +35,14 @@ Specifically to FlowPlayer:
 A crude fix has been implemented by bypassing MPRIS events. Instead, BlueZ state changes are monitored. This needs to be redone since it would prevent Flowplayer to pick events from wired headphones and other media devices.
 
 
+## New Features Screenshots
+
+|   |   |   |
+|:---:|:---:|:---:|
+| ![Music Player](./.xdata/screenshots/Screenshot_20260921_211607_001.png?raw=true) | ![Song list (album)](./.xdata/screenshots/Screenshot_20260921_211620_001.png?raw=true) | ![Song list (album)](./.xdata/screenshots/Screenshot_20260921_211645_001.png?raw=true) |
+| Multi-CD album  | Multi-CD Album  | Lyrics synced to playback  |
+
+
 ## Features
 
 #### Supported file formats
