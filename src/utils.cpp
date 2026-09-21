@@ -25,6 +25,48 @@ void Utils::restartMprisProxy()
         QStringList() << "--user" << "restart" << "mpris-proxy");
 }
 
+
+
+// Parse an LRC blob into a list of {time: ms, text: "..."}. Handles
+// [mm:ss], [mm:ss.xx] and [mm:ss.xxx] timestamps, and multiple timestamps
+// on one line ("[00:12.00][01:34.00] chorus").
+static QVariantList parseLrc(const QString &lrc)
+{
+    QVariantList out;
+    if (lrc.isEmpty())
+        return out;
+
+    QRegularExpression re("\\[(\\d{1,2}):(\\d{2})(?:[.:](\\d{1,3}))?\\]");
+    const QStringList lines = lrc.split('\n');
+
+    for (const QString &line : lines) {
+        QString text = line;
+        text.remove(re);
+        text = text.trimmed();
+        if (text.isEmpty())
+            continue;
+
+        auto it = re.globalMatch(line);
+        while (it.hasNext()) {
+            QRegularExpressionMatch m = it.next();
+            int minutes = m.captured(1).toInt();
+            int seconds = m.captured(2).toInt();
+            QString frac = m.captured(3);
+
+            int ms = 0;
+            if (frac.length() == 1)      ms = frac.toInt() * 100;
+            else if (frac.length() == 2) ms = frac.toInt() * 10;
+            else if (frac.length() == 3) ms = frac.toInt();
+
+            QVariantMap entry;
+            entry.insert("time", minutes * 60000 + seconds * 1000 + ms);
+            entry.insert("text", text);
+            out.append(entry);
+        }
+    }
+    return out;
+}
+
 // LRC lines start with one or more [mm:ss.xx] or [mm:ss.xxx] timestamps.
 // Strip them so the plain-text UI in Lyrics.qml renders cleanly. If you
 // later want to highlight the current line, keep the raw text instead and
@@ -77,9 +119,14 @@ void Utils::readLyrics(QString artist, QString song)
 {
     QString art = cleanItem(artist);
     QString sng = cleanItem(song);
+
+    m_syncedLyrics.clear();
+
     if ( ( art!="" ) && ( sng!="" ) )
     {
-        QString th1 = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/lyrics/"+art+"-"+sng+".txt";
+        const QString dir = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/lyrics";
+        QString th1 = dir + "/" + art + "-" + sng + ".txt";
+        QString lrc = dir + "/" + art + "-" + sng + ".lrc";
 
         if ( QFileInfo(th1).exists() )
         {
@@ -94,10 +141,21 @@ void Utils::readLyrics(QString artist, QString song)
             data.close();
             currentLyrics = lines.replace("\n", "<br>");
             m_noLyrics = false;
+
+            // Load synced version if it's cached, so highlight survives
+            // across app restarts.
+            if (QFileInfo(lrc).exists()) {
+                QFile lf(lrc);
+                if (lf.open(QIODevice::ReadOnly | QIODevice::Text)) {
+                    QTextStream in(&lf);
+                    m_syncedLyrics = parseLrc(in.readAll());
+                    lf.close();
+                }
+            }
         }
         else
         {
-            currentLyrics =  tr("No lyrics found");
+            currentLyrics = tr("No lyrics found");
             m_noLyrics = true;
         }
     }
@@ -276,12 +334,12 @@ void Utils::applyLrcLibResponse(const QByteArray &body, bool isArray)
         QJsonArray arr = doc.array();
         if (arr.isEmpty()) {
             currentLyrics = tr("No lyrics found");
+            m_syncedLyrics.clear();
             m_lyricsonline = true;
             m_noLyrics = true;
             emit lyricsChanged();
             return;
         }
-        // Prefer first entry that has syncedLyrics; otherwise first entry.
         obj = arr.first().toObject();
         for (const QJsonValue &v : arr) {
             QJsonObject o = v.toObject();
@@ -297,20 +355,37 @@ void Utils::applyLrcLibResponse(const QByteArray &body, bool isArray)
     const bool instrumental = obj.value("instrumental").toBool(false);
     const QString synced = obj.value("syncedLyrics").toString();
     const QString plain  = obj.value("plainLyrics").toString();
-    QString text = !synced.isEmpty() ? synced : plain;
 
     qDebug() << "LRCLIB result: instrumental =" << instrumental
              << "synced len =" << synced.length()
              << "plain len =" << plain.length();
 
-    if (text.isEmpty() || instrumental) {
+    if (instrumental || (synced.isEmpty() && plain.isEmpty())) {
         currentLyrics = tr("No lyrics found");
+        m_syncedLyrics.clear();
         m_noLyrics = true;
+    } else if (!synced.isEmpty()) {
+        m_syncedLyrics = parseLrc(synced);
+        currentLyrics = stripLrcTimestamps(synced).replace("\n", "<br>");
+        m_noLyrics = false;
+
+        // Cache the raw LRC next to the plain text so highlight works
+        // on subsequent opens without refetching.
+        const QString lrcDir = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/lyrics";
+        QDir().mkpath(lrcDir);
+        QFile f(lrcDir + "/" + cleanItem(m_lastArtist) + "-" + cleanItem(m_lastSong) + ".lrc");
+        if (f.open(QIODevice::Truncate | QIODevice::Text | QIODevice::WriteOnly)) {
+            QTextStream out(&f);
+            out << synced;
+            f.close();
+        }
     } else {
-        text = stripLrcTimestamps(text);
-        currentLyrics = text.replace("\n", "<br>");
+        m_syncedLyrics.clear();
+        QString plainCopy = plain;
+        currentLyrics = plainCopy.replace("\n", "<br>");
         m_noLyrics = false;
     }
+
     m_lyricsonline = true;
     emit lyricsChanged();
 }

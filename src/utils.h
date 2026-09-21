@@ -36,6 +36,7 @@ class Utils : public QQuickItem
     Q_PROPERTY(QString autosearch READ autosearch NOTIFY autosearchChanged)
     Q_PROPERTY(QString cleanqueue READ cleanqueue NOTIFY queueChanged)
     Q_PROPERTY(QString workoffline READ workoffline NOTIFY workofflineChanged)
+    Q_PROPERTY(QVariantList syncedLyrics READ syncedLyrics NOTIFY lyricsChanged)
 
 public:
     Utils(QQuickItem *parent = 0);
@@ -84,6 +85,8 @@ public:
 
     QList<int> items;
     int itemstotal;
+
+    QVariantList syncedLyrics() { return m_syncedLyrics; }
 
     //QMetaDataWriterControl *mcontrol;
 
@@ -136,6 +139,7 @@ private slots:
 
 private:
     QString currentLyrics;
+    QVariantList m_syncedLyrics;
     bool m_noLyrics, m_lyricsonline;
     QString downloadedAlbumArt;
     QString banner;

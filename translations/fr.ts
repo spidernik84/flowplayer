@@ -532,17 +532,17 @@
         <translation>par</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Lyrics.qml" line="208"/>
+        <location filename="../qml/pages/Lyrics.qml" line="249"/>
         <source>Reload picture</source>
         <translation>Recharger l&apos;image</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Lyrics.qml" line="215"/>
+        <location filename="../qml/pages/Lyrics.qml" line="256"/>
         <source>Reload info</source>
         <translation>Recharger les infos</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Lyrics.qml" line="236"/>
+        <location filename="../qml/pages/Lyrics.qml" line="277"/>
         <source>Info</source>
         <translation>Info</translation>
     </message>
@@ -1362,32 +1362,32 @@
 <context>
     <name>Utils</name>
     <message>
-        <location filename="../src/utils.cpp" line="100"/>
-        <location filename="../src/utils.cpp" line="226"/>
-        <location filename="../src/utils.cpp" line="278"/>
-        <location filename="../src/utils.cpp" line="307"/>
+        <location filename="../src/utils.cpp" line="158"/>
+        <location filename="../src/utils.cpp" line="284"/>
+        <location filename="../src/utils.cpp" line="336"/>
+        <location filename="../src/utils.cpp" line="364"/>
         <source>No lyrics found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/utils.cpp" line="147"/>
-        <location filename="../src/utils.cpp" line="198"/>
+        <location filename="../src/utils.cpp" line="205"/>
+        <location filename="../src/utils.cpp" line="256"/>
         <source>No internet connection.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/utils.cpp" line="148"/>
-        <location filename="../src/utils.cpp" line="199"/>
+        <location filename="../src/utils.cpp" line="206"/>
+        <location filename="../src/utils.cpp" line="257"/>
         <source>Connect to a network and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/utils.cpp" line="234"/>
+        <location filename="../src/utils.cpp" line="292"/>
         <source>Error fetching lyrics</source>
         <translation>Erreur lors de la recherche des paroles</translation>
     </message>
     <message>
-        <location filename="../src/utils.cpp" line="252"/>
+        <location filename="../src/utils.cpp" line="310"/>
         <source>Album cover not found</source>
         <translation type="unfinished"></translation>
     </message>

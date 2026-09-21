@@ -178,15 +178,56 @@ Page {
                 color: Theme.secondaryColor
             }
 
+            // Synced lyrics: one Label per line, colored by playback time.
+            // Falls back to the plain Label below when no LRC is available.
+            Column {
+                id: syncedColumn
+                width: parent.width
+                spacing: Theme.paddingSmall
+                visible: !fetchingLyrics && !editmode &&
+                         utils.syncedLyrics.length > 0
+
+                Repeater {
+                    model: utils.syncedLyrics
+
+                    Label {
+                        width: syncedColumn.width
+                        wrapMode: TextEdit.WordWrap
+                        textFormat: Text.PlainText
+                        text: modelData.text
+                        font.pixelSize: Theme.fontSizeSmall
+
+                        // Anticipate the highlight by this many ms so the
+                        // line lights up slightly before the timestamp hits.
+                        // Compensates for the 1s position-update granularity
+                        // and matches user perception of lyric timing.
+                        readonly property int anticipation: 250
+
+                        property bool active: {
+                            var pos = myPlayer.position * 1000 + anticipation
+                            var t = modelData.time
+                            var next = (index + 1 < utils.syncedLyrics.length)
+                                ? utils.syncedLyrics[index + 1].time
+                                : 0x7fffffff
+                            return pos >= t && pos < next
+                        }
+
+                        color: active ? Theme.highlightColor : Theme.secondaryColor
+                        font.bold: active
+                    }
+                }
+            }
+
             Label {
                 id: lText
-                x: Theme.laddingLarge
-                visible: !fetchingLyrics && !editmode && currentSongInfo.artist!==[]
+                x: Theme.paddingLarge
+                visible: !fetchingLyrics && !editmode &&
+                         currentSongInfo.artist!==[] &&
+                         utils.syncedLyrics.length === 0
                 wrapMode: TextEdit.WordWrap
                 textFormat: Text.RichText
                 width: parent.width - Theme.paddingLarge*2
                 font.pixelSize: Theme.fontSizeSmall
-                //horizontalAlignment: Text.AlignHCenter
                 text: currentLyrics
                 color: Theme.secondaryColor
             }
