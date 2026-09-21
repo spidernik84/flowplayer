@@ -26,7 +26,7 @@ Specifically to FlowPlayer:
 
 **Low Prio**
 
-- [ ] Implement Lyrics download
+- [x] Implement Lyrics download + synced highlight to playback
 - [ ] Implement Radio Paradise support
 
 
