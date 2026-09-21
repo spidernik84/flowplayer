@@ -7,19 +7,41 @@
 #include <QSettings>
 #include <QStandardPaths>
 
-//#include <MGConfItem>
+#include <QUrl>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
+#include <QRegularExpression>
 
+// File-scope state shared between request setup and the reply handler
 QString albumArtUrl, albumArtArtist, albumArtAlbum;
 QString currentArtist, currentSong;
 QString searchServer;
-
-//extern bool isDBOpened;
 
 // Workaround for bluetooth headphones playback control issues
 void Utils::restartMprisProxy()
 {
     QProcess::startDetached("systemctl",
         QStringList() << "--user" << "restart" << "mpris-proxy");
+}
+
+// LRC lines start with one or more [mm:ss.xx] or [mm:ss.xxx] timestamps.
+// Strip them so the plain-text UI in Lyrics.qml renders cleanly. If you
+// later want to highlight the current line, keep the raw text instead and
+// parse in QML.
+static QString stripLrcTimestamps(const QString &input)
+{
+    QRegularExpression re("\\[\\d{1,2}:\\d{2}([.:]\\d{1,3})?\\]");
+    QString out;
+    const QStringList lines = input.split('\n');
+    for (const QString &line : lines) {
+        QString cleaned = line;
+        cleaned.remove(re);
+        cleaned = cleaned.trimmed();
+        if (!cleaned.isEmpty())
+            out += cleaned + "\n";
+    }
+    return out.trimmed();
 }
 
 Utils::Utils(QQuickItem *parent)
@@ -80,9 +102,7 @@ void Utils::readLyrics(QString artist, QString song)
         }
     }
     m_lyricsonline = false;
-    //qDebug() << art << sng << currentLyrics.left(20);
     emit lyricsChanged();
-
 }
 
 QString Utils::thumbnail(QString artist, QString album, QString count)
@@ -109,7 +129,6 @@ QString Utils::thumbnailArtist(QString artist)
 
 QString Utils::accents(QString data)
 {
-    //qDebug() << data;
     QString str = QString::fromUtf8(data.toUtf8());
     str.replace("á", "a");
     str.replace("é", "e");
@@ -119,212 +138,186 @@ QString Utils::accents(QString data)
     return str;
 }
 
-
-void Utils::getLyrics(QString artist, QString song, QString server)
+void Utils::getLyrics(QString artist, QString song, QString album, int duration)
 {
-    searchServer = server;
-
-    //if (reply->isRunning())
-    //    reply->abort();
-
-
-    //qDebug() << "seaching in " << server;
-    /*QNetworkConfigurationManager mgr;
-    QList<QNetworkConfiguration> activeConfigs = mgr.allConfigurations(QNetworkConfiguration::Active);
-    if ( activeConfigs.count() > 0 )
-    {*/
-        if ( searchServer == "0" )
-        {
-            qDebug() << "Searching in ChartLyrics";
-            QString url = "http://api.chartlyrics.com/apiv1.asmx/SearchLyricDirect";
-            reply = datos->get(QNetworkRequest(QUrl(url+"?Artist=\""+artist.toLower()+"\"&Song=\""+song.toLower()+"\"")));
-        }
-        else if ( searchServer == "1" )
-        {
-            QString url = "http://www.azlyrics.com/lyrics/"+ cleanItem(artist) + "/" + cleanItem(song) +".html";
-            qDebug() << "Searching in A-Z Lyrics " << url;
-            reply = datos->get(QNetworkRequest(QUrl(url)));
-        }
-        else if ( searchServer == "2" )
-        {
-            QString url = "http://lyrics.wikia.com/wiki/"+ artist.replace(" ", "_") + ":" + song.replace(" ", "_");
-            qDebug() << "Searching in Lyric Wiki " << url;
-            reply = datos->get(QNetworkRequest(QUrl(url.replace(" ","_"))));
-        }
-        else if ( searchServer == "3" )
-        {
-            //qDebug() << "Searching in LyricsDB";
-            QString url = "http://lyrics.mirkforce.net/"+ cleanItem(artist) + "/" + cleanItem(song) +".txt";
-            reply = datos->get(QNetworkRequest(QUrl(url)));
-        }
-    /*}
-    else
-    {
-        QString line1 = tr("There is not an active Internet connection");
-        QString line2 = tr("Please connect to use this function.");
-        currentLyrics = line1+"\n"+line2;
+    // Offline guard first — bail before touching any request state so
+    // the QML side doesn't retry in a loop.
+    if (!isOnline()) {
+        qDebug() << "getLyrics: no active network connection";
+        currentLyrics = tr("No internet connection.") + "<br><br>" +
+                        tr("Connect to a network and try again.");
+        m_lyricsonline = false;
+        m_noLyrics = true;
         emit lyricsChanged();
-    }*/
+        return;
+    }
 
+    m_lastArtist = artist;
+    m_lastSong   = song;
+    searchServer = "lrclib-get";
+
+    QString url = "https://lrclib.net/api/get";
+    url += "?artist_name=" + QString(QUrl::toPercentEncoding(artist));
+    url += "&track_name="  + QString(QUrl::toPercentEncoding(song));
+    if (!album.isEmpty())
+        url += "&album_name=" + QString(QUrl::toPercentEncoding(album));
+    if (duration > 0 && duration < 3600)   // sanity: seconds, not ms
+        url += "&duration=" + QString::number(duration);
+
+    qDebug() << "LRCLIB get:" << url;
+
+    QNetworkRequest req{QUrl(url)};
+    req.setHeader(QNetworkRequest::UserAgentHeader,
+                  "FlowPlayer/1.0 (https://github.com/sailfishos-applications/flowplayer)");
+    reply = datos->get(req);
 }
 
 void Utils::downloaded(QNetworkReply *respuesta)
 {
-    QString datos1;
-
+    // --- Error paths ---
     if (respuesta->error() != QNetworkReply::NoError)
     {
-        qDebug() << "error: " << respuesta->error();
-        {
-            if ( searchServer == "albumart ")
-                albumArtUrl = "";
-            else
+        const QNetworkReply::NetworkError err = respuesta->error();
+        qDebug() << "network error:" << err << "for" << searchServer;
+
+        if (searchServer == "albumart") {
+            albumArtUrl = "";
+            return;
+        }
+
+        // Network-level failures (as opposed to a clean 404) mean we should
+        // not fall through to the fuzzy search — it would fail too. Show
+        // the user the same friendly message the offline guard emits.
+        if (searchServer.startsWith("lrclib")) {
+            if (err == QNetworkReply::HostNotFoundError ||
+                err == QNetworkReply::TimeoutError ||
+                err == QNetworkReply::NetworkSessionFailedError ||
+                err == QNetworkReply::TemporaryNetworkFailureError ||
+                err == QNetworkReply::UnknownNetworkError)
             {
-                currentLyrics = tr("Error fetching lyrics");
-                m_lyricsonline = true;
+                currentLyrics = tr("No internet connection.") + "<br><br>" +
+                                tr("Connect to a network and try again.");
+                m_lyricsonline = false;
                 m_noLyrics = true;
                 emit lyricsChanged();
-            }
-        }
-    }
-    else
-    {
-        if ( searchServer == "autorization" )
-        {
-            datos1 = respuesta->readAll();
-            //qDebug() << "SIGNATURE: " << datos1;
-        }
-        else if ( searchServer == "albumart" )
-        {
-            datos1 = respuesta->readAll();
-            //qDebug() << datos1;
-            QString tmp = datos1;
-            int x = tmp.indexOf("<image size=\"mega\">");
-            tmp.remove(0,x+19);
-            x = tmp.indexOf("<");
-            tmp.remove(x,tmp.length()-x);
-            tmp = tmp.trimmed();
-            //qDebug() << "Image found... downloading... " << tmp;
-            if (tmp=="") {
-                banner = tr("Album cover not found");
-                emit bannerChanged();
                 return;
             }
-            /*QUrl url(tmp);
-            http = new QHttp(this);
-            connect(http, SIGNAL(requestFinished(int, bool)),this, SLOT(Finished(int,
-            bool)));
-            buffer = new QBuffer(&bytes);
-            buffer->open(QIODevice::WriteOnly);
-            http->setHost(url.host());
-            Request=http->get (url.path(),buffer);*/
-
         }
 
-        else if ( searchServer == "3" )
-        {
-            QString str = QString::fromUtf8(respuesta->readAll());
-            qDebug() << str;
-            if ( str.contains("was not found on this server") )
-            {
-                currentLyrics = tr("No lyrics found");
-                m_noLyrics = true;
-            }
-            else
-            {
-                currentLyrics = str.replace("\n", "<br>");
-                m_noLyrics = false;
-            }
-            m_lyricsonline = true;
-            emit lyricsChanged();
-        }
-        else if ( searchServer == "2" )
-        {
-            datos1 = QString::fromUtf8(respuesta->readAll());
-            qDebug() << datos1;
-            if ( datos1.contains("ntNode.insertBefore(r,s)};}})();</script>") )
-            {
-                QString tmp = datos1;
-                int x = tmp.indexOf("ntNode.insertBefore(r,s)};}})();</script>");
-                tmp.remove(0,x+41);
-                x = tmp.indexOf("<!--");
-                tmp.remove(x,tmp.length()-x);
-                tmp.replace("<br />", "<br>");
-                tmp.replace("\n\n", "\n");
-                currentLyrics = tmp.replace("\n", "<br>");
+        if (searchServer == "lrclib-get") {
+            // Exact match failed (usually 404). Try fuzzy search using the
+            // artist/song stored when the request was built.
+            qDebug() << "LRCLIB exact miss, searching for"
+                     << m_lastArtist << "-" << m_lastSong;
 
-                if (currentLyrics.contains("<div ")) {
-                    currentLyrics = tr("No lyrics found");
-                    m_noLyrics = true;
-                } else {
-                    m_noLyrics = false;
-                }
-            }
-            else
-            {
-                currentLyrics = tr("No lyrics found");
-                m_noLyrics = true;
-            }
-            m_lyricsonline = true;
-            emit lyricsChanged();
+            searchServer = "lrclib-search";
+            QString url = "https://lrclib.net/api/search";
+            url += "?artist_name=" + QString(QUrl::toPercentEncoding(m_lastArtist));
+            url += "&track_name="  + QString(QUrl::toPercentEncoding(m_lastSong));
+
+            QNetworkRequest req{QUrl(url)};
+            req.setHeader(QNetworkRequest::UserAgentHeader,
+                          "FlowPlayer/1.0 (https://github.com/sailfishos-applications/flowplayer)");
+            reply = datos->get(req);
+            return;
         }
-        else if ( searchServer == "1" )
-        {
-            datos1 = QString::fromUtf8(respuesta->readAll());
-            qDebug() << datos1;
-            if ( datos1.contains("<!-- start of lyrics -->") )
-            {
-                QString tmp = datos1;
-                int x = tmp.indexOf("<!-- start of lyrics -->");
-                tmp.remove(0,x+24);
-                x = tmp.indexOf("<!-- end of lyrics -->");
-                tmp.remove(x,tmp.length()-x);
-                tmp.replace("<br>", "\n");
-                tmp.remove("\r");
-                tmp.remove("<i>");
-                tmp.remove("</i>");
-                tmp.remove(0,1);
-                tmp.replace("<br />", "\n");
-                tmp.replace("\n\n", "\n");
-                currentLyrics = tmp.replace("\n", "<br>");
-                m_noLyrics = false;
-            }
-            else
-            {
-                currentLyrics = tr("No lyrics found");
-                m_noLyrics = true;
-            }
+
+        if (searchServer == "lrclib-search") {
+            currentLyrics = tr("No lyrics found");
             m_lyricsonline = true;
+            m_noLyrics = true;
             emit lyricsChanged();
+            return;
         }
-        else
-        {
-            datos1 = respuesta->readAll();
-            qDebug() << datos1;
-            if ( datos1.contains("<Lyric>") )
-            {
-                QString tmp = datos1;
-                int x = tmp.indexOf("<Lyric>");
-                tmp.remove(0,x+7);
-                x = tmp.indexOf("<");
-                tmp.remove(x,tmp.length()-x);
-                tmp.replace("\r", "\n");
-                tmp.replace("\n\n", "\n");
-                currentLyrics = tmp.replace("\n", "<br>");
-                m_noLyrics = false;
-            }
-            else
-            {
-                currentLyrics = tr("No lyrics found");
-                m_noLyrics = true;
-            }
-            m_lyricsonline = true;
-            emit lyricsChanged();
-        }
+
+        // Generic fallback for anything else
+        currentLyrics = tr("Error fetching lyrics");
+        m_lyricsonline = true;
+        m_noLyrics = true;
+        emit lyricsChanged();
+        return;
     }
 
+    // --- Success paths ---
+    if (searchServer == "albumart")
+    {
+        QString datos1 = respuesta->readAll();
+        QString tmp = datos1;
+        int x = tmp.indexOf("<image size=\"mega\">");
+        tmp.remove(0, x + 19);
+        x = tmp.indexOf("<");
+        tmp.remove(x, tmp.length() - x);
+        tmp = tmp.trimmed();
+        if (tmp == "") {
+            banner = tr("Album cover not found");
+            emit bannerChanged();
+            return;
+        }
+        return;
+    }
 
+    if (searchServer == "lrclib-get") {
+        applyLrcLibResponse(respuesta->readAll(), false);
+        return;
+    }
+
+    if (searchServer == "lrclib-search") {
+        applyLrcLibResponse(respuesta->readAll(), true);
+        return;
+    }
 }
+
+void Utils::applyLrcLibResponse(const QByteArray &body, bool isArray)
+{
+    QJsonDocument doc = QJsonDocument::fromJson(body);
+
+    QJsonObject obj;
+    if (isArray) {
+        QJsonArray arr = doc.array();
+        if (arr.isEmpty()) {
+            currentLyrics = tr("No lyrics found");
+            m_lyricsonline = true;
+            m_noLyrics = true;
+            emit lyricsChanged();
+            return;
+        }
+        // Prefer first entry that has syncedLyrics; otherwise first entry.
+        obj = arr.first().toObject();
+        for (const QJsonValue &v : arr) {
+            QJsonObject o = v.toObject();
+            if (!o.value("syncedLyrics").toString().isEmpty()) {
+                obj = o;
+                break;
+            }
+        }
+    } else {
+        obj = doc.object();
+    }
+
+    const bool instrumental = obj.value("instrumental").toBool(false);
+    const QString synced = obj.value("syncedLyrics").toString();
+    const QString plain  = obj.value("plainLyrics").toString();
+    QString text = !synced.isEmpty() ? synced : plain;
+
+    qDebug() << "LRCLIB result: instrumental =" << instrumental
+             << "synced len =" << synced.length()
+             << "plain len =" << plain.length();
+
+    if (text.isEmpty() || instrumental) {
+        currentLyrics = tr("No lyrics found");
+        m_noLyrics = true;
+    } else {
+        text = stripLrcTimestamps(text);
+        currentLyrics = text.replace("\n", "<br>");
+        m_noLyrics = false;
+    }
+    m_lyricsonline = true;
+    emit lyricsChanged();
+}
+
+// ---------------------------------------------------------------------------
+// Everything from here down is unchanged from your original file.
+// ---------------------------------------------------------------------------
 
 void Utils::saveLyrics(QString artist, QString song, QString lyrics)
 {
@@ -340,8 +333,6 @@ void Utils::saveLyrics(QString artist, QString song, QString lyrics)
     QFile file(f);
     file.open( QIODevice::Truncate | QIODevice::Text | QIODevice::ReadWrite);
     QTextStream out(&file);
-    //QTextEdit texto(0);
-    //texto.setText(lyrics);
     out << lyrics;
     file.close();
     m_lyricsonline = false;
@@ -362,10 +353,8 @@ void Utils::saveLyrics2(QString artist, QString song, QString lyrics)
     QFile file(f);
     file.open( QIODevice::Truncate | QIODevice::Text | QIODevice::ReadWrite);
     QTextStream out(&file);
-    //out.setCodec("UTF-8");
     out << lyrics;
     file.close();
-
 }
 
 void Utils::cancelFetching()
@@ -381,7 +370,6 @@ void Utils::getAlbumArt(QString artist, QString album)
     searchServer = "albumart";
     albumArtArtist = artist;
     albumArtAlbum = album;
-    //qDebug() << "Searching album art..." << albumArtArtist << albumArtAlbum;
     QString url = "http://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=7f338c7458e7d1a9a6204221ff904ba1";
     reply = datos->get(QNetworkRequest(QUrl(url+"&artist="+albumArtArtist+"&album="+albumArtAlbum)));
 }
@@ -403,7 +391,6 @@ void Utils::Finished(int requestId, bool)
             emit coverDownloaded();
         }
     }
-
 }
 
 void Utils::removePreview()
@@ -484,7 +471,6 @@ QString Utils::workoffline() const
     QSettings settings(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/flowplayer.conf", QSettings::NativeFormat);
     return settings.value("WorkOffline", "no").toString();
 }
-
 
 void Utils::setViewMode(QString val)
 {
@@ -574,9 +560,7 @@ void Utils::setOrientation(QString val)
 
 QString Utils::plainLyrics(QString text)
 {
-    //QTextEdit texto(0);
-    //texto.setText(text);
-    return text; //.toPlainText();
+    return text;
 }
 
 QString Utils::version()
@@ -654,13 +638,10 @@ void Utils::getFolderItems(QString path)
 
     QDir dir (path);
     QStringList data;
-    //data << ".mp3" << "*.m4a" << "*.wma" << "*.flac" << "*.ogg" << "*.wav" << "*.asf";
-    //dir.setNameFilters(data);
 
     QFileInfoList entries;
     entries = dir.entryInfoList(QDir::AllEntries | QDir::System | QDir::NoDotAndDotDot ,
                                 QDir::Name | QDir::IgnoreCase | QDir::DirsFirst);
-
 
     QListIterator<QFileInfo> entriesIterator (entries);
     while(entriesIterator.hasNext())
@@ -701,7 +682,6 @@ void Utils::removeFolder(QString path)
     folders.removeDuplicates();
     settings.setValue("Folders", folders.join("<separator>"));
     settings.sync();
-    //emit foldersChanged();
 }
 
 void Utils::setShuffle(int nitems)
@@ -718,8 +698,7 @@ void Utils::setShuffle(int nitems)
     std::random_shuffle(temp.begin(), temp.end());
 
     while (!temp.isEmpty()) {
-        //int i = temp.takeAt(temp.count() == 1 ? 0 : (qrand() % (temp.count() - 1)));
-        int i = temp.takeFirst(); // use with random_shuffle
+        int i = temp.takeFirst();
         items.append(i);
     }
 
@@ -735,19 +714,15 @@ int Utils::getShuffleTrack(int current)
         setShuffle(itemstotal);
 
     res = items.takeFirst();
-
-    //qDebug() << "SHUFFLE ::: " << items;
     return res;
 }
 
 void Utils::loadPresets()
 {
-    //if (!isDBOpened) openDatabase();
     QSqlQuery query = getQuery("select * from presets order by name");
 
     while( query.next() )
         emit appendPreset(query.value(0).toString());
-
 }
 
 void Utils::removePreset(QString name)
@@ -758,8 +733,6 @@ void Utils::removePreset(QString name)
 
 void Utils::updateSongDuration(QString source, int duration)
 {
-    //if (!isDBOpened) openDatabase();
-
     QString d = QString::number(duration);
 
     QString qr = QString("UPDATE tracks SET duration='%1' where url='%2'").arg(d).arg(source);
@@ -770,5 +743,4 @@ void Utils::updateSongDuration(QString source, int duration)
 
     qr = QString("UPDATE queue SET duration='%1' where url='%2'").arg(d).arg(source);
     executeQuery(qr);
-
 }

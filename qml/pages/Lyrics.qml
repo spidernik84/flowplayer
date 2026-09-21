@@ -22,6 +22,8 @@ Page {
     }
 
     function reloadLyrics() {
+        console.log("=== Lyrics: reloadLyrics ->",
+                    currentSongInfo.artist, "/", currentSongInfo.title)
         currentLyrics = ""
         utils.readLyrics(currentSongInfo.artist, currentSongInfo.title)
     }
@@ -55,14 +57,22 @@ Page {
         onLyricsChanged: {
             currentLyrics = utils.lyrics
             fetchingLyrics = false
-            if (!utils.lyricsonline && utils.nolyrics)
-            {
-                if (utils.autosearch!=="yes")
+            console.log("=== Lyrics: onLyricsChanged, online =", utils.lyricsonline,
+                        "nolyrics =", utils.nolyrics, "autosearch =", utils.autosearch)
+            if (!utils.lyricsonline && utils.nolyrics) {
+                if (utils.autosearch!=="yes") {
+                    console.log("=== Lyrics: skipped, autosearch is off")
                     return;
-
-                console.log("Lyrics not found in disk")
+                }
+                if (!utils.isOnline()) {
+                    console.log("=== Lyrics: offline, not fetching")
+                    return
+                }
+                console.log("=== Lyrics: triggering LRCLIB fetch")
                 fetchingLyrics = true
-                utils.getLyrics(currentSongInfo.artist, currentSongInfo.title, searchServer)
+                utils.getLyrics(currentSongInfo.artist, currentSongInfo.title,
+                                currentSongInfo.album, currentSongInfo.duration)
+
             }
             if (utils.lyricsonline && !utils.nolyrics && utils.readSettings("SaveAfterSearch", "no")==="yes")
             {
@@ -73,12 +83,13 @@ Page {
         }
     }
 
-    property string searchServer: utils.readSettings("SearchServer", "0")
-
     onStatusChanged: {
         if (status===PageStatus.Activating) {
-            searchServer = utils.readSettings("SearchServer", "0")
             nppOpened = true
+            console.log("=== Lyrics: Activating, artist =",
+                        currentSongInfo ? currentSongInfo.artist : "NO INFO")
+            if (currentSongInfo && currentSongInfo.artist !== undefined)
+                reloadLyrics()
         }
     }
 
@@ -103,30 +114,11 @@ Page {
 
         PullDownMenu {
             MenuItem {
-                text: qsTr("Search in ChartLyrics")
+                text: qsTr("Search lyrics")
                 onClicked: {
-                    searchServer = "0"
-                    utils.setSettings("SearchServer", searchServer)
                     fetchingLyrics = true
-                    utils.getLyrics(currentSongInfo.artist, currentSongInfo.title, searchServer)
-                }
-            }
-            MenuItem {
-                text: qsTr("Search in A-Z Lyrics")
-                onClicked: {
-                    searchServer = "1"
-                    utils.setSettings("SearchServer", searchServer)
-                    fetchingLyrics = true
-                    utils.getLyrics(currentSongInfo.artist, currentSongInfo.title, searchServer)
-                }
-            }
-            MenuItem {
-                text: qsTr("Search in Lyric Wiki")
-                onClicked: {
-                    searchServer = "2"
-                    utils.setSettings("SearchServer", searchServer)
-                    fetchingLyrics = true
-                    utils.getLyrics(currentSongInfo.artist, currentSongInfo.title, searchServer)
+                    utils.getLyrics(currentSongInfo.artist, currentSongInfo.title,
+                                    currentSongInfo.album, currentSongInfo.duration)
                 }
             }
             MenuItem {
@@ -137,7 +129,6 @@ Page {
                 }
             }
         }
-
 
 
         Column {

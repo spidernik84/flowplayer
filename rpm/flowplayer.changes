@@ -1,3 +1,6 @@
+* Sun Sep 20 2026 spidernik84 <spidernik84@users.noreply.github.com> - 0.6.5
+- Change bt play/stop button event processing
+
 * Sun Sep 20 2026 spidernik84 <spidernik84@users.noreply.github.com> - 0.6.4
 - Fixed bulk cover fetching fallback for missing results from lastfm
 

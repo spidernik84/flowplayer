@@ -94,7 +94,7 @@ public slots:
     void removePreview();
     void Finished(int requestId, bool error);
 
-    void getLyrics(QString artist, QString song, QString server);
+    void getLyrics(QString artist, QString song, QString album, int duration);
     void saveLyrics(QString artist, QString song, QString lyrics);
     void saveLyrics2(QString artist, QString song, QString lyrics);
     void readLyrics(QString artist, QString song);
@@ -145,6 +145,10 @@ private:
     int Request;
 
     QSqlDatabase db;
+
+    QString m_lastArtist, m_lastSong;
+
+    void applyLrcLibResponse(const QByteArray &body, bool isArray);
 
 signals:
     void downloadingCover();

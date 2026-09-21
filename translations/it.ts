@@ -512,47 +512,37 @@
 <context>
     <name>Lyrics</name>
     <message>
-        <location filename="../qml/pages/Lyrics.qml" line="106"/>
-        <source>Search in ChartLyrics</source>
-        <translation>Cerca in ChartLyrics</translation>
+        <location filename="../qml/pages/Lyrics.qml" line="117"/>
+        <source>Search lyrics</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/Lyrics.qml" line="115"/>
-        <source>Search in A-Z Lyrics</source>
-        <translation>Cerca in A-Z Lyrics</translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/Lyrics.qml" line="124"/>
-        <source>Search in Lyric Wiki</source>
-        <translation>Cerca in Lyric Wiki</translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/Lyrics.qml" line="133"/>
+        <location filename="../qml/pages/Lyrics.qml" line="125"/>
         <source>Save lyrics</source>
         <translation>Salva testo</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Lyrics.qml" line="155"/>
+        <location filename="../qml/pages/Lyrics.qml" line="146"/>
         <source>Lyrics</source>
         <translation>Testo</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Lyrics.qml" line="185"/>
+        <location filename="../qml/pages/Lyrics.qml" line="176"/>
         <source>by</source>
         <translation>di</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Lyrics.qml" line="217"/>
+        <location filename="../qml/pages/Lyrics.qml" line="208"/>
         <source>Reload picture</source>
         <translation>Ricarica immagine</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Lyrics.qml" line="224"/>
+        <location filename="../qml/pages/Lyrics.qml" line="215"/>
         <source>Reload info</source>
         <translation>Ricarica info</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Lyrics.qml" line="245"/>
+        <location filename="../qml/pages/Lyrics.qml" line="236"/>
         <source>Info</source>
         <translation>Info</translation>
     </message>
@@ -1372,22 +1362,32 @@
 <context>
     <name>Utils</name>
     <message>
-        <location filename="../src/utils.cpp" line="78"/>
-        <location filename="../src/utils.cpp" line="230"/>
-        <location filename="../src/utils.cpp" line="257"/>
-        <location filename="../src/utils.cpp" line="265"/>
-        <location filename="../src/utils.cpp" line="294"/>
-        <location filename="../src/utils.cpp" line="318"/>
+        <location filename="../src/utils.cpp" line="100"/>
+        <location filename="../src/utils.cpp" line="226"/>
+        <location filename="../src/utils.cpp" line="278"/>
+        <location filename="../src/utils.cpp" line="307"/>
         <source>No lyrics found</source>
         <translation>Testo non trovato</translation>
     </message>
     <message>
-        <location filename="../src/utils.cpp" line="183"/>
+        <location filename="../src/utils.cpp" line="147"/>
+        <location filename="../src/utils.cpp" line="198"/>
+        <source>No internet connection.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/utils.cpp" line="148"/>
+        <location filename="../src/utils.cpp" line="199"/>
+        <source>Connect to a network and try again.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/utils.cpp" line="234"/>
         <source>Error fetching lyrics</source>
         <translation>Errore nel recuperare il testo</translation>
     </message>
     <message>
-        <location filename="../src/utils.cpp" line="209"/>
+        <location filename="../src/utils.cpp" line="252"/>
         <source>Album cover not found</source>
         <translation>Copertina album non trovata</translation>
     </message>

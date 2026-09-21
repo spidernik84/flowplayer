@@ -512,47 +512,37 @@
 <context>
     <name>Lyrics</name>
     <message>
-        <location filename="../qml/pages/Lyrics.qml" line="106"/>
-        <source>Search in ChartLyrics</source>
-        <translation>Buscar en ChartLyrics</translation>
+        <location filename="../qml/pages/Lyrics.qml" line="117"/>
+        <source>Search lyrics</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/Lyrics.qml" line="115"/>
-        <source>Search in A-Z Lyrics</source>
-        <translation>Buscar en A-Z Lyrics</translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/Lyrics.qml" line="124"/>
-        <source>Search in Lyric Wiki</source>
-        <translation>Buscar en Lyric Wiki</translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/Lyrics.qml" line="133"/>
+        <location filename="../qml/pages/Lyrics.qml" line="125"/>
         <source>Save lyrics</source>
         <translation>Guardar letras</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Lyrics.qml" line="155"/>
+        <location filename="../qml/pages/Lyrics.qml" line="146"/>
         <source>Lyrics</source>
         <translation>Letras</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Lyrics.qml" line="185"/>
+        <location filename="../qml/pages/Lyrics.qml" line="176"/>
         <source>by</source>
         <translation>por</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Lyrics.qml" line="217"/>
+        <location filename="../qml/pages/Lyrics.qml" line="208"/>
         <source>Reload picture</source>
         <translation>Recargar imagen</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Lyrics.qml" line="224"/>
+        <location filename="../qml/pages/Lyrics.qml" line="215"/>
         <source>Reload info</source>
         <translation>Recargar información</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Lyrics.qml" line="245"/>
+        <location filename="../qml/pages/Lyrics.qml" line="236"/>
         <source>Info</source>
         <translation>Información</translation>
     </message>
@@ -1372,22 +1362,32 @@
 <context>
     <name>Utils</name>
     <message>
-        <location filename="../src/utils.cpp" line="78"/>
-        <location filename="../src/utils.cpp" line="230"/>
-        <location filename="../src/utils.cpp" line="257"/>
-        <location filename="../src/utils.cpp" line="265"/>
-        <location filename="../src/utils.cpp" line="294"/>
-        <location filename="../src/utils.cpp" line="318"/>
+        <location filename="../src/utils.cpp" line="100"/>
+        <location filename="../src/utils.cpp" line="226"/>
+        <location filename="../src/utils.cpp" line="278"/>
+        <location filename="../src/utils.cpp" line="307"/>
         <source>No lyrics found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/utils.cpp" line="183"/>
+        <location filename="../src/utils.cpp" line="147"/>
+        <location filename="../src/utils.cpp" line="198"/>
+        <source>No internet connection.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/utils.cpp" line="148"/>
+        <location filename="../src/utils.cpp" line="199"/>
+        <source>Connect to a network and try again.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/utils.cpp" line="234"/>
         <source>Error fetching lyrics</source>
         <translation>Error al descargar letras</translation>
     </message>
     <message>
-        <location filename="../src/utils.cpp" line="209"/>
+        <location filename="../src/utils.cpp" line="252"/>
         <source>Album cover not found</source>
         <translation type="unfinished"></translation>
     </message>
