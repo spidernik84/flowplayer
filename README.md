@@ -39,7 +39,7 @@ A crude fix has been implemented by bypassing MPRIS events. Instead, BlueZ state
 
 |   |   |   |
 |:---:|:---:|:---:|
-| ![Music Player](./.xdata/screenshots/Screenshot_20260921_211607_001.png?raw=true) | ![Song list (album)](./.xdata/screenshots/Screenshot_20260921_211620_001.png?raw=true) | ![Song list (album)](./.xdata/screenshots/Screenshot_20260921_211645_001.png?raw=true) |
+| ![Multi-CD album](./.xdata/screenshots/Screenshot_20260921_211607_001.png?raw=true) | ![Multi-CD album](./.xdata/screenshots/Screenshot_20260921_211620_001.png?raw=true) | ![Lyrics synced to playback](./.xdata/screenshots/Screenshot_20260921_211645_001.png?raw=true) |
 | Multi-CD album  | Multi-CD Album  | Lyrics synced to playback  |
 
 
