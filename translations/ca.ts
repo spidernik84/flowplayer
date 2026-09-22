@@ -1395,12 +1395,12 @@
 <context>
     <name>flowplayer</name>
     <message>
-        <location filename="../qml/flowplayer.qml" line="176"/>
+        <location filename="../qml/flowplayer.qml" line="171"/>
         <source>(radio)</source>
         <translation>(ràdio)</translation>
     </message>
     <message>
-        <location filename="../qml/flowplayer.qml" line="353"/>
+        <location filename="../qml/flowplayer.qml" line="338"/>
         <source>Cover not found</source>
         <translation>No s&apos;ha trobat la caràtula</translation>
     </message>

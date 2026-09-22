@@ -4,7 +4,7 @@ import FlowPlayer 1.0
 //import QtMultimedia 5.0
 import Nemo.DBus 2.0
 import org.nemomobile.mpris 1.0
-//import com.jolla.mediaplayer 1.0
+import com.jolla.mediaplayer 1.0
 import "pages"
 
 ApplicationWindow
@@ -16,15 +16,10 @@ ApplicationWindow
 
     onApplicationActiveChanged: {
         if (appWindow.applicationActive) {
-            mprisProxyNudged = false
             startPage.startTimers()
         } else {
             startPage.stopTimers()
         }
-    }
-
-    Component.onCompleted: {
-        nudgeMprisProxy()
     }
 
     property int lastArtistItem
@@ -76,7 +71,10 @@ ApplicationWindow
         }
     }
 
-    // Workaround mpris-proxy issues when system media players takes over BT events control
+    // Manual fallback: restarts mpris-proxy so it re-elects FlowPlayer.
+    // Not called automatically any more — the direct BlueZ registration
+    // through BluetoothMediaPlayer below should make this unnecessary on
+    // current Sailfish versions. Kept for emergencies.
     function nudgeMprisProxy() {
         systemdUser.call("RestartUnit", ["mpris-proxy.service", "replace"])
     }
@@ -90,8 +88,6 @@ ApplicationWindow
     property variant currentSongInfo: []
 
     property string currentListOrder: utils.order
-
-    property bool mprisProxyNudged: false     // Workaround for bluetooth headphones playback control issues
 
     property string lastGroup
 
@@ -138,7 +134,6 @@ ApplicationWindow
     }
 
 
-
     /*Audio {
         id: player
         source: ""
@@ -183,17 +178,7 @@ ApplicationWindow
             }
         }
         mprisPlayer.localMetadata = metadata
-
-        // Workaround for bluetooth headphones playback control issues
-        if (!mprisProxyNudged && currentSongInfo.url !== undefined) {
-            mprisProxyNudged = true
-            console.log("=== Nudging mpris-proxy for BT election")
-            nudgeMprisProxy()
-            console.log("=== Nudge dispatched")
-        }
-
-
-//        bluetoothMediaPlayer.metadata = metadata
+        bluetoothMediaPlayer.metadata = metadata
     }
 
 
@@ -472,7 +457,6 @@ ApplicationWindow
         canPlay: queueList.count>0 && currentSongInfo!==[]
         canSeek: queueList.count>0 && myPlayer.state>0
 
-        //loopStatus: repeatSwitch.checked ? Mpris.Playlist : Mpris.None
         playbackStatus: {
             if (myPlayer.state===2) {
                 return Mpris.Paused
@@ -482,8 +466,7 @@ ApplicationWindow
                 return Mpris.Stopped
             }
         }
-        //position: player.position * 1000
-        shuffle: false //shuffleSwitch.checked
+        shuffle: false
         volume: 1
 
         onPauseRequested: myPlayer.pause()
@@ -511,16 +494,6 @@ ApplicationWindow
             myPlayer.seek(position)
             emitSeeked()
         }
-        //onOpenUriRequested: playUrl(url)
-
-        /*onLoopStatusRequested: {
-            if (loopStatus == Mpris.None) {
-                repeatSwitch.checked = false
-            } else if (loopStatus == Mpris.Playlist) {
-                repeatSwitch.checked = true
-            }
-        }*/
-        //onShuffleRequested: shuffleSwitch.checked = shuffle
 
         onLocalMetadataChanged: {
             if (!localMetadata.url)
@@ -529,19 +502,16 @@ ApplicationWindow
             var metadata = {}
 
             if (localMetadata && 'url' in localMetadata) {
-                metadata[Mpris.metadataToString(Mpris.Url)] = localMetadata['url'] // Url
-                metadata[Mpris.metadataToString(Mpris.TrackId)] = "/com/jolla/mediaplayer/" + Qt.md5(localMetadata['url'].toString()) // DBus object path
-                metadata[Mpris.metadataToString(Mpris.Length)] = localMetadata['duration'] * 1000 // Microseconds
-                metadata[Mpris.metadataToString(Mpris.Album)] = localMetadata['album'] // String
-                metadata[Mpris.metadataToString(Mpris.Artist)] = [localMetadata['artist']] // List of strings
-                metadata[Mpris.metadataToString(Mpris.Genre)] = [localMetadata['genre']] // List of strings
-                metadata[Mpris.metadataToString(Mpris.Title)] = localMetadata['title'] // String
-                metadata[Mpris.metadataToString(Mpris.TrackNumber)] = localMetadata['track'] // Int
+                metadata[Mpris.metadataToString(Mpris.Url)] = localMetadata['url']
+                metadata[Mpris.metadataToString(Mpris.TrackId)] = "/com/jolla/mediaplayer/" + Qt.md5(localMetadata['url'].toString())
+                metadata[Mpris.metadataToString(Mpris.Length)] = localMetadata['duration'] * 1000
+                metadata[Mpris.metadataToString(Mpris.Album)] = localMetadata['album']
+                metadata[Mpris.metadataToString(Mpris.Artist)] = [localMetadata['artist']]
+                metadata[Mpris.metadataToString(Mpris.Genre)] = [localMetadata['genre']]
+                metadata[Mpris.metadataToString(Mpris.Title)] = localMetadata['title']
+                metadata[Mpris.metadataToString(Mpris.TrackNumber)] = localMetadata['track']
             }
             mprisPlayer.metadata = metadata
-
-
-
         }
     }
 
@@ -549,49 +519,77 @@ ApplicationWindow
         id: mediaKeys
     }
 
-//    BluetoothMediaPlayer {
-//        id: bluetoothMediaPlayer
+    // Direct BlueZ MediaPlayer registration. BlueZ prefers players that
+    // register with it directly over those it sees through mpris-proxy,
+    // which is why the default media player always wins BT button routing
+    // without this component present.
+    BluetoothMediaPlayer {
+        id: bluetoothMediaPlayer
 
-//        status: {
-//            if (myPlayer.state===1) {
-//                return BluetoothMediaPlayer.Playing
-//            } else if (myPlayer.state===2) {
-//                return BluetoothMediaPlayer.Paused
-//            } else {
-//                return BluetoothMediaPlayer.Stopped
-//            }
-//        }
+        status: {
+            if (myPlayer.state===1) {
+                return BluetoothMediaPlayer.Playing
+            } else if (myPlayer.state===2) {
+                return BluetoothMediaPlayer.Paused
+            } else {
+                return BluetoothMediaPlayer.Stopped
+            }
+        }
 
-//        onStatusChanged: console.log("BT PLAYBACK STATUS: " + status + " - Player state: " + myPlayer.state)
+        onStatusChanged: console.log("BT PLAYBACK STATUS: " + status + " - Player state: " + myPlayer.state)
 
-//        repeat: appWindow.repeat
-//                    ? BluetoothMediaPlayer.RepeatAllTracks
-//                    : BluetoothMediaPlayer.RepeatOff
+        repeat: appWindow.repeat
+                    ? BluetoothMediaPlayer.RepeatAllTracks
+                    : BluetoothMediaPlayer.RepeatOff
 
-//        shuffle: appWindow.shuffle
-//                    ? BluetoothMediaPlayer.ShuffleAllTracks
-//                    : BluetoothMediaPlayer.ShuffleOff
+        shuffle: appWindow.shuffle
+                    ? BluetoothMediaPlayer.ShuffleAllTracks
+                    : BluetoothMediaPlayer.ShuffleOff
 
-//        position: myPlayer.position
+        position: myPlayer.position
 
-//        metadata: currentSongInfo
+        metadata: (currentSongInfo && currentSongInfo.url !== undefined)
+            ? {
+                "title":    currentSongInfo.title,
+                "artist":   currentSongInfo.artist,
+                "album":    currentSongInfo.album,
+                "duration": currentSongInfo.duration * 1000
+              }
+            : ({})
 
-//        onChangeRepeat: {
-//            if (repeat == BluetoothMediaPlayer.RepeatOff) {
-//                appWindow.repeat = false
-//            } else if (repeat == BluetoothMediaPlayer.RepeatAllTracks) {
-//                appWindow.repeat = true
-//            }
-//        }
+        onPlayRequested: {
+            console.log("=== BT MEDIA: Play")
+            myPlayer.resume()
+        }
+        onPauseRequested: {
+            console.log("=== BT MEDIA: Pause")
+            myPlayer.pause()
+        }
+        onNextRequested: {
+            console.log("=== BT MEDIA: Next")
+            nowPlayingPage.nextSong()
+        }
+        onPreviousRequested: {
+            console.log("=== BT MEDIA: Previous")
+            nowPlayingPage.prevSong()
+        }
 
-//        onChangeShuffle: {
-//            if (shuffle == BluetoothMediaPlayer.ShuffleOff) {
-//                appWindow.shuffle = false
-//            } else if (shuffle == BluetoothMediaPlayer.ShuffleAllTracks) {
-//                appWindow.shuffle = true
-//            }
-//        }
-//    }
+        onChangeRepeat: {
+            if (repeat == BluetoothMediaPlayer.RepeatOff) {
+                appWindow.repeat = false
+            } else if (repeat == BluetoothMediaPlayer.RepeatAllTracks) {
+                appWindow.repeat = true
+            }
+        }
+
+        onChangeShuffle: {
+            if (shuffle == BluetoothMediaPlayer.ShuffleOff) {
+                appWindow.shuffle = false
+            } else if (shuffle == BluetoothMediaPlayer.ShuffleAllTracks) {
+                appWindow.shuffle = true
+            }
+        }
+    }
 
 
     function replaceText(text, str) {
@@ -607,5 +605,3 @@ ApplicationWindow
     }
 
 }
-
-
