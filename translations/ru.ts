@@ -1395,12 +1395,12 @@
 <context>
     <name>flowplayer</name>
     <message>
-        <location filename="../qml/flowplayer.qml" line="176"/>
+        <location filename="../qml/flowplayer.qml" line="171"/>
         <source>(radio)</source>
         <translation>(радио)</translation>
     </message>
     <message>
-        <location filename="../qml/flowplayer.qml" line="353"/>
+        <location filename="../qml/flowplayer.qml" line="338"/>
         <source>Cover not found</source>
         <translation>Обложка не найдена</translation>
     </message>
