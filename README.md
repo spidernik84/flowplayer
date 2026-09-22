@@ -19,10 +19,13 @@ Specifically to FlowPlayer:
 - [x] Implement better track management in the player
     - [x] sort by track number
     - [x] handle multi-cd albums
+- [ ] implement different strategies for track management (filesystem based, metadata based, hybrid) 
 - [x] cover loading from file first (prefer embedded, fallback to manual)
 - [x] bulk cover loading fix
-- [x] implement headphones event (play/pause/next track) // NOTE: see remark on bt below
+- [ ] implement headphones event (play/pause/next track) // NOTE: see remark on bt below
+- [ ] implement Queue in own menu section
 - [ ] implement resume from last state
+
 
 **Low Prio**
 
