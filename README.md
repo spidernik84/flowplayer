@@ -19,23 +19,22 @@ Specifically to FlowPlayer:
 - [x] Implement better track management in the player
     - [x] sort by track number
     - [x] handle multi-cd albums
-- [ ] implement different strategies for track management (filesystem based, metadata based, hybrid) 
+- [x] Multiple queuing strategies: in addition to "Add to (end of) the queue", now offers "Play Next"
 - [x] cover loading from file first (prefer embedded, fallback to manual)
 - [x] bulk cover loading fix
-- [ ] implement headphones event (play/pause/next track) // NOTE: see remark on bt below
-- [ ] implement Queue in own menu section
 - [ ] implement resume from last state
-
+- [ ] implement "Queue entire album"
+- [ ] implement "Queue entire playlist"
+- [ ] implement different strategies for track management (filesystem based, metadata based, hybrid) 
+- [x] implement headphones event (play/pause/next track) // this needs further testing, it seemed already implemented but doesn't always work
 
 **Low Prio**
 
+- [ ] Implement Queue in own menu section
+- [ ] Queue advanced editing (reordering, multi-selection)
 - [x] Implement Lyrics download + synced highlight to playback
 - [ ] Implement Radio Paradise support
 
-
-**Note on bluetooth play/stop events via headphones**
-
-A crude fix has been implemented by bypassing MPRIS events. Instead, BlueZ state changes are monitored. This needs to be redone since it would prevent Flowplayer to pick events from wired headphones and other media devices.
 
 
 ## New Features Screenshots

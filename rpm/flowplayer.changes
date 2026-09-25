@@ -1,3 +1,7 @@
+* Fri Sep 25 2026 spidernik84 <spidernik84@users.noreply.github.com> - 0.7.5
+- Add multiple queuing options (add to end of queue, play next)
+- fix track selection highlight overflow in multi-cd view
+
 * Tue Sep 22 2026 spidernik84 <spidernik84@users.noreply.github.com> - 0.7.2
 - Further attempts at fixing bluetooth
 
