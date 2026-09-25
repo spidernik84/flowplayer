@@ -71,6 +71,75 @@ ApplicationWindow
         }
     }
 
+    // Adds a track to the queue. With playNext the track goes right after
+    // the one playing (it is moved there if already queued); otherwise it is
+    // appended, unless it is already in the queue.
+    function queueTrack(track, playNext) {
+        if (playingRadio) {
+            // queueList holds the radio station: only update the stored queue
+            if (!playNext && myplaylistmanager.isInQueue(track.url)) {
+                ibanner.displayMessage(qsTr("Already in queue"), false)
+                return
+            }
+            myplaylistmanager.insertIntoQueue(track.url, playNext ? 0 : -1)
+            ibanner.displayMessage(playNext ? qsTr("Playing next") : qsTr("Added to queue"), true)
+            return
+        }
+
+        if (queueList.count===0)
+            myplaylistmanager.loadPlaylist("00000000000000000000")
+
+        // Index of the playing track, or -1 when nothing from the queue is playing
+        var source = decodeURIComponent(myPlayer.source)
+        var current = -1
+        if (source!=="" && queueList.currentIndex>=0 && queueList.currentIndex<queueList.count &&
+                decodeURIComponent(queueList.get(queueList.currentIndex).url)===source) {
+            current = queueList.currentIndex
+        } else if (source!=="") {
+            for (var i=0; i<queueList.count; ++i) {
+                if (decodeURIComponent(queueList.get(i).url)===source) {
+                    current = i
+                    break
+                }
+            }
+        }
+
+        if (current>=0 && queueList.get(current).url===track.url) {
+            ibanner.displayMessage(qsTr("Already playing"), false)
+            return
+        }
+
+        var queued = false
+        for (var j=queueList.count-1; j>=0; --j) {
+            if (queueList.get(j).url===track.url) {
+                queued = true
+                if (!playNext) break
+                queueList.remove(j)
+                if (j<current) current--
+            }
+        }
+
+        if (queued && !playNext) {
+            ibanner.displayMessage(qsTr("Already in queue"), false)
+            return
+        }
+
+        var position = playNext ? current+1 : queueList.count
+        queueList.insert(position, {"artist":track.artist, "album":track.album, "title":track.title,
+                                    "duration":track.duration, "url":track.url})
+        if (current>=0)
+            queueList.currentIndex = current
+
+        myplaylistmanager.insertIntoQueue(track.url, position)
+        utils.setShuffle(queueList.count)
+
+        // The player preloads the following track for gapless playback
+        if (current>=0)
+            myPlayer.setNextSource(nowPlayingPage.getNextSong(), false)
+
+        ibanner.displayMessage(playNext ? qsTr("Playing next") : qsTr("Added to queue"), true)
+    }
+
     // Manual fallback: restarts mpris-proxy so it re-elects FlowPlayer.
     // Not called automatically any more — the direct BlueZ registration
     // through BluetoothMediaPlayer below should make this unnecessary on

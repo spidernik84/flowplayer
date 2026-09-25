@@ -196,6 +196,47 @@ void PlaylistManager::copyListToQueue(QString source)
 
 }
 
+bool PlaylistManager::isInQueue(QString url)
+{
+    if (!isDBOpened) openDatabase();
+
+    return executeQueryCheckCount(QString("select url from queue where url='%1' limit 1").arg(xmlin(url)));
+}
+
+// Inserts a track into the stored queue at the given position (-1 appends).
+// Any existing copy of the track is removed first, so it gets moved.
+// The queue table has no order column: rows are kept in rowid order, so the
+// table is rebuilt around the new track.
+void PlaylistManager::insertIntoQueue(QString url, int position)
+{
+    qDebug() << "INSERTING INTO QUEUE AT" << position << url;
+
+    if (!isDBOpened) openDatabase();
+
+    QString link = xmlin(url);
+    QString track = QString("insert into queue (url, artist, album, title, duration) "
+                            "select url, artist, album, title, duration from tracks "
+                            "where url='%1' collate nocase limit 1").arg(link);
+
+    executeQuery("begin transaction");
+    executeQuery("drop table if exists queue_tmp");
+    executeQuery(QString("create temp table queue_tmp as select * from queue "
+                         "where url!='%1' order by rowid").arg(link));
+    executeQuery("delete from queue");
+
+    if (position < 0) {
+        executeQuery("insert into queue select * from queue_tmp order by rowid");
+        executeQuery(track);
+    } else {
+        executeQuery(QString("insert into queue select * from queue_tmp order by rowid limit %1").arg(position));
+        executeQuery(track);
+        executeQuery(QString("insert into queue select * from queue_tmp order by rowid limit -1 offset %1").arg(position));
+    }
+
+    executeQuery("drop table queue_tmp");
+    executeQuery("commit");
+}
+
 void PlaylistManager::saveList(QString list)
 {
     list = list.trimmed();

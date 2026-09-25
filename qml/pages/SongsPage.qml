@@ -127,6 +127,14 @@ Page {
                     }
                 }
                 MenuItem {
+                    text: qsTr("Play next")
+                    onClicked: queueTrack(model, true)
+                }
+                MenuItem {
+                    text: qsTr("Add to queue")
+                    onClicked: queueTrack(model, false)
+                }
+                MenuItem {
                     text: qsTr("Add to playlist")
                     onClicked: {
                         filterArtist = ""
@@ -148,7 +156,8 @@ Page {
             }
 
             onClicked: {
-                if (isqueue)
+                // The queue only mirrors this list until tracks get queued from elsewhere
+                if (isqueue && model.index<queueList.count && queueList.get(model.index).url===model.url)
                 {
                     nowPlayingPage.playSong(model.index)
                 }

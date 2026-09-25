@@ -26,6 +26,8 @@ public slots:
     void addToList(QString artist, QString album, QString title, QString link, QString time);
     void addAlbumToList(QString list, QString artist, QString album, QString various, QString song);
     void copyListToQueue(QString source);
+    bool isInQueue(QString url);
+    void insertIntoQueue(QString url, int position);
     void removeFromList(QString link);
     void saveList(QString list);
     void removeList(QString name);
