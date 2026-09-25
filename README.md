@@ -39,10 +39,10 @@ Specifically to FlowPlayer:
 
 ## New Features Screenshots
 
-|   |   |   |
-|:---:|:---:|:---:|
-| ![Multi-CD album](./.xdata/screenshots/Screenshot_20260921_211607_001.png?raw=true) | ![Multi-CD album](./.xdata/screenshots/Screenshot_20260921_211620_001.png?raw=true) | ![Lyrics synced to playback](./.xdata/screenshots/Screenshot_20260921_211645_001.png?raw=true) |
-| Multi-CD album  | Multi-CD Album  | Lyrics synced to playback  |
+|   |   |   | |
+|:---:|:---:|:---:|:---:|
+| ![Multi-CD album](./.xdata/screenshots/Screenshot_20260921_211607_001.png?raw=true) | ![Multi-CD album](./.xdata/screenshots/Screenshot_20260921_211620_001.png?raw=true) | ![Lyrics synced to playback](./.xdata/screenshots/Screenshot_20260921_211645_001.png?raw=true) | ![Add to Queue + Play Next](./.xdata/screenshots/Screenshot_20260925_200055_001.png?raw=true) |
+| Multi-CD album  | Multi-CD Album  | Lyrics synced to playback  | Add to queue + play next |
 
 
 ## Features

@@ -1217,58 +1217,58 @@
     </message>
     <message>
         <location filename="../qml/pages/SongListView.qml" line="80"/>
-        <location filename="../qml/pages/SongListView.qml" line="140"/>
+        <location filename="../qml/pages/SongListView.qml" line="143"/>
         <source>Edit metadata</source>
         <translation>Редактировать метаданные</translation>
     </message>
     <message>
         <location filename="../qml/pages/SongListView.qml" line="90"/>
-        <location filename="../qml/pages/SongListView.qml" line="158"/>
+        <location filename="../qml/pages/SongListView.qml" line="161"/>
         <source>Add to playlist</source>
         <translation>Добавить в плейлист</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="119"/>
+        <location filename="../qml/pages/SongListView.qml" line="122"/>
         <source>Disc %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="150"/>
+        <location filename="../qml/pages/SongListView.qml" line="153"/>
         <source>Play next</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="154"/>
+        <location filename="../qml/pages/SongListView.qml" line="157"/>
         <source>Add to queue</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="167"/>
+        <location filename="../qml/pages/SongListView.qml" line="170"/>
         <source>Remove from favorites</source>
         <translation>Убрать из избранного</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="167"/>
+        <location filename="../qml/pages/SongListView.qml" line="170"/>
         <source>Add to favorites</source>
         <translation>Добавить в избранное</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="244"/>
+        <location filename="../qml/pages/SongListView.qml" line="247"/>
         <source>Cover not found</source>
         <translation>Обложка не найдена</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="252"/>
+        <location filename="../qml/pages/SongListView.qml" line="255"/>
         <source>Various artists</source>
         <translation>Различные исполнители</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="256"/>
+        <location filename="../qml/pages/SongListView.qml" line="259"/>
         <source>1 track</source>
         <translation>1 трек</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="256"/>
+        <location filename="../qml/pages/SongListView.qml" line="259"/>
         <source>%1 tracks</source>
         <translation>%1 треков</translation>
     </message>
