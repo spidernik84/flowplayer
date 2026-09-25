@@ -2,7 +2,13 @@ TARGET = flowplayer
 
 QT += core network sql xml dbus
 
-DEFINES += VERSION=\\\"$${VERSION}\\\"
+# The version goes into a generated header instead of DEFINES: make doesn't
+# notice changed compiler flags, so objects kept showing an old version.
+# The header is only rewritten when the version changes.
+VERSION_HEADER = $$OUT_PWD/version.h
+VERSION_DEFINE = "$${LITERAL_HASH}define VERSION \"$${VERSION}\""
+!equals(VERSION_DEFINE, $$cat($$VERSION_HEADER, lines)): write_file($$VERSION_HEADER, VERSION_DEFINE)
+INCLUDEPATH += $$OUT_PWD
 
 CONFIG += link_pkgconfig
 PKGCONFIG += gstreamer-1.0 libresource libresource-glib taglib

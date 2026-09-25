@@ -10,6 +10,8 @@
 #include <QSettings>
 #include <QStandardPaths>
 
+#include "version.h"
+
 #include "playlistmanager.h"
 #include "utils.h"
 #include "coversearch.h"

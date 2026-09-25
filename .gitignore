@@ -43,3 +43,4 @@ translations/*.qm
 # Sailfish SDK binaries
 RPMS
 flowplayer
+/version.h
