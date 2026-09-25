@@ -23,7 +23,7 @@ Specifically to FlowPlayer:
 - [x] cover loading from file first (prefer embedded, fallback to manual)
 - [x] bulk cover loading fix
 - [ ] implement resume from last state
-- [ ] implement "Queue entire album"
+- [x] implement "Queue entire album"
 - [ ] implement "Queue entire playlist"
 - [ ] implement different strategies for track management (filesystem based, metadata based, hybrid) 
 - [x] implement headphones event (play/pause/next track) // this needs further testing, it seemed already implemented but doesn't always work
@@ -43,6 +43,8 @@ Specifically to FlowPlayer:
 |:---:|:---:|:---:|:---:|
 | ![Multi-CD album](./.xdata/screenshots/Screenshot_20260921_211607_001.png?raw=true) | ![Multi-CD album](./.xdata/screenshots/Screenshot_20260921_211620_001.png?raw=true) | ![Lyrics synced to playback](./.xdata/screenshots/Screenshot_20260921_211645_001.png?raw=true) | ![Add to Queue + Play Next](./.xdata/screenshots/Screenshot_20260925_200055_001.png?raw=true) |
 | Multi-CD album  | Multi-CD Album  | Lyrics synced to playback  | Add to queue + play next |
+| ![Queue entire album (grid view)](./.xdata/screenshots/Screenshot_20260925_201423_001.png?raw=true) | ![Queue entire album (list view)](./.xdata/screenshots/Screenshot_20260925_201520_001.png?raw=true) | | |
+| Queue entire album (grid view) | Queue entire album (list view) | | |
 
 
 ## Features
