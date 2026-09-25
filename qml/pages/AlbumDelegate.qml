@@ -21,13 +21,6 @@ ListItem
     property bool showCover: false
     property alias textSize: thumb.textSize
     property int tracknum: 0
-    property int discnum: 0
-    property bool showDiscHeader: false
-
-    readonly property bool _showHeader: showDiscHeader && discnum > 0
-    readonly property real _headerSectionHeight: _showHeader
-        ? Theme.paddingSmall + discHeaderLabel.implicitHeight + Theme.paddingSmall
-        : 0
 
     // Formats track number as "xx"
     function formatTrack(t) {
@@ -37,24 +30,12 @@ ListItem
     }
 
     width: parent.width
-    clip: true
-    height: Theme.itemSizeSmall + _headerSectionHeight
-
-    Label {
-        id: discHeaderLabel
-        visible: _showHeader
-        x: Theme.paddingLarge
-        y: Theme.paddingSmall
-        width: parent.width - Theme.paddingLarge * 2
-        text: qsTr("Disc %1").arg(discnum)
-        font.pixelSize: Theme.fontSizeSmall
-        font.bold: true
-        color: Theme.secondaryColor
-    }
+    // Use contentHeight (not height) so ListItem can grow itself when the
+    // context menu opens, and so the menu is placed below the whole item.
+    contentHeight: Theme.itemSizeSmall
 
     Item {
         id: rowContainer
-        y: _headerSectionHeight
         width: parent.width
         height: Theme.itemSizeSmall
 
@@ -134,8 +115,4 @@ ListItem
 
         }
     }
-    Component.onCompleted: console.log("AlbumDelegate:",
-        "discnum =", discnum,
-        "showDiscHeader =", showDiscHeader,
-        "height =", height)
 }

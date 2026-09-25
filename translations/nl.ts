@@ -100,12 +100,7 @@
 <context>
     <name>AlbumDelegate</name>
     <message>
-        <location filename="../qml/pages/AlbumDelegate.qml" line="49"/>
-        <source>Disc %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/AlbumDelegate.qml" line="70"/>
+        <location filename="../qml/pages/AlbumDelegate.qml" line="51"/>
         <source>Not found</source>
         <translation>Niet gevonden</translation>
     </message>
@@ -1206,59 +1201,64 @@
 <context>
     <name>SongListView</name>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="101"/>
+        <location filename="../qml/pages/SongListView.qml" line="72"/>
         <source>Search cover</source>
         <translation>Zoek cover</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="102"/>
+        <location filename="../qml/pages/SongListView.qml" line="73"/>
         <source>Unknown artist</source>
         <translation>Onbekende artiest</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="102"/>
+        <location filename="../qml/pages/SongListView.qml" line="73"/>
         <source>Unknown album</source>
         <translation>Onbekende album</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="109"/>
-        <location filename="../qml/pages/SongListView.qml" line="149"/>
+        <location filename="../qml/pages/SongListView.qml" line="80"/>
+        <location filename="../qml/pages/SongListView.qml" line="140"/>
         <source>Edit metadata</source>
         <translation>Bewerk metadata</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="119"/>
-        <location filename="../qml/pages/SongListView.qml" line="159"/>
+        <location filename="../qml/pages/SongListView.qml" line="90"/>
+        <location filename="../qml/pages/SongListView.qml" line="150"/>
         <source>Add to playlist</source>
         <translation>Toevoegen aan afspeellijst </translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="168"/>
+        <location filename="../qml/pages/SongListView.qml" line="119"/>
+        <source>Disc %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/SongListView.qml" line="159"/>
         <source>Remove from favorites</source>
         <translation>Verwijder uit favorieten</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="168"/>
+        <location filename="../qml/pages/SongListView.qml" line="159"/>
         <source>Add to favorites</source>
         <translation>Voeg aan favorieten</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="244"/>
+        <location filename="../qml/pages/SongListView.qml" line="235"/>
         <source>Cover not found</source>
         <translation>Cover niet gevonden</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="252"/>
+        <location filename="../qml/pages/SongListView.qml" line="243"/>
         <source>Various artists</source>
         <translation>Diverse artiesten</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="256"/>
+        <location filename="../qml/pages/SongListView.qml" line="247"/>
         <source>1 track</source>
         <translation>1 track</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="256"/>
+        <location filename="../qml/pages/SongListView.qml" line="247"/>
         <source>%1 tracks</source>
         <translation>%1 tracks</translation>
     </message>

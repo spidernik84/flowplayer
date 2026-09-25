@@ -17,37 +17,16 @@ Page {
     property bool loaded: false
     property bool isqueue: false
 
+    // True once any track with disc number > 1 has been loaded. The
+    // "Disc N" section headers are only shown for multi-disc albums.
+    property bool multiDisc: false
+
     ListModel { id: songListModel }
-
-    // After all tracks are loaded, walk the model once and decide which
-    // entries should carry a "Disc N" header above them. A header is shown:
-    //   - for every disc number > 1 (definite disc change), AND
-    //   - for disc 1 if the album turns out to be multi-disc.
-    // Single-disc albums get no headers at all.
-    function updateDiscHeaders() {
-        var multiDisc = false
-        for (var i = 0; i < songListModel.count; i++) {
-            if (songListModel.get(i).discnum > 1) {
-                multiDisc = true
-                break
-            }
-        }
-
-        var prevDisc = -1
-        for (var j = 0; j < songListModel.count; j++) {
-            var d = songListModel.get(j).discnum || 0
-            var show = false
-            if (d > 0 && d !== prevDisc) {
-                if (d > 1 || multiDisc) show = true
-            }
-            songListModel.setProperty(j, "showDiscHeader", show)
-            prevDisc = d
-        }
-    }
 
     onStatusChanged: {
         if (status===PageStatus.Activating && !loaded) {
             songListModel.clear()
+            multiDisc = false
             myplaylistmanager.loadAlbum(artist, album, artistcount)
             loaded = true
             isqueue = false
@@ -62,6 +41,7 @@ Page {
                 artist = artistnew
                 album = albumnew
                 songListModel.clear()
+                multiDisc = false
                 myplaylistmanager.loadAlbum(artist, album, artistcount)
             }
         }
@@ -73,22 +53,13 @@ Page {
         onAddItemToAlbum: {
             songListModel.append({"index":songListModel.count, "artist":item.artist, "album":item.album, "title":item.title,
                                      "duration":item.duration, "url":item.url, "fav":item.fav,
-                                     "tracknum":item.tracknum, "discnum":item.discnum,
-                                     "showDiscHeader":false})
-            headerTimer.restart()
+                                     "tracknum":item.tracknum, "discnum":item.discnum})
+            if (item.discnum > 1) multiDisc = true
         }
 
         onAlbumLoaded: {
             totalTime = DT.getDuration(totaltime)
-            headerTimer.stop()
-            updateDiscHeaders()
         }
-    }
-
-    Timer {
-        id: headerTimer
-        interval: 100
-        onTriggered: updateDiscHeaders()
     }
 
     SilicaListView {
@@ -130,6 +101,28 @@ Page {
 
         header: mainColumn
 
+        // Disc headers live outside the delegate so they don't take part in
+        // the ListItem's press highlight or context menu positioning.
+        section.property: "discnum"
+        section.criteria: ViewSection.FullString
+        section.delegate: Item {
+            readonly property bool shown: multiDisc && parseInt(section) > 0
+            visible: shown
+            width: parent.width
+            height: shown ? discLabel.implicitHeight + Theme.paddingSmall * 2 : 0
+
+            Label {
+                id: discLabel
+                x: Theme.paddingLarge
+                y: Theme.paddingSmall
+                width: parent.width - Theme.paddingLarge * 2
+                text: qsTr("Disc %1").arg(section)
+                font.pixelSize: Theme.fontSizeSmall
+                font.bold: true
+                color: Theme.secondaryColor
+            }
+        }
+
         delegate: AlbumDelegate {
             myData: model
             name: model.title
@@ -138,8 +131,6 @@ Page {
             time: DT.getDuration(model.duration)
             cindex: index
             tracknum: model.tracknum
-            discnum: model.discnum
-            showDiscHeader: model.showDiscHeader
             isplaying: decodeURIComponent(model.url) === decodeURIComponent(myPlayer.source)
 
             menu: ContextMenu {
