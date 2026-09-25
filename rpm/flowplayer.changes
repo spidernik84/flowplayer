@@ -1,3 +1,6 @@
+* Fri Sep 25 2026 spidernik84 <spidernik84@users.noreply.github.com> - 0.8.1
+- Fix compilation logic so version in "about" page always updates
+
 * Fri Sep 25 2026 spidernik84 <spidernik84@users.noreply.github.com> - 0.8.0
 - Add "queue entire album" feature
 
