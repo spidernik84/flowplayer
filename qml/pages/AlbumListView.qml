@@ -104,6 +104,14 @@ Page {
                     }
                 }*/
                 MenuItem {
+                    text: qsTr("Play next")
+                    onClicked: queueAlbum(model.artist, model.album, "1", true)
+                }
+                MenuItem {
+                    text: qsTr("Add to queue")
+                    onClicked: queueAlbum(model.artist, model.album, "1", false)
+                }
+                MenuItem {
                     text: qsTr("Add to playlist")
                     onClicked: {
                         helperList.clear()

@@ -20,6 +20,9 @@ public:
     QString xmlin(QString data);
     QString xmlout(QString data);
 
+private:
+    QString albumQuery(QString artist, QString album, QString various);
+
 public slots:
     void loadList(QString list);
     void clearList(QString list);
@@ -27,7 +30,8 @@ public slots:
     void addAlbumToList(QString list, QString artist, QString album, QString various, QString song);
     void copyListToQueue(QString source);
     bool isInQueue(QString url);
-    void insertIntoQueue(QString url, int position);
+    void insertIntoQueue(QStringList urls, int position);
+    QVariantList getAlbumTracks(QString artist, QString album, QString various);
     void removeFromList(QString link);
     void saveList(QString list);
     void removeList(QString name);

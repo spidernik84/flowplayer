@@ -157,6 +157,22 @@ Page {
                 count: model.acount
                 time: model.songs
 
+                menu: lastGroup==="albums" ? listAlbumMenu : null
+
+                Component {
+                    id: listAlbumMenu
+                    ContextMenu {
+                        MenuItem {
+                            text: qsTr("Play next")
+                            onClicked: queueAlbum(model.artist, model.title, model.acount, true)
+                        }
+                        MenuItem {
+                            text: qsTr("Add to queue")
+                            onClicked: queueAlbum(model.artist, model.title, model.acount, false)
+                        }
+                    }
+                }
+
                 onClicked: {
                     if (lastGroup==="albums")
                         pageStack.push("SongListView.qml", {"artist":model.artist, "album":model.title, "artistcount":model.acount})
@@ -246,15 +262,37 @@ Page {
                 }
             }
 
-            delegate: CoverArtList {
-                id: cvl
-                height: gridView.cellHeight
+            // GridItem pushes the rows below down when its menu opens
+            delegate: GridItem {
                 width: gridView.cellWidth
-                itemimg: model.coverart
-                text: model.title
-                artist: model.artist
-                album: model.title
-                textvisible: lastGroup==="artists"
+                contentHeight: gridView.cellHeight
+
+                menu: lastGroup==="albums" ? gridAlbumMenu : null
+
+                CoverArtList {
+                    id: cvl
+                    anchors.fill: parent
+                    enabled: false  // presses are handled by the GridItem
+                    itemimg: model.coverart
+                    text: model.title
+                    artist: model.artist
+                    album: model.title
+                    textvisible: lastGroup==="artists"
+                }
+
+                Component {
+                    id: gridAlbumMenu
+                    ContextMenu {
+                        MenuItem {
+                            text: qsTr("Play next")
+                            onClicked: queueAlbum(model.artist, model.title, model.acount, true)
+                        }
+                        MenuItem {
+                            text: qsTr("Add to queue")
+                            onClicked: queueAlbum(model.artist, model.title, model.acount, false)
+                        }
+                    }
+                }
 
                 onClicked: {
                     if (lastGroup==="albums")
@@ -441,9 +479,12 @@ Page {
                         else
                             pageStack.push("AlbumListView.qml", {"artist":model.title})
                     }
-                    /*onPressAndHold: {
-
-                    }*/
+                    onPressAndHold: {
+                        if (lastGroup!=="albums")
+                            return
+                        view.currentIndex = model.index
+                        flowAlbumMenu.open(model.artist, model.title, model.acount)
+                    }
 
                 }
 
@@ -488,6 +529,69 @@ Page {
                     visible: view.visible
                 }
 
+            }
+
+            // Silica's ContextMenu needs a list item to attach to, which the
+            // carousel doesn't have, so it gets a small menu of its own shown
+            // over the album labels. Tapping anywhere else closes it.
+            MouseArea {
+                id: flowAlbumMenu
+                property string artist
+                property string album
+                property string various
+
+                function open(artist, album, various) {
+                    flowAlbumMenu.artist = artist
+                    flowAlbumMenu.album = album
+                    flowAlbumMenu.various = various
+                    opacity = 1
+                }
+                function close() {
+                    opacity = 0
+                }
+
+                anchors.fill: parent
+                visible: opacity > 0
+                opacity: 0
+                Behavior on opacity { FadeAnimation {} }
+                onClicked: close()
+
+                Rectangle {
+                    anchors.fill: flowMenuItems
+                    color: Theme.highlightDimmerColor
+                    opacity: 0.9
+                }
+
+                Column {
+                    id: flowMenuItems
+                    width: parent.width
+                    anchors.bottom: parent.bottom
+
+                    BackgroundItem {
+                        height: Theme.itemSizeSmall
+                        onClicked: {
+                            queueAlbum(flowAlbumMenu.artist, flowAlbumMenu.album, flowAlbumMenu.various, true)
+                            flowAlbumMenu.close()
+                        }
+                        Label {
+                            anchors.centerIn: parent
+                            text: qsTr("Play next")
+                            color: parent.highlighted ? Theme.highlightColor : Theme.primaryColor
+                        }
+                    }
+                    BackgroundItem {
+                        height: Theme.itemSizeSmall
+                        onClicked: {
+                            queueAlbum(flowAlbumMenu.artist, flowAlbumMenu.album, flowAlbumMenu.various, false)
+                            flowAlbumMenu.close()
+                        }
+                        Label {
+                            anchors.centerIn: parent
+                            text: qsTr("Add to queue")
+                            color: parent.highlighted ? Theme.highlightColor : Theme.primaryColor
+                        }
+                    }
+                }
             }
 
         }

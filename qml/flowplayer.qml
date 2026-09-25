@@ -75,13 +75,29 @@ ApplicationWindow
     // the one playing (it is moved there if already queued); otherwise it is
     // appended, unless it is already in the queue.
     function queueTrack(track, playNext) {
+        queueTracks([track], playNext)
+    }
+
+    // Adds all tracks of an album to the queue, like queueTrack()
+    function queueAlbum(artist, album, various, playNext) {
+        queueTracks(myplaylistmanager.getAlbumTracks(artist, album, various), playNext)
+    }
+
+    function queueTracks(tracks, playNext) {
+        var added = []
+        var i, j
+
         if (playingRadio) {
             // queueList holds the radio station: only update the stored queue
-            if (!playNext && myplaylistmanager.isInQueue(track.url)) {
+            for (i=0; i<tracks.length; ++i) {
+                if (playNext || !myplaylistmanager.isInQueue(tracks[i].url))
+                    added.push(tracks[i].url)
+            }
+            if (added.length===0) {
                 ibanner.displayMessage(qsTr("Already in queue"), false)
                 return
             }
-            myplaylistmanager.insertIntoQueue(track.url, playNext ? 0 : -1)
+            myplaylistmanager.insertIntoQueue(added, playNext ? 0 : -1)
             ibanner.displayMessage(playNext ? qsTr("Playing next") : qsTr("Added to queue"), true)
             return
         }
@@ -96,41 +112,50 @@ ApplicationWindow
                 decodeURIComponent(queueList.get(queueList.currentIndex).url)===source) {
             current = queueList.currentIndex
         } else if (source!=="") {
-            for (var i=0; i<queueList.count; ++i) {
+            for (i=0; i<queueList.count; ++i) {
                 if (decodeURIComponent(queueList.get(i).url)===source) {
                     current = i
                     break
                 }
             }
         }
+        var currentUrl = current>=0 ? queueList.get(current).url : ""
 
-        if (current>=0 && queueList.get(current).url===track.url) {
-            ibanner.displayMessage(qsTr("Already playing"), false)
-            return
-        }
-
-        var queued = false
-        for (var j=queueList.count-1; j>=0; --j) {
-            if (queueList.get(j).url===track.url) {
-                queued = true
-                if (!playNext) break
-                queueList.remove(j)
-                if (j<current) current--
+        // The playing track stays where it is. With playNext, queued copies
+        // of the other tracks are moved; otherwise they are left alone.
+        var toAdd = []
+        for (i=0; i<tracks.length; ++i) {
+            if (tracks[i].url===currentUrl)
+                continue
+            var queued = false
+            for (j=queueList.count-1; j>=0; --j) {
+                if (queueList.get(j).url===tracks[i].url) {
+                    queued = true
+                    if (!playNext) break
+                    queueList.remove(j)
+                    if (j<current) current--
+                }
             }
+            if (playNext || !queued)
+                toAdd.push(tracks[i])
         }
 
-        if (queued && !playNext) {
-            ibanner.displayMessage(qsTr("Already in queue"), false)
+        if (toAdd.length===0) {
+            ibanner.displayMessage(tracks.length===1 && tracks[0].url===currentUrl ?
+                                       qsTr("Already playing") : qsTr("Already in queue"), false)
             return
         }
 
         var position = playNext ? current+1 : queueList.count
-        queueList.insert(position, {"artist":track.artist, "album":track.album, "title":track.title,
-                                    "duration":track.duration, "url":track.url})
+        for (i=0; i<toAdd.length; ++i) {
+            queueList.insert(position+i, {"artist":toAdd[i].artist, "album":toAdd[i].album, "title":toAdd[i].title,
+                                          "duration":toAdd[i].duration, "url":toAdd[i].url})
+            added.push(toAdd[i].url)
+        }
         if (current>=0)
             queueList.currentIndex = current
 
-        myplaylistmanager.insertIntoQueue(track.url, position)
+        myplaylistmanager.insertIntoQueue(added, position)
         utils.setShuffle(queueList.count)
 
         // The player preloads the following track for gapless playback

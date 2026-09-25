@@ -119,7 +119,7 @@
     </message>
     <message>
         <location filename="../qml/pages/AlbumListView.qml" line="55"/>
-        <location filename="../qml/pages/AlbumListView.qml" line="107"/>
+        <location filename="../qml/pages/AlbumListView.qml" line="115"/>
         <source>Add to playlist</source>
         <translation>Afegeix a la llista de reproducció</translation>
     </message>
@@ -130,28 +130,38 @@
     </message>
     <message>
         <location filename="../qml/pages/AlbumListView.qml" line="85"/>
-        <location filename="../qml/pages/AlbumListView.qml" line="185"/>
+        <location filename="../qml/pages/AlbumListView.qml" line="193"/>
         <source>1 track</source>
         <translation>1 pista</translation>
     </message>
     <message>
         <location filename="../qml/pages/AlbumListView.qml" line="85"/>
-        <location filename="../qml/pages/AlbumListView.qml" line="185"/>
+        <location filename="../qml/pages/AlbumListView.qml" line="193"/>
         <source>%1 tracks</source>
         <translation>%1 pistes</translation>
     </message>
     <message>
-        <location filename="../qml/pages/AlbumListView.qml" line="171"/>
+        <location filename="../qml/pages/AlbumListView.qml" line="107"/>
+        <source>Play next</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AlbumListView.qml" line="111"/>
+        <source>Add to queue</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/AlbumListView.qml" line="179"/>
         <source>Image not found</source>
         <translation>No s&apos;ha trobat la imatge</translation>
     </message>
     <message>
-        <location filename="../qml/pages/AlbumListView.qml" line="180"/>
+        <location filename="../qml/pages/AlbumListView.qml" line="188"/>
         <source>1 album</source>
         <translation>1 àlbum</translation>
     </message>
     <message>
-        <location filename="../qml/pages/AlbumListView.qml" line="180"/>
+        <location filename="../qml/pages/AlbumListView.qml" line="188"/>
         <source>%1 albums</source>
         <translation>%1 àlbums</translation>
     </message>
@@ -561,19 +571,33 @@
     </message>
     <message>
         <location filename="../qml/pages/MainPage.qml" line="94"/>
-        <location filename="../qml/pages/MainPage.qml" line="194"/>
+        <location filename="../qml/pages/MainPage.qml" line="210"/>
         <source>Artists</source>
         <translation>Artistes</translation>
     </message>
     <message>
         <location filename="../qml/pages/MainPage.qml" line="94"/>
-        <location filename="../qml/pages/MainPage.qml" line="194"/>
+        <location filename="../qml/pages/MainPage.qml" line="210"/>
         <source>Albums</source>
         <translation>Àlbums</translation>
     </message>
     <message>
-        <location filename="../qml/pages/MainPage.qml" line="294"/>
-        <location filename="../qml/pages/MainPage.qml" line="455"/>
+        <location filename="../qml/pages/MainPage.qml" line="166"/>
+        <location filename="../qml/pages/MainPage.qml" line="287"/>
+        <location filename="../qml/pages/MainPage.qml" line="578"/>
+        <source>Play next</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MainPage.qml" line="170"/>
+        <location filename="../qml/pages/MainPage.qml" line="291"/>
+        <location filename="../qml/pages/MainPage.qml" line="590"/>
+        <source>Add to queue</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/MainPage.qml" line="332"/>
+        <location filename="../qml/pages/MainPage.qml" line="496"/>
         <source>Various artists</source>
         <translation>Artistes diversos</translation>
     </message>
@@ -862,7 +886,7 @@
 <context>
     <name>PlaylistManager</name>
     <message>
-        <location filename="../src/playlistmanager.cpp" line="387"/>
+        <location filename="../src/playlistmanager.cpp" line="418"/>
         <source>Custom playlists</source>
         <translation>Personalitza les llistes de reproducció</translation>
     </message>
@@ -1415,35 +1439,35 @@
 <context>
     <name>flowplayer</name>
     <message>
-        <location filename="../qml/flowplayer.qml" line="81"/>
-        <location filename="../qml/flowplayer.qml" line="123"/>
+        <location filename="../qml/flowplayer.qml" line="97"/>
+        <location filename="../qml/flowplayer.qml" line="145"/>
         <source>Already in queue</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/flowplayer.qml" line="85"/>
-        <location filename="../qml/flowplayer.qml" line="140"/>
+        <location filename="../qml/flowplayer.qml" line="101"/>
+        <location filename="../qml/flowplayer.qml" line="165"/>
         <source>Playing next</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/flowplayer.qml" line="85"/>
-        <location filename="../qml/flowplayer.qml" line="140"/>
+        <location filename="../qml/flowplayer.qml" line="101"/>
+        <location filename="../qml/flowplayer.qml" line="165"/>
         <source>Added to queue</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/flowplayer.qml" line="108"/>
+        <location filename="../qml/flowplayer.qml" line="145"/>
         <source>Already playing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/flowplayer.qml" line="240"/>
+        <location filename="../qml/flowplayer.qml" line="265"/>
         <source>(radio)</source>
         <translation>(ràdio)</translation>
     </message>
     <message>
-        <location filename="../qml/flowplayer.qml" line="407"/>
+        <location filename="../qml/flowplayer.qml" line="432"/>
         <source>Cover not found</source>
         <translation>No s&apos;ha trobat la caràtula</translation>
     </message>

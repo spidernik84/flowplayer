@@ -203,38 +203,69 @@ bool PlaylistManager::isInQueue(QString url)
     return executeQueryCheckCount(QString("select url from queue where url='%1' limit 1").arg(xmlin(url)));
 }
 
-// Inserts a track into the stored queue at the given position (-1 appends).
-// Any existing copy of the track is removed first, so it gets moved.
-// The queue table has no order column: rows are kept in rowid order, so the
-// table is rebuilt around the new track.
-void PlaylistManager::insertIntoQueue(QString url, int position)
+// Inserts tracks, in the given order, into the stored queue at the given
+// position (-1 appends). Existing copies of the tracks are removed first, so
+// they get moved. The queue table has no order column: rows are kept in rowid
+// order, so the table is rebuilt around the new tracks.
+void PlaylistManager::insertIntoQueue(QStringList urls, int position)
 {
-    qDebug() << "INSERTING INTO QUEUE AT" << position << url;
+    qDebug() << "INSERTING INTO QUEUE AT" << position << urls;
 
+    if (urls.isEmpty()) return;
     if (!isDBOpened) openDatabase();
 
-    QString link = xmlin(url);
-    QString track = QString("insert into queue (url, artist, album, title, duration) "
-                            "select url, artist, album, title, duration from tracks "
-                            "where url='%1' collate nocase limit 1").arg(link);
+    QStringList links;
+    for (int i=0; i<urls.count(); ++i)
+        links.append(QString("'%1'").arg(xmlin(urls[i])));
 
     executeQuery("begin transaction");
     executeQuery("drop table if exists queue_tmp");
     executeQuery(QString("create temp table queue_tmp as select * from queue "
-                         "where url!='%1' order by rowid").arg(link));
+                         "where url not in (%1) order by rowid").arg(links.join(",")));
     executeQuery("delete from queue");
 
-    if (position < 0) {
+    if (position < 0)
         executeQuery("insert into queue select * from queue_tmp order by rowid");
-        executeQuery(track);
-    } else {
+    else
         executeQuery(QString("insert into queue select * from queue_tmp order by rowid limit %1").arg(position));
-        executeQuery(track);
+
+    for (int i=0; i<links.count(); ++i)
+        executeQuery(QString("insert into queue (url, artist, album, title, duration) "
+                             "select url, artist, album, title, duration from tracks "
+                             "where url=%1 collate nocase limit 1").arg(links[i]));
+
+    if (position >= 0)
         executeQuery(QString("insert into queue select * from queue_tmp order by rowid limit -1 offset %1").arg(position));
-    }
 
     executeQuery("drop table queue_tmp");
     executeQuery("commit");
+}
+
+// Returns the tracks of an album, in the same order as loadAlbum()
+QVariantList PlaylistManager::getAlbumTracks(QString artist, QString album, QString various)
+{
+    if (!isDBOpened) openDatabase();
+
+    QVariantList tracks;
+    QSqlQuery query = getQuery(albumQuery(artist, album, various));
+
+    while( query.next() )
+    {
+        QString url = query.value(4).toString();
+        if (url=="") continue;
+
+        QString title = query.value(2).toString();
+        if (title=="") title = QFileInfo(url).baseName();
+
+        QVariantMap map;
+        map.insert("artist", xmlout(query.value(0).toString()));
+        map.insert("album", xmlout(query.value(1).toString()));
+        map.insert("title", xmlout(title));
+        map.insert("duration", query.value(3).toString());
+        map.insert("url", xmlout(url));
+        tracks.append(map);
+    }
+    return tracks;
 }
 
 void PlaylistManager::saveList(QString list)
@@ -464,14 +495,11 @@ void PlaylistManager::loadArtist(QString artist)
 
 }
 
-void PlaylistManager::loadAlbum(QString artist, QString album, QString various)
+// Builds the query listing an album's tracks, ordered by the TrackOrder setting
+QString PlaylistManager::albumQuery(QString artist, QString album, QString various)
 {
     album = xmlin(album);
     artist = xmlin(artist);
-
-    listado.clear();
-
-    if (!isDBOpened) openDatabase();
 
     QSettings sets(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/flowplayer.conf", QSettings::NativeFormat);
     QString torder = sets.value("TrackOrder", "number").toString();
@@ -497,8 +525,16 @@ void PlaylistManager::loadAlbum(QString artist, QString album, QString various)
                      "from tracks where album='%1' order by %2 collate nocase")
                      .arg(album).arg(order);
 
+    return qr;
+}
 
-    QSqlQuery query = getQuery(qr);
+void PlaylistManager::loadAlbum(QString artist, QString album, QString various)
+{
+    listado.clear();
+
+    if (!isDBOpened) openDatabase();
+
+    QSqlQuery query = getQuery(albumQuery(artist, album, various));
 
     int totaltime = 0;
 
