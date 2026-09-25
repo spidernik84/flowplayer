@@ -106,13 +106,16 @@ Page {
         section.property: "discnum"
         section.criteria: ViewSection.FullString
         section.delegate: Item {
+            id: discHeader
             readonly property bool shown: multiDisc && parseInt(section) > 0
-            visible: shown
+            // ListView forces section items visible, so hide the label itself
             width: parent.width
             height: shown ? discLabel.implicitHeight + Theme.paddingSmall * 2 : 0
+            clip: true
 
             Label {
                 id: discLabel
+                visible: discHeader.shown
                 x: Theme.paddingLarge
                 y: Theme.paddingSmall
                 width: parent.width - Theme.paddingLarge * 2
