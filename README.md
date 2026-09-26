@@ -2,23 +2,50 @@
 
 **FlowPlayer is a feature-rich music player for SailfishOS.**
 
-This is an **experimental** fork with moderately heavy use of LLMs. The fork is being developed for a Jolla Phone 2026 which I personally own.
-Do NOT take this as an example of good coding. It's used only for my own experiments. I'm sharing it here nevertheless. 
-I am using it daily and it works, but as usual use it at your own risk.
+**This is an **experimental** fork with moderately heavy use of LLMs. The fork is being developed for a Jolla Phone 2026 which I personally own.**
 
-All credit to the original developers!
+## Warnings, background and LLM usage
 
-The scope of the fork exercise:
+Some advice: do NOT take this as an example of necessarily good coding. It's used only for my own experiments. I'm sharing it here nevertheless.
+I am using it daily and it works well. As usual, use it at your own risk.
+I started with Deepseek and recently switched to Claude.
 
-- play with the Sailfish SDK
-- play with development on Sailfish in general
+NOTE: This shares the same config folder as the standard FlowPlayer so you may want to take a backup of your config directory, just in case (`~/.config/sailfishos-applications/flowplayer/`).
 
-Specifically to FlowPlayer:
+This has only been tested on Sailfish 5.1 on a Jolla Phone 2026. The requirements are essentially the same to FlowPlayer but no testing has been performed on older releases of SailfishOS.
+
+Scary-tone aside: the modifications have been introduced step-by-step, iteratively, and not in a single big-jump, bruteforcing my way through vibe-coding:
+I created branches, tags and did my best to understand what the LLMs were changing.
+I focused on single features, tested them one by one, ironed out the bugs and marched on.
+While I am no professional, full-time programmer, I am no total stranger either: I have experience with Python scripting at least.
+
+The documentation, merging, release notes, changelog entries and comments hand-typed with love by yours truly (at least that I can still do).
+
+## Thanks
+
+Most importantly: all credit to the original developers who made this possible. I'm piggybacking greatly here.
+
+## Contributing
+
+You'll see some bugs and issues I created. Please feel free to add more, I'll do my best to consider what to add.
+Testing is fundamental so please try it out, I'm particularly interested in how the changes manage big collections of music.
+
+## Reason for the existence of this fork and what to do with it
+
+The scope of the fork exercise is essentially:
+
+- playing with the Sailfish SDK
+- playing with development on Sailfish in general
+- playing with LLMs
+
+It's kept separate for the reasons explained in the beginning. In case the LLMs have produced useful changes to be merged upstream, please pick them!
+
+## Changes and new features to the original FlowPlayer
 
 **High Prio**
 
 - [x] Implement better track management in the player
-    - [x] sort by track number
+    - [x] sort by track number by default
     - [x] handle multi-cd albums
 - [x] Multiple queuing strategies: in addition to "Add to (end of) the queue", now offers "Play Next"
 - [x] cover loading from file first (prefer embedded, fallback to manual)
