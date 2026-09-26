@@ -74,7 +74,7 @@ Specifically to FlowPlayer:
 - Lyrics support
 
 #### Currently broken features
-- Online radio
+~~- Online radio~~
 - Last.fm scrobbling
 
 <br />
