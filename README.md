@@ -2,7 +2,7 @@
 
 **FlowPlayer is a feature-rich music player for SailfishOS.**
 
-**This is an **experimental** fork with moderately heavy use of LLMs. The fork is being developed for a Jolla Phone 2026 which I personally own.**
+**This is an experimental fork with moderately heavy use of LLMs, with the intention of fixing some bugs and introducing some features (read section below). The fork is being tested on a Jolla Phone 2026 which I personally own.**
 
 ## Warnings, background and LLM usage
 
@@ -12,14 +12,14 @@ I started with Deepseek and recently switched to Claude.
 
 NOTE: This shares the same config folder as the standard FlowPlayer so you may want to take a backup of your config directory, just in case (`~/.config/sailfishos-applications/flowplayer/`).
 
-This has only been tested on Sailfish 5.1 on a Jolla Phone 2026. The requirements are essentially the same to FlowPlayer but no testing has been performed on older releases of SailfishOS.
+This has only been tested on Sailfish 5.1 on a Jolla Phone 2026. The requirements are essentially the same of upstream FlowPlayer but no testing has been performed on older releases of SailfishOS.
 
 Scary-tone aside: the modifications have been introduced step-by-step, iteratively, and not in a single big-jump, bruteforcing my way through vibe-coding:
 I created branches, tags and did my best to understand what the LLMs were changing.
 I focused on single features, tested them one by one, ironed out the bugs and marched on.
 While I am no professional, full-time programmer, I am no total stranger either: I have experience with Python scripting at least.
 
-The documentation, merging, release notes, changelog entries and comments hand-typed with love by yours truly (at least that I can still do).
+The documentation, merging, release notes, changelog entries and comments are hand-typed with love by yours truly (at least that I can still do).
 
 ## Thanks
 
