@@ -49,8 +49,8 @@ Specifically to FlowPlayer:
 | Multi-CD album  | Multi-CD Album  | Lyrics synced to playback  | Add to queue + play next |
 | ![Queue entire album (grid view)](./.xdata/screenshots/Screenshot_20260925_201423_001.png?raw=true) | ![Queue entire album (list view)](./.xdata/screenshots/Screenshot_20260925_201520_001.png?raw=true) | ![Radio station search (radio-browser.info)](./.xdata/screenshots/Screenshot_20260926_082925_001.png?raw=true) | ![Radio playing with station logo](./.xdata/screenshots/Screenshot_20260926_083016_001.png?raw=true) |
 | Queue entire album (grid view) | Queue entire album (list view) | Radio station search (radio-browser.info) | Radio playing with station logo |
-| ![Radio now playing (Icecast metadata + cover)](./.xdata/screenshots/Screenshot_20260926_082838_001.png?raw=true) | | | |
-| Radio now playing (Icecast metadata + cover) | | | |
+| ![Radio now playing (Icecast metadata + cover)](./.xdata/screenshots/Screenshot_20260926_082838_001.png?raw=true) | ![Queue editor](./.xdata/screenshots/items_manager.png?raw=true) | ![Drag multiple selected tracks](./.xdata/screenshots/multi_drag.png?raw=true) | ![Play selected tracks next](./.xdata/screenshots/play_next.png?raw=true) |
+| Radio now playing (Icecast metadata + cover) | Queue editor | Drag multiple selected tracks | Play selected tracks next |
 
 
 ## Features
