@@ -1,3 +1,6 @@
+* Sat Sep 26 2026 spidernik84 <spidernik84@users.noreply.github.com> - 0.10.0
+- Advanced queue editing capabilities (drag and drop, multi-edit)
+
 * Sat Sep 26 2026 spidernik84 <spidernik84@users.noreply.github.com> - 0.9.1
 - Fix lockscreen widget
 - Switch to Amber-MPRIS

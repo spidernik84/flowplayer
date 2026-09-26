@@ -3,7 +3,8 @@
 **FlowPlayer is a feature-rich music player for SailfishOS.**
 
 This is an **experimental** fork with moderately heavy use of LLMs. The fork is being developed for a Jolla Phone 2026 which I personally own.
-Do NOT take this as an example of good coding. It's used only for my own experiments. I'm sharing it here nevertheless.
+Do NOT take this as an example of good coding. It's used only for my own experiments. I'm sharing it here nevertheless. 
+I am using it daily and it works, but as usual use it at your own risk.
 
 All credit to the original developers!
 
@@ -28,6 +29,10 @@ Specifically to FlowPlayer:
   - [x] remove progress bar and shuffle/repeat controls
 - [x] implement "Queue entire album"
 - [x] implement headphones event (play/pause/next track) // this needs further testing, it seemed already implemented but doesn't always work
+- [x] Queue advanced editing
+  - [x] Draggable items, even non contiguous (they become contiguous in that case)
+  - [x] Send items to end of queue or to top of queue
+  - [x] Send multiple items after now-playing track
 - [ ] implement resume from last state
 - [ ] implement "Queue entire playlist"
 - [ ] implement different strategies for track management (filesystem based, metadata based, hybrid) 
@@ -36,8 +41,10 @@ Specifically to FlowPlayer:
 
 - [x] Implement Lyrics download + synced highlight to playback
 - [ ] Implement Queue in own menu section
-- [ ] Queue advanced editing (reordering, multi-selection)
-- [ ] Implement Advanced Radio Paradise support (pre-download for offline playing, PSD). This should probably warrant a dedicated app...
+
+**Won't implement**
+
+- [x] Advanced Radio Paradise support (pre-download for offline playing, PSD). This should probably warrant a dedicated app. For now, it shows the artist and track name, and the cover.
 
 
 
@@ -49,8 +56,8 @@ Specifically to FlowPlayer:
 | Multi-CD album  | Multi-CD Album  | Lyrics synced to playback  | Add to queue + play next |
 | ![Queue entire album (grid view)](./.xdata/screenshots/Screenshot_20260925_201423_001.png?raw=true) | ![Queue entire album (list view)](./.xdata/screenshots/Screenshot_20260925_201520_001.png?raw=true) | ![Radio station search (radio-browser.info)](./.xdata/screenshots/Screenshot_20260926_082925_001.png?raw=true) | ![Radio playing with station logo](./.xdata/screenshots/Screenshot_20260926_083016_001.png?raw=true) |
 | Queue entire album (grid view) | Queue entire album (list view) | Radio station search (radio-browser.info) | Radio playing with station logo |
-| ![Radio now playing (Icecast metadata + cover)](./.xdata/screenshots/Screenshot_20260926_082838_001.png?raw=true) | ![Queue editor](./.xdata/screenshots/items_manager.png?raw=true) | ![Drag multiple selected tracks](./.xdata/screenshots/multi_drag.png?raw=true) | ![Play selected tracks next](./.xdata/screenshots/play_next.png?raw=true) |
-| Radio now playing (Icecast metadata + cover) | Queue editor | Drag multiple selected tracks | Play selected tracks next |
+| ![Radio now playing (Icecast metadata + cover)](./.xdata/screenshots/Screenshot_20260926_082838_001.png?raw=true) | ![Advanced Queue editor](./.xdata/screenshots/items_manager.png?raw=true) | ![Drag multiple selected tracks](./.xdata/screenshots/multi_drag.png?raw=true) | ![Play selected tracks next](./.xdata/screenshots/play_next.png?raw=true) |
+| Radio now playing (Icecast metadata + cover) | Advanced Queue editor | Drag multiple selected tracks | Play selected tracks next |
 
 
 ## Features
