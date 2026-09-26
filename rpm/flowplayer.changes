@@ -1,3 +1,7 @@
+* Sat Sep 26 2026 spidernik84 <spidernik84@users.noreply.github.com> - 0.10.1
+- Added queue/playlist editing undo and revert features
+- Removed redundant visual feedback on dragging elements
+
 * Sat Sep 26 2026 spidernik84 <spidernik84@users.noreply.github.com> - 0.10.0
 - Advanced queue editing capabilities (drag and drop, multi-edit)
 
