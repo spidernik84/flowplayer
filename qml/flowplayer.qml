@@ -519,6 +519,8 @@ ApplicationWindow
         }
 
         PushUpMenu {
+            // Shuffle and repeat mean nothing for a radio stream
+            visible: !playingRadio
             Row {
                 width: parent.width
 

@@ -21,10 +21,6 @@ public:
     Radios(QQuickItem *parent = 0);
 
     QNetworkAccessManager* datos;
-    QNetworkReply *reply;
-
-    QString action;
-    QString currentRadio, currentArtist, currentTitle;
 
     QString reemplazar1(QString data);
     QString reemplazar2(QString data);
@@ -32,20 +28,19 @@ public:
 public slots:
     void loadRadios();
     void searchRadio(QString text);
-    void getRadioInfo(QString text);
-    void getPlayingInfo(QString text);
+    void getRadioInfo(QString uuid);
     void saveRadio(QString name, QString url, QString id, QString image);
     void removeRadio(QString name, QString url);
 
-private slots:
-    void downloaded(QNetworkReply *respuesta);
+private:
+    QNetworkReply *apiGet(QString path);
+    QNetworkReply *searchReply = nullptr;
 
 signals:
     void appendRadio(QString name, QString genre, QString radioid, QString image);
-    void appendRadioSearch(QString name, QString genre, QString radioid);
+    void appendRadioSearch(QString name, QString genre, QString radioid, QString url, QString image);
     void appendRadioDone();
-    void radioInfoLoaded(QString radiourl, QString image);
-    void playInfoLoaded(QString artist, QString title, int remaining);
+    void radioInfoLoaded(QString radiourl);
 
 };
 

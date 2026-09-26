@@ -67,7 +67,7 @@ Page {
                     MenuItem {
                         text: qsTr("Edit")
                         onClicked: {
-                            pageStack.push("AddRadio.qml", {"editingRadio":true, "previd":model.id,
+                            pageStack.push("AddRadio.qml", {"editingRadio":true, "previd":model.radioid,
                                                "prevname":model.name, "prevurl":model.url, "previmage":model.image})
                         }
                     }
@@ -117,8 +117,6 @@ Page {
                 myPlayer.play()
                 miniPlayer.open = true
                 utils.removeAlbumArt()
-                console.log("Fetching Info..." + model.name)
-                radios.getPlayingInfo(model.radioid)
 
             }
 

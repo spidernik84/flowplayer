@@ -15,6 +15,7 @@ Page {
 
     property string selectedRadio: ""
     property string selectedRadioId: ""
+    property string selectedRadioImage: ""
 
     ListModel { id: searchModel }
 
@@ -32,7 +33,7 @@ Page {
         target: radios
 
         onAppendRadioSearch: {
-            searchModel.append({"name":name, "genre":genre, "radioid":radioid})
+            searchModel.append({"name":name, "genre":genre, "radioid":radioid, "url":url, "image":image})
         }
 
         onAppendRadioDone: loading = false
@@ -47,15 +48,13 @@ Page {
             console.log("Playing radio: " + radiourl + " - " + selectedRadioId)
             playingRadio = true
             queueList.clear()
-            currentSongInfo = {name:selectedRadio, url:radiourl, imageurl:image, radioid:selectedRadioId, artist:"", album:"", title:""}
+            currentSongInfo = {name:selectedRadio, url:radiourl, imageurl:selectedRadioImage, radioid:selectedRadioId, artist:"", album:"", title:""}
             queueList.append({"artist":"", "title":"", "album":"", "name":selectedRadio, "radioid":selectedRadioId,
-                               "imageurl":image, "url":radiourl})
+                               "imageurl":selectedRadioImage, "url":radiourl})
             myPlayer.setSource(radiourl)
             myPlayer.play()
             miniPlayer.open = true
             utils.removeAlbumArt()
-            console.log("Fetching Info..." + selectedRadio)
-            radios.getPlayingInfo(selectedRadioId)
 
         }
 
@@ -66,6 +65,11 @@ Page {
         anchors.fill: parent
 
         model: searchModel
+
+        ViewPlaceholder {
+            enabled: searchModel.count===0 && searchValue!=="" && !loading
+            text: qsTr("No stations found")
+        }
 
         header: Item {
             height: head2.height + search2.height
@@ -107,6 +111,16 @@ Page {
                         loading = true
                         searchModel.clear()
                         radios.searchRadio(searchInput2.text)
+                    }
+
+                    // Open the keyboard straight away. Wait for the page to be
+                    // active: focusing during the push transition is ignored.
+                    Connections {
+                        target: root
+                        onStatusChanged: {
+                            if (root.status===PageStatus.Active && searchInput2.text==="")
+                                searchInput2.forceActiveFocus()
+                        }
                     }
                 }
 
@@ -174,6 +188,7 @@ Page {
                 loading = true
                 selectedRadio = model.name
                 selectedRadioId = model.radioid
+                selectedRadioImage = model.image
                 radios.getRadioInfo(model.radioid)
                 //pageStack.push("PlaylistPage.qml")
             }

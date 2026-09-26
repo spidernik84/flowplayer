@@ -768,58 +768,53 @@
     <name>NowPlaying</name>
     <message>
         <location filename="../qml/pages/NowPlaying.qml" line="34"/>
-        <location filename="../qml/pages/NowPlaying.qml" line="119"/>
+        <location filename="../qml/pages/NowPlaying.qml" line="80"/>
         <source>Unknown artist</source>
         <translation>Artista desconegut</translation>
     </message>
     <message>
         <location filename="../qml/pages/NowPlaying.qml" line="34"/>
-        <location filename="../qml/pages/NowPlaying.qml" line="119"/>
+        <location filename="../qml/pages/NowPlaying.qml" line="80"/>
         <source>Unknown album</source>
         <translation>Àlbum desconegut</translation>
     </message>
     <message>
-        <location filename="../qml/pages/NowPlaying.qml" line="259"/>
+        <location filename="../qml/pages/NowPlaying.qml" line="220"/>
         <source>Equalizer</source>
         <translation>Equalitzador</translation>
     </message>
     <message>
-        <location filename="../qml/pages/NowPlaying.qml" line="267"/>
+        <location filename="../qml/pages/NowPlaying.qml" line="228"/>
         <source>Edit metadata</source>
         <translation>Edita les metadades</translation>
     </message>
     <message>
-        <location filename="../qml/pages/NowPlaying.qml" line="281"/>
+        <location filename="../qml/pages/NowPlaying.qml" line="242"/>
         <source>Remove from favorites</source>
         <translation>Elimina dels preferits</translation>
     </message>
     <message>
-        <location filename="../qml/pages/NowPlaying.qml" line="281"/>
+        <location filename="../qml/pages/NowPlaying.qml" line="242"/>
         <source>Add to favorites</source>
         <translation>Afegeix als preferits</translation>
     </message>
     <message>
-        <location filename="../qml/pages/NowPlaying.qml" line="291"/>
+        <location filename="../qml/pages/NowPlaying.qml" line="252"/>
         <source>Add to playlist</source>
         <translation>Afegeix a la llista de reproducció</translation>
     </message>
     <message>
-        <location filename="../qml/pages/NowPlaying.qml" line="306"/>
-        <source>Reload info</source>
-        <translation>Torna a carregar la informació</translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/NowPlaying.qml" line="315"/>
+        <location filename="../qml/pages/NowPlaying.qml" line="268"/>
         <source>Save station</source>
         <translation>Desa l&apos;emissora</translation>
     </message>
     <message>
-        <location filename="../qml/pages/NowPlaying.qml" line="394"/>
+        <location filename="../qml/pages/NowPlaying.qml" line="347"/>
         <source>Cover not found</source>
         <translation>No s&apos;ha trobat la caràtula</translation>
     </message>
     <message>
-        <location filename="../qml/pages/NowPlaying.qml" line="503"/>
+        <location filename="../qml/pages/NowPlaying.qml" line="450"/>
         <source>Online radio</source>
         <translation>Ràdio en línia</translation>
     </message>
@@ -857,7 +852,7 @@
         <translation>Elimina</translation>
     </message>
     <message>
-        <location filename="../qml/pages/OnlineRadios.qml" line="131"/>
+        <location filename="../qml/pages/OnlineRadios.qml" line="129"/>
         <source>No saved stations</source>
         <translation>No hi ha cap emissora desada</translation>
     </message>
@@ -985,7 +980,12 @@
 <context>
     <name>SearchRadio</name>
     <message>
-        <location filename="../qml/pages/SearchRadio.qml" line="76"/>
+        <location filename="../qml/pages/SearchRadio.qml" line="71"/>
+        <source>No stations found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/SearchRadio.qml" line="80"/>
         <source>Search station</source>
         <translation>Cerca emissores</translation>
     </message>

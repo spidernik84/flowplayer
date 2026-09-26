@@ -44,45 +44,6 @@ Page {
     }
 
     Connections {
-        target: radios
-
-        onPlayInfoLoaded: {
-            // The stream's own ICY metadata is more accurate than dar.fm
-            if (!playingRadio || myPlayer.streamTitle!=="")
-                return
-
-            console.log("Radio song loaded: " + artist + " - " + title + " - " + remaining)
-
-            currentSongInfo = {name:currentSongInfo.name, url:currentSongInfo.url, radioid:currentSongInfo.radioid,
-                imageurl:currentSongInfo.imageurl, artist:artist, album:"", title:title}
-
-            if (artist==="" &&  title==="")
-                return;
-
-            if (remaining==0)
-                remaining = 60
-
-            timer.current = currentSongInfo.name
-            timer.interval = remaining *1000
-            timer.restart()
-        }
-    }
-
-    Timer {
-        id: timer
-        property string current
-        repeat: false
-        running: false
-        triggeredOnStart: false
-        onTriggered: {
-            timer.stop()
-            if (playingRadio && current===currentSongInfo.radioid) {
-                radios.getPlayingInfo(currentSongInfo.radioid)
-            }
-        }
-    }
-
-    Connections {
         target: appWindow
 
         onPlayerSourceChanged: {
@@ -302,14 +263,6 @@ Page {
                 }
             }
             MenuItem {
-                visible: playingRadio && currentSongInfo.radioid!==""
-                text: qsTr("Reload info")
-                onClicked: {
-                    timer.stop()
-                    radios.getPlayingInfo(currentSongInfo.radioid)
-                }
-            }
-            MenuItem {
                 visible: playingRadio
                 enabled: !radioExists
                 text: qsTr("Save station")
@@ -490,17 +443,27 @@ Page {
 
             }
 
+            // A live stream has no duration and can't be seeked
+            Label {
+                visible: playingRadio
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: qsTr("Online radio")
+                font.pixelSize: Theme.fontSizeSmall
+                color: Theme.secondaryColor
+            }
+
             Slider {
                 id: positionSlider
 
                 //height: Theme.itemSizeMedium
 
+                visible: !playingRadio
                 width: parent.width - Theme.paddingLarge*2
                 anchors.horizontalCenter: parent.horizontalCenter
                 minimumValue: 0
-                maximumValue: playingRadio? 0 : myPlayer.duration
-                valueText: playingRadio? "" : DT.getDuration(parseInt(value))
-                label: playingRadio? qsTr("Online radio") : (myPlayer.duration>-1? DT.getDuration(myPlayer.duration) : "")
+                maximumValue: myPlayer.duration
+                valueText: DT.getDuration(parseInt(value))
+                label: myPlayer.duration>-1? DT.getDuration(myPlayer.duration) : ""
 
                 onReleased: myPlayer.seek(value)
 
@@ -528,6 +491,8 @@ Page {
         }
 
         PushUpMenu {
+            // Shuffle and repeat mean nothing for a radio stream
+            visible: !playingRadio
             Row {
                 width: parent.width
 

@@ -1,8 +1,11 @@
 #include "radios.h"
 
+#include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
-#include <QTimer>
+#include <QUrlQuery>
+
+#include "version.h"
 
 bool Radios::radioExists(QString name, QString url)
 {
@@ -17,8 +20,18 @@ Radios::Radios(QQuickItem *parent)
     : QQuickItem(parent)
 {
     datos = new QNetworkAccessManager(this);
-    connect(datos, SIGNAL(finished(QNetworkReply*)), this, SLOT(downloaded(QNetworkReply*)));
+}
 
+// Station directory: https://www.radio-browser.info
+// all.api.radio-browser.info is the round-robin DNS name for every API server.
+QNetworkReply *Radios::apiGet(QString path)
+{
+    QNetworkRequest req{QUrl("https://all.api.radio-browser.info" + path)};
+    // The API asks clients to identify themselves
+    req.setHeader(QNetworkRequest::UserAgentHeader,
+                  "FlowPlayer/" VERSION " (https://github.com/sailfishos-applications/flowplayer)");
+    req.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
+    return datos->get(req);
 }
 
 QString Radios::reemplazar1(QString data)
@@ -60,36 +73,78 @@ void Radios::loadRadios()
 
 void Radios::searchRadio(QString text)
 {
-    action = "search";
-    QString url = "http://api.dar.fm/playlist.php?q=@callsign%20" + text.trimmed() + "*&web=1&pagesize=100&callback=?";
+    // A new search supersedes one still running
+    if (searchReply)
+        searchReply->abort();
+
+    QUrlQuery query;
+    query.addQueryItem("name", QString(QUrl::toPercentEncoding(text.trimmed())));
+    query.addQueryItem("hidebroken", "true");
+    query.addQueryItem("order", "clickcount");
+    query.addQueryItem("reverse", "true");
+    query.addQueryItem("limit", "100");
+
     qDebug() << "Searching radio" << text;
-    reply = datos->get(QNetworkRequest(QUrl(url)));
+    QNetworkReply *reply = apiGet("/json/stations/search?" + query.toString(QUrl::FullyEncoded));
+    searchReply = reply;
+
+    connect(reply, &QNetworkReply::finished, this, [this, reply]() {
+        reply->deleteLater();
+        if (reply == searchReply)
+            searchReply = nullptr;
+        if (reply->error() == QNetworkReply::OperationCanceledError)
+            return;
+        if (reply->error() != QNetworkReply::NoError)
+            qDebug() << "Radio search failed:" << reply->errorString();
+
+        QJsonDocument doc = QJsonDocument::fromJson(reply->readAll());
+        foreach (const QJsonValue &value, doc.array())
+        {
+            QJsonObject station = value.toObject();
+
+            // url_resolved has playlists (.pls/.m3u) already resolved to the stream
+            QString url = station["url_resolved"].toString();
+            if (url.isEmpty())
+                url = station["url"].toString();
+            if (url.isEmpty())
+                continue;
+
+            QStringList details;
+            QString codec = station["codec"].toString();
+            int bitrate = station["bitrate"].toInt();
+            if (!codec.isEmpty() && codec != "UNKNOWN")
+                details << (bitrate > 0 ? QString("%1 %2k").arg(codec).arg(bitrate) : codec);
+            if (!station["countrycode"].toString().isEmpty())
+                details << station["countrycode"].toString();
+            if (!station["tags"].toString().isEmpty())
+                details << station["tags"].toString().replace(",", ", ");
+
+            emit appendRadioSearch(station["name"].toString().trimmed(), details.join(" · "),
+                                   station["stationuuid"].toString(), url,
+                                   station["favicon"].toString());
+        }
+        emit appendRadioDone();
+    });
 }
 
-void Radios::getRadioInfo(QString text)
+// Called when the user picks a station: /json/url registers the click (the
+// directory's popularity ranking relies on it) and returns the stream url.
+void Radios::getRadioInfo(QString uuid)
 {
-    action = "getinfo";
-    QString url = "http://api.dar.fm/player_api.php?station_id=" + text.trimmed() + "&partner_token=1123581337";
-    qDebug() << "Getting radio info" << text;
-    reply = datos->get(QNetworkRequest(QUrl(url)));
-}
+    qDebug() << "Getting radio info" << uuid;
+    QNetworkReply *reply = apiGet("/json/url/" + QString(QUrl::toPercentEncoding(uuid.trimmed())));
 
-void Radios::getPlayingInfo(QString text)
-{
-    if (text=="")
-        return;
-
-    action = "playinfo";
-
-    if (text!=currentRadio) {
-        currentArtist = "";
-        currentTitle = "";
-    }
-
-    currentRadio = text;
-    QString url = "http://api.dar.fm/playlist.php?station_id=" + text.trimmed() + "&callback=?";
-    qDebug() << "Get playing info for" << text;
-    reply = datos->get(QNetworkRequest(QUrl(url)));
+    connect(reply, &QNetworkReply::finished, this, [this, reply]() {
+        reply->deleteLater();
+        QJsonObject result = QJsonDocument::fromJson(reply->readAll()).object();
+        QString url = result["url"].toString();
+        if (reply->error() != QNetworkReply::NoError || !result["ok"].toBool() || url.isEmpty()) {
+            qDebug() << "Radio info failed:" << reply->errorString() << result["message"].toString();
+            emit radioInfoLoaded("ERROR");
+            return;
+        }
+        emit radioInfoLoaded(url);
+    });
 }
 
 void Radios::saveRadio(QString name, QString url, QString id, QString image)
@@ -119,92 +174,3 @@ void Radios::removeRadio(QString name, QString url)
     qDebug() << "Removed radio " << name << res;
 
 }
-
-void Radios::downloaded(QNetworkReply *respuesta)
-{
-    if (respuesta->error() != QNetworkReply::NoError)
-    {
-        emit radioInfoLoaded("ERROR", "ERROR");
-    }
-    else
-    {
-        QString datos1 = respuesta->readAll();
-        if (action == "search")
-        {
-            datos1.replace("?(", "{\"list\": ");
-            datos1.chop(1);
-            datos1.append("}");
-
-            QJsonDocument jsonResponse = QJsonDocument::fromJson(datos1.toUtf8());
-
-            foreach(const QVariant &itemJson, jsonResponse.object().toVariantMap()["list"].toList())
-            {
-                QVariantMap itemMap = itemJson.toMap();
-                QString name = itemMap["callsign"].toString();
-                QString genre = itemMap["genre"].toString();
-                QString id = itemMap["station_id"].toString();
-                emit appendRadioSearch(name, genre, id);
-            }
-            emit appendRadioDone();
-
-        }
-        else if (action == "getinfo")
-        {
-            if (datos1.contains("cannot play in a browser"))
-            {
-                emit radioInfoLoaded("ERROR", "ERROR");
-                return;
-            }
-
-            qDebug() << datos1;
-            QString tmp = datos1;
-            int x = tmp.indexOf("var playUrl = ");
-            tmp.remove(0,x+15);
-            x = tmp.indexOf("\";");
-            tmp.remove(x,tmp.length()-x);
-            QString radiourl = tmp;
-
-            tmp = datos1;
-            x = tmp.indexOf("var stationImage = ");
-            tmp.remove(0,x+20);
-            x = tmp.indexOf("\";");
-            tmp.remove(x,tmp.length()-x);
-
-            emit radioInfoLoaded(radiourl, tmp);
-        }
-        else if (action == "playinfo")
-        {
-            qDebug() << datos1;
-
-            datos1.replace("?(", "{\"list\": ");
-            datos1.chop(1);
-            datos1.append("}");
-
-            QJsonDocument jsonResponse = QJsonDocument::fromJson(datos1.toUtf8());
-
-            bool done = false;
-            foreach(const QVariant &itemJson, jsonResponse.object().toVariantMap()["list"].toList())
-            {
-                QVariantMap itemMap = itemJson.toMap();
-                QString name = itemMap["station_id"].toString();
-                QString artist = itemMap["artist"].toString();
-                QString title = itemMap["title"].toString();
-                int seconds_remaining = itemMap["seconds_remaining"].toInt();
-
-                if (name==currentRadio && seconds_remaining>0 && !title.contains("???") && !artist.contains("???")) {
-                    currentArtist = artist;
-                    currentTitle = title;
-                    emit playInfoLoaded(artist, title, seconds_remaining);
-                    done = true;
-                    break;
-                }
-            }
-            if (!done)
-                emit playInfoLoaded(currentArtist, currentTitle, 0);
-
-            //QTimer::singleShot(tmp.trimmed().toInt()*1000, this, SLOT(getPlayingInfo(currentRadio)));
-        }
-
-    }
-}
-
