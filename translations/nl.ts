@@ -100,7 +100,7 @@
 <context>
     <name>AlbumDelegate</name>
     <message>
-        <location filename="../qml/pages/AlbumDelegate.qml" line="57"/>
+        <location filename="../qml/pages/AlbumDelegate.qml" line="56"/>
         <source>Not found</source>
         <translation>Niet gevonden</translation>
     </message>
@@ -894,17 +894,27 @@
 <context>
     <name>PlaylistPage</name>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="143"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="57"/>
+        <source>Queue changes discarded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/PlaylistPage.qml" line="58"/>
+        <source>Playlist changes discarded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/PlaylistPage.qml" line="233"/>
         <source>Queue</source>
         <translation>Wachtrij</translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="144"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="234"/>
         <source>Favorites</source>
         <translation>Favorieten</translation>
     </message>
     <message numerus="yes">
-        <location filename="../qml/pages/PlaylistPage.qml" line="148"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="238"/>
         <source>%n selected</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -912,75 +922,84 @@
         </translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="149"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="239"/>
         <source>Drag the handle to move, tap to select</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="155"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="245"/>
         <source>Rename playlist</source>
         <translation>Afspeellijst hernoemen</translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="162"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="252"/>
         <source>Clear playlist</source>
         <translation>Afspeellijst wissen</translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="179"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="254"/>
+        <source>Clearing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/PlaylistPage.qml" line="271"/>
         <source>Edit queue</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="179"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="271"/>
         <source>Edit playlist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="186"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="278"/>
         <source>Select none</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="186"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="278"/>
         <source>Select all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="196"/>
-        <location filename="../qml/pages/PlaylistPage.qml" line="355"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="288"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="449"/>
         <source>Done</source>
         <translation type="unfinished">Klaar</translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="220"/>
-        <location filename="../qml/pages/PlaylistPage.qml" line="347"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="294"/>
+        <source>Undo</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/PlaylistPage.qml" line="318"/>
         <source>Deleting</source>
         <translation>Verwijderen</translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="239"/>
-        <location filename="../qml/pages/PlaylistPage.qml" line="343"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="337"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="442"/>
         <source>Remove</source>
         <translation>Verwijder</translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="281"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="379"/>
         <source>Playlist is empty</source>
         <translation>Afspelllijst is leeg</translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="309"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="407"/>
         <source>Move to top</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="320"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="419"/>
         <source>Move to bottom</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="333"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="433"/>
         <source>Play next</source>
         <translation type="unfinished"></translation>
     </message>

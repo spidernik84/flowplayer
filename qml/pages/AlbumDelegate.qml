@@ -22,7 +22,7 @@ ListItem
     property alias textSize: thumb.textSize
     property int tracknum: 0
     // Edit mode of a ReorderableListView: shows a drag handle, and
-    // highlights the row when selected
+    // highlights the row when selected or when it marks where a drag lands
     property bool editing: false
     property bool dragged: false
 
@@ -37,8 +37,7 @@ ListItem
     // Use contentHeight (not height) so ListItem can grow itself when the
     // context menu opens, and so the menu is placed below the whole item.
     contentHeight: Theme.itemSizeSmall
-    highlighted: down || menuOpen || (editing && selected)
-    opacity: dragged ? 0.2 : 1
+    highlighted: down || menuOpen || (editing && selected) || dragged
 
     Item {
         id: rowContainer

@@ -13,8 +13,6 @@ SilicaListView {
     property var selection: []          // selection[i] is true when row i is selected
     property int selectedCount: 0
     property real rowHeight: Theme.itemSizeSmall
-    property string titleRole: "title"
-    property string subtitleRole: "artist"
 
     // Drag state. fingerY is in view coordinates.
     // Not "dragging": that would hide Flickable.dragging, which the
@@ -28,6 +26,8 @@ SilicaListView {
     property real firstRowY: 0          // y of row 0 in content coordinates
     property bool dragMoved: false
 
+    // Emitted when a drag starts, before any row moves
+    signal reorderStarted()
     // Emitted after the user changed the row order
     signal reordered()
 
@@ -67,6 +67,11 @@ SilicaListView {
             sel.push(true)
         selection = sel
         selectedCount = count
+    }
+
+    function setSelection(sel) {
+        selection = sel.slice()
+        selectedCount = selectedIndices().length
     }
 
     function clearSelection() {
@@ -124,6 +129,7 @@ SilicaListView {
         if (!editing || reordering)
             return
 
+        reorderStarted()
         firstRowY = item.y - index*rowHeight
         var before = selectionPattern()
         if (isSelected(index) && selectedCount>1) {
@@ -199,73 +205,6 @@ SilicaListView {
             else
                 view.contentY = Math.min(bottom, view.contentY + step)
             view.updateDrag(view.fingerY)
-        }
-    }
-
-    // Follows the finger while dragging. Children of a Flickable live in its
-    // content item, so y is in content coordinates.
-    Item {
-        id: ghost
-        visible: view.reordering
-        z: 100
-        x: 0
-        width: view.width
-        height: view.rowHeight
-        y: view.contentY + view.fingerY - view.grabY
-
-        property var row: view.reordering ? view.model.get(view.dragIndex + view.grabOffset) : null
-
-        Rectangle {
-            anchors.fill: parent
-            color: Theme.highlightDimmerColor
-            opacity: 0.9
-        }
-
-        Rectangle {
-            anchors.fill: parent
-            color: Theme.rgba(Theme.highlightBackgroundColor, Theme.highlightBackgroundOpacity)
-        }
-
-        Column {
-            anchors.left: parent.left
-            anchors.leftMargin: Theme.paddingLarge
-            anchors.right: badge.visible ? badge.left : parent.right
-            anchors.rightMargin: Theme.paddingLarge
-            anchors.verticalCenter: parent.verticalCenter
-
-            Label {
-                width: parent.width
-                text: ghost.row ? ghost.row[view.titleRole] : ""
-                color: Theme.highlightColor
-                truncationMode: TruncationMode.Fade
-            }
-            Label {
-                width: parent.width
-                text: ghost.row ? ghost.row[view.subtitleRole] : ""
-                color: Theme.secondaryHighlightColor
-                font.pixelSize: Theme.fontSizeExtraSmall
-                truncationMode: TruncationMode.Fade
-            }
-        }
-
-        Rectangle {
-            id: badge
-            visible: view.dragCount > 1
-            anchors.right: parent.right
-            anchors.rightMargin: Theme.paddingLarge
-            anchors.verticalCenter: parent.verticalCenter
-            height: Theme.itemSizeExtraSmall / 2
-            width: Math.max(height, badgeLabel.implicitWidth + Theme.paddingMedium*2)
-            radius: height/2
-            color: Theme.highlightColor
-
-            Label {
-                id: badgeLabel
-                anchors.centerIn: parent
-                text: "+" + (view.dragCount - 1)
-                color: Theme.highlightDimmerColor
-                font.pixelSize: Theme.fontSizeExtraSmall
-            }
         }
     }
 }
