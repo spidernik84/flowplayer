@@ -218,6 +218,24 @@ ApplicationWindow
             playerPositionChanged(myPlayer.position)
         }
 
+        onStreamMetadataChanged: {
+            if (!playingRadio || myPlayer.streamTitle==="")
+                return
+
+            // ICY titles are usually "Artist - Title"
+            var artist = ""
+            var title = myPlayer.streamTitle
+            var sep = title.indexOf(" - ")
+            if (sep>0) {
+                artist = title.substring(0, sep).trim()
+                title = title.substring(sep+3).trim()
+            }
+
+            currentSongInfo = {name:currentSongInfo.name, url:currentSongInfo.url, radioid:currentSongInfo.radioid,
+                imageurl:currentSongInfo.imageurl, coverurl:myPlayer.streamCover,
+                artist:artist, album:"", title:title}
+        }
+
         /*onAboutToFinish: {
             if (gaplessPlayback) {
                 var next = nowPlayingPage.getNextSong()
@@ -428,7 +446,7 @@ ApplicationWindow
                 x: 0
                 width: parent.height
                 height: width
-                itemimg: playingRadio? currentSongInfo.imageurl : utils.thumbnail(currentSongInfo.artist, currentSongInfo.album)
+                itemimg: playingRadio? (currentSongInfo.coverurl? currentSongInfo.coverurl : currentSongInfo.imageurl) : utils.thumbnail(currentSongInfo.artist, currentSongInfo.album)
                 text: qsTr("Cover not found")
                 onClicked: {
                     if (nppOpened)

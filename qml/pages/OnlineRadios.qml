@@ -112,7 +112,7 @@ Page {
                 queueList.clear()
                 currentSongInfo = {name:model.name, url:model.url, imageurl:model.image, radioid:model.radioid, artist:"", album:"", title:""}
                 queueList.append({"artist":"", "album":"", "title":"", "name":model.name, "radioid":model.radioid,
-                                   "imageurl":model.url, "url":model.image})
+                                   "imageurl":model.image, "url":model.url})
                 myPlayer.setSource(model.url)
                 myPlayer.play()
                 miniPlayer.open = true

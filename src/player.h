@@ -17,6 +17,9 @@ public:
     Q_PROPERTY(double position READ position NOTIFY positionChanged)
     Q_PROPERTY(double duration READ duration NOTIFY durationChanged)
     Q_PROPERTY(bool eqenabled READ eqenabled NOTIFY eqEnabledChanged)
+    // ICY (Icecast/Shoutcast) metadata of the current network stream
+    Q_PROPERTY(QString streamTitle READ streamTitle NOTIFY streamMetadataChanged)
+    Q_PROPERTY(QString streamCover READ streamCover NOTIFY streamMetadataChanged)
 
     Player(QQuickItem *parent = 0);
 
@@ -26,6 +29,8 @@ public:
     int position() { return m_position; }
     int duration() { return m_duration; }
     bool eqenabled() { return m_eqenabled; }
+    QString streamTitle() { return m_streamTitle; }
+    QString streamCover() { return m_streamCover; }
 
     QString nextSource;
     int prevDuration;
@@ -39,6 +44,8 @@ public:
     QVariantMap eq, preveq;
 
     gboolean handleBusMessage(GstBus * bus, GstMessage * msg);
+    void handleTags(GstTagList *tags);
+    void clearStreamMetadata();
 
 public slots:
     void backend_init(int *argc, char **argv[]);
@@ -77,6 +84,7 @@ signals:
     void positionChanged();
     void durationChanged();
     void eqEnabledChanged();
+    void streamMetadataChanged();
     void equalizerChanged(QVariantMap eq);
     void presetSaved();
     void aboutToFinish();
@@ -92,6 +100,9 @@ private:
     GstMessage *msg;
 
     bool m_pausedByBT = false; // used to track if playback paused by BT event
+
+    QString m_streamTitle;
+    QString m_streamCover;
 
     AudioResourceQt::AudioResource m_audio_resource;
 };

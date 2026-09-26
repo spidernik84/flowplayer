@@ -47,7 +47,8 @@ Page {
         target: radios
 
         onPlayInfoLoaded: {
-            if (!playingRadio)
+            // The stream's own ICY metadata is more accurate than dar.fm
+            if (!playingRadio || myPlayer.streamTitle!=="")
                 return
 
             console.log("Radio song loaded: " + artist + " - " + title + " - " + remaining)
@@ -389,7 +390,7 @@ Page {
                 width: root.isPortrait? root.width : root.height
                 height: width
                 clip: true
-                itemimg: playingRadio? currentSongInfo.imageurl : utils.thumbnail(model.artist, model.album)
+                itemimg: playingRadio? (currentSongInfo.coverurl? currentSongInfo.coverurl : currentSongInfo.imageurl) : utils.thumbnail(model.artist, model.album)
                 text: playingRadio? currentSongInfo.name : qsTr("Cover not found")
                 textSize: Theme.fontSizeLarge
 

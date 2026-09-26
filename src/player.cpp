@@ -2,6 +2,7 @@
 #include "mydatabase.h"
 
 #include <QTimer>
+#include <QUrl>
 #include <QSettings>
 #include <QStandardPaths>
 #include "QVariantMap"
@@ -98,6 +99,14 @@ gboolean Player::handleBusMessage (GstBus *, GstMessage *msg)
             getDuration();
             break;
         }*/
+        case GST_MESSAGE_TAG:
+        {
+            GstTagList *tags = NULL;
+            gst_message_parse_tag (msg, &tags);
+            handleTags(tags);
+            gst_tag_list_unref (tags);
+            break;
+        }
         case GST_MESSAGE_ERROR:
         {
             gchar *debug;
@@ -117,6 +126,58 @@ gboolean Player::handleBusMessage (GstBus *, GstMessage *msg)
     }
 
     return TRUE;
+}
+
+// Network streams (Icecast/Shoutcast) carry "now playing" info as ICY
+// metadata. souphttpsrc requests it and icydemux turns it into tags:
+// StreamTitle -> GST_TAG_TITLE (usually "Artist - Title"),
+// StreamUrl -> GST_TAG_HOMEPAGE (some stations put the cover art URL there).
+void Player::handleTags(GstTagList *tags)
+{
+    // Local files post their own tags, which are already read with TagLib
+    if (!m_source.startsWith("http://") && !m_source.startsWith("https://"))
+        return;
+
+    bool changed = false;
+    gchar *value = NULL;
+
+    if (gst_tag_list_get_string (tags, GST_TAG_TITLE, &value)) {
+        QString title = QString::fromUtf8(value).trimmed();
+        g_free (value);
+        if (title != m_streamTitle) {
+            m_streamTitle = title;
+            // A cover URL belongs to the previous song unless sent again
+            m_streamCover = "";
+            changed = true;
+        }
+    }
+
+    if (gst_tag_list_get_string (tags, GST_TAG_HOMEPAGE, &value)) {
+        QString url = QString::fromUtf8(value).trimmed();
+        g_free (value);
+        QString path = QUrl(url).path().toLower();
+        if (!path.endsWith(".jpg") && !path.endsWith(".jpeg") &&
+                !path.endsWith(".png") && !path.endsWith(".webp"))
+            url = "";
+        if (url != m_streamCover) {
+            m_streamCover = url;
+            changed = true;
+        }
+    }
+
+    if (changed) {
+        qDebug() << "Stream metadata:" << m_streamTitle << m_streamCover;
+        emit streamMetadataChanged();
+    }
+}
+
+void Player::clearStreamMetadata()
+{
+    if (m_streamTitle.isEmpty() && m_streamCover.isEmpty())
+        return;
+    m_streamTitle = "";
+    m_streamCover = "";
+    emit streamMetadataChanged();
 }
 
 
@@ -258,6 +319,7 @@ void Player::setSource(QString file, bool stopcurrent)
 
     m_source = file;
     qDebug() << "Set source: " << m_source;
+    clearStreamMetadata();
 
     QByteArray ba = m_source.toUtf8();
     gchar *filename = ba.data();

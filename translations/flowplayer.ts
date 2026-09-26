@@ -768,58 +768,58 @@
     <name>NowPlaying</name>
     <message>
         <location filename="../qml/pages/NowPlaying.qml" line="34"/>
-        <location filename="../qml/pages/NowPlaying.qml" line="118"/>
+        <location filename="../qml/pages/NowPlaying.qml" line="119"/>
         <source>Unknown artist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/pages/NowPlaying.qml" line="34"/>
-        <location filename="../qml/pages/NowPlaying.qml" line="118"/>
+        <location filename="../qml/pages/NowPlaying.qml" line="119"/>
         <source>Unknown album</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/NowPlaying.qml" line="258"/>
+        <location filename="../qml/pages/NowPlaying.qml" line="259"/>
         <source>Equalizer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/NowPlaying.qml" line="266"/>
+        <location filename="../qml/pages/NowPlaying.qml" line="267"/>
         <source>Edit metadata</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/NowPlaying.qml" line="280"/>
+        <location filename="../qml/pages/NowPlaying.qml" line="281"/>
         <source>Remove from favorites</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/NowPlaying.qml" line="280"/>
+        <location filename="../qml/pages/NowPlaying.qml" line="281"/>
         <source>Add to favorites</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/NowPlaying.qml" line="290"/>
+        <location filename="../qml/pages/NowPlaying.qml" line="291"/>
         <source>Add to playlist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/NowPlaying.qml" line="305"/>
+        <location filename="../qml/pages/NowPlaying.qml" line="306"/>
         <source>Reload info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/NowPlaying.qml" line="314"/>
+        <location filename="../qml/pages/NowPlaying.qml" line="315"/>
         <source>Save station</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/NowPlaying.qml" line="393"/>
+        <location filename="../qml/pages/NowPlaying.qml" line="394"/>
         <source>Cover not found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/NowPlaying.qml" line="502"/>
+        <location filename="../qml/pages/NowPlaying.qml" line="503"/>
         <source>Online radio</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1462,12 +1462,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/flowplayer.qml" line="265"/>
+        <location filename="../qml/flowplayer.qml" line="283"/>
         <source>(radio)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/flowplayer.qml" line="432"/>
+        <location filename="../qml/flowplayer.qml" line="450"/>
         <source>Cover not found</source>
         <translation type="unfinished"></translation>
     </message>
