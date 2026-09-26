@@ -10,7 +10,7 @@ Name:       flowplayer
 Summary:    Music Player for SailfishOS
 # The <version> tag must adhere to semantic versioning: Among multiple other
 # reasons due to its use for `qmake5` in line 104.  See https://semver.org/
-Version:    0.9.0
+Version:    0.9.1
 # The <release> tag comprises one of {alpha,beta,rc,release} postfixed with a
 # natural number greater or equal to 1 (e.g., "beta3") and may additionally be
 # postfixed with a plus character ("+"), the name of the packager and a release

@@ -1,3 +1,7 @@
+* Sat Sep 26 2026 spidernik84 <spidernik84@users.noreply.github.com> - 0.9.1
+- Fix lockscreen widget
+- Switch to Amber-MPRIS
+
 * Sat Sep 26 2026 spidernik84 <spidernik84@users.noreply.github.com> - 0.9.0
 - Changed radio stations browser to https://www.radio-browser.info/
 - Fixed Icecast metadata retrieval
