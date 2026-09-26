@@ -3,7 +3,7 @@ import Sailfish.Silica 1.0
 import FlowPlayer 1.0
 //import QtMultimedia 5.0
 import Nemo.DBus 2.0
-import org.nemomobile.mpris 1.0
+import Amber.Mpris 1.0
 import com.jolla.mediaplayer 1.0
 import "pages"
 
@@ -214,7 +214,7 @@ ApplicationWindow
         }
 
         onPositionChanged: {
-            mprisPlayer.position = myPlayer.position
+            mprisPlayer.position = myPlayer.position * 1000
             playerPositionChanged(myPlayer.position)
         }
 
@@ -545,31 +545,35 @@ ApplicationWindow
     }
 
 
+    // Amber.Mpris is the MPRIS library the SailfishOS lockscreen and
+    // notification area are built on. Its times are in milliseconds.
     MprisPlayer {
         id: mprisPlayer
 
         property var localMetadata
 
         function emitSeeked() {
-            seeked(player.position * 1000)
+            seeked(myPlayer.position * 1000)
         }
 
         serviceName: "flowplayer"
 
         // Mpris2 Root Interface
-        identity: "flowplayer"
-        // Hard coded. FIXME: JB#22001.
-        desktopEntry: "jolla-mediaplayer"
+        identity: "FlowPlayer"
+        desktopEntry: "flowplayer"
         supportedUriSchemes: ["file", "http", "https"]
         supportedMimeTypes: ["audio/x-wav", "audio/mp4", "audio/mpeg", "audio/x-vorbis+ogg", "audio/ogg", "audio/opus"]
 
         // Mpris2 Player Interface
-        canControl: currentSongInfo && currentSongInfo.url !== undefined
-        canGoNext: queueList.count>1 && currentSongInfo!==[]
-        canGoPrevious: queueList.count>1 && currentSongInfo!==[]
-        canPause: queueList.count>0 && currentSongInfo!==[]
-        canPlay: queueList.count>0 && currentSongInfo!==[]
-        canSeek: queueList.count>0 && myPlayer.state>0
+        // CanControl must stay true: MPRIS clients read it once and, while it
+        // is false, treat every other can* property as false too (the
+        // lockscreen then hides its buttons for good).
+        canControl: true
+        canGoNext: queueList.count>1
+        canGoPrevious: queueList.count>1
+        canPause: queueList.count>0
+        canPlay: queueList.count>0
+        canSeek: queueList.count>0 && myPlayer.state>0 && !playingRadio
 
         playbackStatus: {
             if (myPlayer.state===2) {
@@ -599,33 +603,38 @@ ApplicationWindow
         onNextRequested: nowPlayingPage.nextSong()
         onPreviousRequested: nowPlayingPage.prevSong()
 
+        onPositionRequested: position = myPlayer.position * 1000
+
         onSeekRequested: {
-            var position = myPlayer.position + offset
+            var position = myPlayer.position + Math.round(offset / 1000)
             myPlayer.seek(position < 0 ? 0 : position)
             emitSeeked()
         }
         onSetPositionRequested: {
-            myPlayer.seek(position)
+            myPlayer.seek(Math.round(position / 1000))
             emitSeeked()
         }
 
         onLocalMetadataChanged: {
-            if (!localMetadata.url)
+            if (!localMetadata || !localMetadata.url)
                 return
 
-            var metadata = {}
+            var art
+            if (playingRadio)
+                art = currentSongInfo.coverurl? currentSongInfo.coverurl : currentSongInfo.imageurl
+            else
+                art = "file://" + utils.thumbnail(localMetadata.artist, localMetadata.album)
 
-            if (localMetadata && 'url' in localMetadata) {
-                metadata[Mpris.metadataToString(Mpris.Url)] = localMetadata['url']
-                metadata[Mpris.metadataToString(Mpris.TrackId)] = "/com/jolla/mediaplayer/" + Qt.md5(localMetadata['url'].toString())
-                metadata[Mpris.metadataToString(Mpris.Length)] = localMetadata['duration'] * 1000
-                metadata[Mpris.metadataToString(Mpris.Album)] = localMetadata['album']
-                metadata[Mpris.metadataToString(Mpris.Artist)] = [localMetadata['artist']]
-                metadata[Mpris.metadataToString(Mpris.Genre)] = [localMetadata['genre']]
-                metadata[Mpris.metadataToString(Mpris.Title)] = localMetadata['title']
-                metadata[Mpris.metadataToString(Mpris.TrackNumber)] = localMetadata['track']
-            }
-            mprisPlayer.metadata = metadata
+            metaData.trackId = "/org/flowplayer/track/" + Qt.md5(localMetadata.url.toString())
+            metaData.url = localMetadata.url
+            metaData.title = localMetadata.title
+            // xesam:artist is a list of strings in the MPRIS spec
+            metaData.contributingArtist = localMetadata.artist? [localMetadata.artist] : undefined
+            metaData.albumTitle = localMetadata.album
+            // Radio streams have no duration
+            metaData.duration = isFinite(localMetadata.duration)? localMetadata.duration : undefined
+            metaData.trackNumber = localMetadata.track
+            metaData.artUrl = art? art : undefined
         }
     }
 
