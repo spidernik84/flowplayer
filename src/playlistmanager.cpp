@@ -309,6 +309,38 @@ void PlaylistManager::saveList(QString list)
 
 }
 
+// Rewrites a playlist, or the queue, with the given rows in the given order.
+// Rows are maps with artist, album, title, duration and url, as the QML
+// models hold them. Duplicate tracks are kept, unlike a lookup by url.
+void PlaylistManager::saveListOrder(QString list, QVariantList rows)
+{
+    listado.clear();
+    for (int i=0; i<rows.count(); ++i)
+    {
+        QVariantMap row = rows[i].toMap();
+        QString url = row.value("url").toString();
+        if (url=="") continue;
+
+        bool isNumber;
+        QString duration = row.value("duration").toString();
+        duration.toInt(&isNumber);
+
+        QStringList l1;
+        l1.append(row.value("artist").toString());
+        l1.append(row.value("album").toString());
+        l1.append(row.value("title").toString());
+        l1.append(isNumber ? duration : "0");
+        l1.append(url);
+        listado.append(l1);
+    }
+
+    if (!isDBOpened) openDatabase();
+
+    executeQuery("begin transaction");
+    saveList(list);
+    executeQuery("commit");
+}
+
 void PlaylistManager::removeFromList(QString link)
 {
     qDebug() << "REMOVING "<< link;

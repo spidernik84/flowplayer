@@ -34,6 +34,7 @@ public slots:
     QVariantList getAlbumTracks(QString artist, QString album, QString various);
     void removeFromList(QString link);
     void saveList(QString list);
+    void saveListOrder(QString list, QVariantList rows);
     void removeList(QString name);
     void renameList(QString oldname, QString newname);
 

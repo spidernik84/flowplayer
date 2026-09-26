@@ -21,6 +21,10 @@ ListItem
     property bool showCover: false
     property alias textSize: thumb.textSize
     property int tracknum: 0
+    // Edit mode of a ReorderableListView: shows a drag handle, and
+    // highlights the row when selected
+    property bool editing: false
+    property bool dragged: false
 
     // Formats track number as "xx"
     function formatTrack(t) {
@@ -33,6 +37,8 @@ ListItem
     // Use contentHeight (not height) so ListItem can grow itself when the
     // context menu opens, and so the menu is placed below the whole item.
     contentHeight: Theme.itemSizeSmall
+    highlighted: down || menuOpen || (editing && selected)
+    opacity: dragged ? 0.2 : 1
 
     Item {
         id: rowContainer
@@ -68,8 +74,8 @@ ListItem
         Column {
             anchors.left: trackLabel.right
             anchors.leftMargin: Theme.paddingSmall
-            anchors.right: parent.right
-            anchors.rightMargin: Theme.paddingLarge
+            anchors.right: editing ? dragHandle.left : parent.right
+            anchors.rightMargin: editing ? 0 : Theme.paddingLarge
             anchors.verticalCenter: parent.verticalCenter
             spacing: parent.height===Theme.itemSizeSmall? 0 : Theme.paddingSmall
 
@@ -113,6 +119,40 @@ ListItem
                 }
             }
 
+        }
+        Item {
+            id: dragHandle
+            visible: editing
+            anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
+            width: editing ? Theme.itemSizeSmall : 0
+            height: parent.height
+
+            Column {
+                anchors.centerIn: parent
+                spacing: Theme.paddingSmall
+                Repeater {
+                    model: 3
+                    Rectangle {
+                        width: Theme.iconSizeSmall
+                        height: Math.max(2, Theme.paddingSmall/2)
+                        radius: height/2
+                        color: handleArea.pressed ? Theme.highlightColor : Theme.secondaryColor
+                    }
+                }
+            }
+
+            MouseArea {
+                id: handleArea
+                anchors.fill: parent
+                enabled: editing
+                preventStealing: true
+                onPressed: itemcontainer.ListView.view.startDrag(itemcontainer, index,
+                                                                 handleArea.mapToItem(itemcontainer.ListView.view, mouse.x, mouse.y).y)
+                onPositionChanged: itemcontainer.ListView.view.updateDrag(handleArea.mapToItem(itemcontainer.ListView.view, mouse.x, mouse.y).y)
+                onReleased: itemcontainer.ListView.view.endDrag()
+                onCanceled: itemcontainer.ListView.view.endDrag()
+            }
         }
     }
 }

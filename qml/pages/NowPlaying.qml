@@ -138,6 +138,33 @@ Page {
         changeSong()
     }
 
+    // Realigns the covers and the preloaded next track after the queue was
+    // reordered or trimmed on the queue page. If the playing track was
+    // removed, the track that took its place plays next.
+    function syncQueue() {
+        if (playingRadio || queueList.count===0)
+            return
+
+        var source = decodeURIComponent(myPlayer.source)
+        var index = -1
+        for (var i=0; i<queueList.count; ++i) {
+            if (decodeURIComponent(queueList.get(i).url)===source) {
+                index = i
+                break
+            }
+        }
+        var found = index>=0
+        if (!found)
+            index = Math.min(Math.max(queueList.currentIndex, 0), queueList.count-1)
+
+        bigCoverList.positionViewAtIndex(index, PathView.Center)
+        queueList.currentIndex = index
+        songsList.currentIndex = index
+
+        if (source!=="")
+            myPlayer.setNextSource(found ? getNextSong() : decodeURIComponent(queueList.get(index).url), false)
+    }
+
     function getNextSong() {
         if (repeat || bigCoverList.count===1) {
             return decodeURIComponent(bigCoverList.currentItem.myData.url)
@@ -541,6 +568,19 @@ Page {
             clip: true
 
             model: queueList
+
+            PullDownMenu {
+                visible: !playingRadio
+                MenuItem {
+                    text: qsTr("Edit queue")
+                    // After the menu has closed, as the panel closes too
+                    onDelayedClick: {
+                        dockPanel.open = false
+                        currentPlaylist = "00000000000000000000"
+                        pageStack.push("PlaylistPage.qml", {"startEditing": true})
+                    }
+                }
+            }
 
             delegate: AlbumDelegate {
                 myData: model

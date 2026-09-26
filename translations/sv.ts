@@ -100,7 +100,7 @@
 <context>
     <name>AlbumDelegate</name>
     <message>
-        <location filename="../qml/pages/AlbumDelegate.qml" line="51"/>
+        <location filename="../qml/pages/AlbumDelegate.qml" line="57"/>
         <source>Not found</source>
         <translation>Kunde inte hittas</translation>
     </message>
@@ -779,44 +779,49 @@
         <translation>Okänt album</translation>
     </message>
     <message>
-        <location filename="../qml/pages/NowPlaying.qml" line="220"/>
+        <location filename="../qml/pages/NowPlaying.qml" line="247"/>
         <source>Equalizer</source>
         <translation>Equalizer</translation>
     </message>
     <message>
-        <location filename="../qml/pages/NowPlaying.qml" line="228"/>
+        <location filename="../qml/pages/NowPlaying.qml" line="255"/>
         <source>Edit metadata</source>
         <translation>Redigera metadata</translation>
     </message>
     <message>
-        <location filename="../qml/pages/NowPlaying.qml" line="242"/>
+        <location filename="../qml/pages/NowPlaying.qml" line="269"/>
         <source>Remove from favorites</source>
         <translation>Ta bort från favoriter</translation>
     </message>
     <message>
-        <location filename="../qml/pages/NowPlaying.qml" line="242"/>
+        <location filename="../qml/pages/NowPlaying.qml" line="269"/>
         <source>Add to favorites</source>
         <translation>Lägg till i favoriter</translation>
     </message>
     <message>
-        <location filename="../qml/pages/NowPlaying.qml" line="252"/>
+        <location filename="../qml/pages/NowPlaying.qml" line="279"/>
         <source>Add to playlist</source>
         <translation>Lägg till i spelningslista</translation>
     </message>
     <message>
-        <location filename="../qml/pages/NowPlaying.qml" line="268"/>
+        <location filename="../qml/pages/NowPlaying.qml" line="295"/>
         <source>Save station</source>
         <translation>Spara station</translation>
     </message>
     <message>
-        <location filename="../qml/pages/NowPlaying.qml" line="347"/>
+        <location filename="../qml/pages/NowPlaying.qml" line="374"/>
         <source>Cover not found</source>
         <translation>Inget omslag hittades</translation>
     </message>
     <message>
-        <location filename="../qml/pages/NowPlaying.qml" line="450"/>
+        <location filename="../qml/pages/NowPlaying.qml" line="477"/>
         <source>Online radio</source>
         <translation>Internetradio</translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/NowPlaying.qml" line="575"/>
+        <source>Edit queue</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -881,7 +886,7 @@
 <context>
     <name>PlaylistManager</name>
     <message>
-        <location filename="../src/playlistmanager.cpp" line="418"/>
+        <location filename="../src/playlistmanager.cpp" line="450"/>
         <source>Custom playlists</source>
         <translation>Anpassade spelningslistor</translation>
     </message>
@@ -889,39 +894,95 @@
 <context>
     <name>PlaylistPage</name>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="59"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="143"/>
         <source>Queue</source>
         <translation>Kö</translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="60"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="144"/>
         <source>Favorites</source>
         <translation>Favoriter</translation>
     </message>
+    <message numerus="yes">
+        <location filename="../qml/pages/PlaylistPage.qml" line="148"/>
+        <source>%n selected</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="66"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="149"/>
+        <source>Drag the handle to move, tap to select</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/PlaylistPage.qml" line="155"/>
         <source>Rename playlist</source>
         <translation>Byt namn på listan</translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="72"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="162"/>
         <source>Clear playlist</source>
         <translation>Rensa listan</translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="104"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="179"/>
+        <source>Edit queue</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/PlaylistPage.qml" line="179"/>
+        <source>Edit playlist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/PlaylistPage.qml" line="186"/>
+        <source>Select none</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/PlaylistPage.qml" line="186"/>
+        <source>Select all</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/PlaylistPage.qml" line="196"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="355"/>
+        <source>Done</source>
+        <translation type="unfinished">Klar</translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/PlaylistPage.qml" line="220"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="347"/>
         <source>Deleting</source>
         <translation>Tar bort</translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="139"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="239"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="343"/>
         <source>Remove</source>
         <translation>Ta bort</translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="175"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="281"/>
         <source>Playlist is empty</source>
         <translation>Spelningslistan är tom</translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/PlaylistPage.qml" line="309"/>
+        <source>Move to top</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/PlaylistPage.qml" line="320"/>
+        <source>Move to bottom</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/PlaylistPage.qml" line="333"/>
+        <source>Play next</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
