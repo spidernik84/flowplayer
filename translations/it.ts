@@ -100,7 +100,7 @@
 <context>
     <name>AlbumDelegate</name>
     <message>
-        <location filename="../qml/pages/AlbumDelegate.qml" line="56"/>
+        <location filename="../qml/pages/AlbumDelegate.qml" line="57"/>
         <source>Not found</source>
         <translation>Non trovato</translation>
     </message>

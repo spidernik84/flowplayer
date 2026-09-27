@@ -42,12 +42,13 @@ ListItem
     Item {
         id: rowContainer
         width: parent.width
-        height: Theme.itemSizeSmall
+        height: itemcontainer.contentHeight
 
         CoverArtList {
             id: thumb
             x: Theme.paddingLarge
-            width: itemimg!="" || showCover? parent.height : 0
+            // Fills small rows; taller rows keep it small-row sized, centered
+            width: itemimg!="" || showCover? Math.min(parent.height, Theme.itemSizeSmall) : 0
             anchors.verticalCenter: parent.verticalCenter
             height: width
             itemimg: img
