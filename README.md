@@ -34,6 +34,7 @@ See screenshots in next section.
   - [x] Change radio search backend to www.radio-browser.info
   - [x] Support ICECast metadata (Artist/Track title/Radio Name)
 - [x] implement headphones event (play/pause/next track) // this needs further testing, it seemed already implemented but doesn't always work
+- [x] dedicated favorites and queue buttons in home
 - [ ] implement resume from last state/page opened
 - [ ] implement different strategies for track management and grouping (filesystem based, metadata based, hybrid)
 
@@ -56,6 +57,8 @@ See screenshots in next section.
 | Queue entire album (grid view) | Queue entire album (list view) | Radio station search (radio-browser.info) | Radio playing with station logo |
 | ![Radio now playing (Icecast metadata + cover)](./.xdata/screenshots/Screenshot_20260926_082838_001.png?raw=true) | ![Advanced Queue editor](./.xdata/screenshots/items_manager.png?raw=true) | ![Drag multiple selected tracks](./.xdata/screenshots/multi_drag.png?raw=true) | ![Play selected tracks next](./.xdata/screenshots/play_next.png?raw=true) |
 | Radio now playing (Icecast metadata + cover) | Advanced Queue editor | Drag multiple selected tracks | Play selected tracks next |
+| ![Queue and Favorites in home](./.xdata/screenshots/new_home_1.png?raw=true) | | | |
+| Queue and Favorites in home | | | |
 
 ## Background, LLM usage, warnings
 
