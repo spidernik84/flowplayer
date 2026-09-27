@@ -64,7 +64,8 @@ ListItem
             anchors.left: img!="" || showCover? thumb.right : parent.left
             anchors.leftMargin: img!="" || showCover? Theme.paddingMedium : Theme.paddingLarge
             anchors.verticalCenter: parent.verticalCenter
-            width: Theme.fontSizeMedium * 2.5
+            // Only album track lists have numbers; elsewhere take no space
+            width: text!=="" ? Theme.fontSizeMedium * 2.5 : 0
             font.pixelSize: Theme.fontSizeMedium
             horizontalAlignment: Text.AlignRight
             truncationMode: TruncationMode.Fade
@@ -73,7 +74,7 @@ ListItem
 
         Column {
             anchors.left: trackLabel.right
-            anchors.leftMargin: Theme.paddingSmall
+            anchors.leftMargin: trackLabel.width>0 ? Theme.paddingSmall : 0
             anchors.right: editing ? dragHandle.left : parent.right
             anchors.rightMargin: editing ? 0 : Theme.paddingLarge
             anchors.verticalCenter: parent.verticalCenter
