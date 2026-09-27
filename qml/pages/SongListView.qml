@@ -17,6 +17,10 @@ Page {
     property bool loaded: false
     property bool isqueue: false
 
+    // True when every track of the album is a favorite, refreshed each time
+    // the pulldown menu opens
+    property bool albumFav: false
+
     // True once any track with disc number > 1 has been loaded. The
     // "Disc N" section headers are only shown for multi-disc albums.
     property bool multiDisc: false
@@ -94,6 +98,40 @@ Page {
                     filterSong = ""
                     pageStack.push("SelectPlaylist.qml")
                 }
+            }
+            MenuItem {
+                text: albumFav ? qsTr("Remove from favorites") : qsTr("Add to favorites")
+                enabled: songListModel.count>0
+                onClicked: {
+                    var fav = !albumFav
+                    for (var i=0; i<songListModel.count; ++i) {
+                        var track = songListModel.get(i)
+                        if ((track.fav==="1")===fav) continue
+                        utils.favSong(track.url, fav)
+                        songListModel.setProperty(i, "fav", fav ? "1" : "")
+                        if (fav) favAdded()
+                        else favRemoved()
+                    }
+                }
+            }
+            MenuItem {
+                text: qsTr("Add to queue")
+                enabled: songListModel.count>0
+                onClicked: queueAlbum(root.artist, root.album, root.artistcount, false)
+            }
+            MenuItem {
+                text: qsTr("Play next")
+                enabled: songListModel.count>0
+                onClicked: queueAlbum(root.artist, root.album, root.artistcount, true)
+            }
+
+            // Track favorites change from the context menus, so check on open
+            onActiveChanged: {
+                if (!active) return
+                var all = songListModel.count>0
+                for (var i=0; i<songListModel.count && all; ++i)
+                    all = songListModel.get(i).fav==="1"
+                albumFav = all
             }
         }
 
