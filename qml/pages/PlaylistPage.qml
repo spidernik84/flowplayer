@@ -204,6 +204,19 @@ Page {
         saveList()
     }
 
+    function addAllToFavorites() {
+        var rows = listRows()
+        var added = 0
+        for (var i=0; i<rows.length; ++i) {
+            if (utils.isFav(rows[i].url))
+                continue
+            utils.favSong(rows[i].url, true)
+            favAdded()
+            added++
+        }
+        ibanner.displayMessage(added>0 ? qsTr("Added to favorites") : qsTr("Already in favorites"), added>0)
+    }
+
     RemorsePopup { id: remorse }
 
     ReorderableListView {
@@ -272,6 +285,25 @@ Page {
                 // Changing which entries are visible while the menu is still
                 // open breaks the menu's positioning, so wait until it closes
                 onDelayedClick: songlist.editing = true
+            }
+            MenuItem {
+                // While a radio plays the queue list holds the station
+                visible: !songlist.editing && !isFavorites && !(isQueueList && playingRadio)
+                enabled: songlist.count>0
+                text: qsTr("Add to favorites")
+                onClicked: addAllToFavorites()
+            }
+            MenuItem {
+                visible: !songlist.editing && !isQueueList
+                enabled: songlist.count>0
+                text: qsTr("Add to queue")
+                onClicked: queueTracks(listRows(), false)
+            }
+            MenuItem {
+                visible: !songlist.editing && !isQueueList
+                enabled: songlist.count>0
+                text: qsTr("Play next")
+                onClicked: queueTracks(listRows(), true)
             }
             MenuItem {
                 visible: songlist.editing

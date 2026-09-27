@@ -904,17 +904,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="233"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="217"/>
+        <source>Added to favorites</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/PlaylistPage.qml" line="217"/>
+        <source>Already in favorites</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/PlaylistPage.qml" line="246"/>
         <source>Queue</source>
         <translation>Cola de reproducción</translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="234"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="247"/>
         <source>Favorites</source>
         <translation>Favoritos</translation>
     </message>
     <message numerus="yes">
-        <location filename="../qml/pages/PlaylistPage.qml" line="238"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="251"/>
         <source>%n selected</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -922,84 +932,95 @@
         </translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="239"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="252"/>
         <source>Drag the handle to move, tap to select</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="245"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="258"/>
         <source>Rename playlist</source>
         <translation>Renombrar lista</translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="252"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="265"/>
         <source>Clear playlist</source>
         <translation>Vaciar lista</translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="254"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="267"/>
         <source>Clearing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="271"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="284"/>
         <source>Edit queue</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="271"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="284"/>
         <source>Edit playlist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="278"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="293"/>
+        <source>Add to favorites</source>
+        <translation type="unfinished">Agregar a favoritos</translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/PlaylistPage.qml" line="299"/>
+        <source>Add to queue</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/PlaylistPage.qml" line="310"/>
         <source>Select none</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="278"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="310"/>
         <source>Select all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="288"/>
-        <location filename="../qml/pages/PlaylistPage.qml" line="449"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="320"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="481"/>
         <source>Done</source>
         <translation type="unfinished">Listo</translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="294"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="326"/>
         <source>Undo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="318"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="350"/>
         <source>Deleting</source>
         <translation>Eliminando</translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="337"/>
-        <location filename="../qml/pages/PlaylistPage.qml" line="442"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="369"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="474"/>
         <source>Remove</source>
         <translation>Eliminar</translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="379"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="411"/>
         <source>Playlist is empty</source>
         <translation>La lista está vacía</translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="407"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="439"/>
         <source>Move to top</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="419"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="451"/>
         <source>Move to bottom</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="433"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="305"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="465"/>
         <source>Play next</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1321,62 +1342,72 @@
     </message>
     <message>
         <location filename="../qml/pages/SongListView.qml" line="84"/>
-        <location filename="../qml/pages/SongListView.qml" line="181"/>
+        <location filename="../qml/pages/SongListView.qml" line="182"/>
         <source>Edit metadata</source>
         <translation>Editar etiquetas</translation>
     </message>
     <message>
         <location filename="../qml/pages/SongListView.qml" line="94"/>
-        <location filename="../qml/pages/SongListView.qml" line="199"/>
+        <location filename="../qml/pages/SongListView.qml" line="200"/>
         <source>Add to playlist</source>
         <translation>Agregar a lista de reproducción</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="160"/>
+        <location filename="../qml/pages/SongListView.qml" line="115"/>
+        <source>Added to favorites</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/SongListView.qml" line="115"/>
+        <source>Removed from favorites</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/SongListView.qml" line="161"/>
         <source>Disc %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="123"/>
-        <location filename="../qml/pages/SongListView.qml" line="191"/>
+        <location filename="../qml/pages/SongListView.qml" line="124"/>
+        <location filename="../qml/pages/SongListView.qml" line="192"/>
         <source>Play next</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="118"/>
-        <location filename="../qml/pages/SongListView.qml" line="195"/>
+        <location filename="../qml/pages/SongListView.qml" line="119"/>
+        <location filename="../qml/pages/SongListView.qml" line="196"/>
         <source>Add to queue</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/pages/SongListView.qml" line="103"/>
-        <location filename="../qml/pages/SongListView.qml" line="208"/>
+        <location filename="../qml/pages/SongListView.qml" line="209"/>
         <source>Remove from favorites</source>
         <translation>Eliminar de favoritos</translation>
     </message>
     <message>
         <location filename="../qml/pages/SongListView.qml" line="103"/>
-        <location filename="../qml/pages/SongListView.qml" line="208"/>
+        <location filename="../qml/pages/SongListView.qml" line="209"/>
         <source>Add to favorites</source>
         <translation>Agregar a favoritos</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="285"/>
+        <location filename="../qml/pages/SongListView.qml" line="286"/>
         <source>Cover not found</source>
         <translation>Carátula no encontrada</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="293"/>
+        <location filename="../qml/pages/SongListView.qml" line="294"/>
         <source>Various artists</source>
         <translation>Artistas varios</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="297"/>
+        <location filename="../qml/pages/SongListView.qml" line="298"/>
         <source>1 track</source>
         <translation>1 canción</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SongListView.qml" line="297"/>
+        <location filename="../qml/pages/SongListView.qml" line="298"/>
         <source>%1 tracks</source>
         <translation>%1 canciones</translation>
     </message>

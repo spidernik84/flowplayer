@@ -112,6 +112,7 @@ Page {
                         if (fav) favAdded()
                         else favRemoved()
                     }
+                    ibanner.displayMessage(fav ? qsTr("Added to favorites") : qsTr("Removed from favorites"), true)
                 }
             }
             MenuItem {
