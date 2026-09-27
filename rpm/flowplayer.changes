@@ -1,4 +1,7 @@
-* Sat Sep 26 2026 spidernik84 <spidernik84@users.noreply.github.com> - 0.10.2
+* Sun Sep 27 2026 spidernik84 <spidernik84@users.noreply.github.com> - 0.11.0
+- Moved Favorites and Queue to dedicated item in main page
+
+* Sun Sep 27 2026 spidernik84 <spidernik84@users.noreply.github.com> - 0.10.2
 - Additional queueing pulldown in playlist and album pages
 - fixed some graphical regressions in lists (spacing, padding)
 
