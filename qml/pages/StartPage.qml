@@ -45,9 +45,6 @@ Page {
 
                 misdatos.clearList()
 
-                myPlaylists.clear()
-                myplaylistmanager.loadPlaylists()
-
                 lastGroup = "" //utils.readSettings("LastGroup", "albums")
 
                 /*if (lastGroup=="albums")
@@ -62,6 +59,10 @@ Page {
                 if (utils.cleanqueue==="yes")
                     myplaylistmanager.clearList("00000000000000000000")
             }
+
+            // The queue and favorites counts shown here change on other pages
+            myPlaylists.clear()
+            myplaylistmanager.loadPlaylists()
 
             /*if (!mainloaded) {
                 mainloaded = true
@@ -97,6 +98,21 @@ Page {
             delegate1.startTimer()
             timer.start()
         }
+    }
+
+    // Track count of the queue or favorites, as stored in myPlaylists
+    function listCount(name) {
+        for (var i=0; i<myPlaylists.count; ++i) {
+            if (myPlaylists.get(i).name===name)
+                return myPlaylists.get(i).count || "0"
+        }
+        return "0"
+    }
+
+    function openList(name) {
+        mainloaded = false
+        currentPlaylist = name
+        pageStack.push("PlaylistPage.qml")
     }
 
     function stopTimers() {
@@ -297,9 +313,24 @@ Page {
             }
 
             StartDelegate {
+                title: qsTr("Queue")
+                model: ListModel { ListElement {url:"../queue.png"} }
+                count: listCount("00000000000000000000")
+                onClicked: openList("00000000000000000000")
+            }
+
+            StartDelegate {
+                title: qsTr("Favorites")
+                model: ListModel { ListElement {url:"../favorites.png"} }
+                count: listCount("00000000000000000001")
+                onClicked: openList("00000000000000000001")
+            }
+
+            StartDelegate {
                 title: qsTr("Playlists")
                 model: ListModel { ListElement {url:"../playlist.png"} }
-                count: myPlaylists.count
+                // Queue and favorites have their own entries
+                count: Math.max(0, myPlaylists.count - 2)
                 onClicked: {
                     mainloaded = false
                     pageStack.push("Playlists.qml")

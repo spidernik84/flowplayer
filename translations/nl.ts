@@ -1038,42 +1038,42 @@
         <translation>Afspeellijsten</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Playlists.qml" line="51"/>
+        <location filename="../qml/pages/Playlists.qml" line="39"/>
         <source>Deleting</source>
         <translation>Verwijderen</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Playlists.qml" line="65"/>
+        <location filename="../qml/pages/Playlists.qml" line="51"/>
         <source>Rename</source>
         <translation>Hernoemen</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Playlists.qml" line="72"/>
+        <location filename="../qml/pages/Playlists.qml" line="58"/>
         <source>Remove</source>
         <translation>Verwijder</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Playlists.qml" line="90"/>
-        <source>Queue</source>
-        <translation>Wachtrij</translation>
+        <location filename="../qml/pages/Playlists.qml" line="104"/>
+        <source>No playlists</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/Playlists.qml" line="91"/>
-        <source>Favorites</source>
-        <translation>Favorieten</translation>
+        <location filename="../qml/pages/Playlists.qml" line="105"/>
+        <source>Pull down to create a new playlist</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/Playlists.qml" line="99"/>
+        <location filename="../qml/pages/Playlists.qml" line="83"/>
         <source>No tracks</source>
         <translation>Geen tracks</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Playlists.qml" line="100"/>
+        <location filename="../qml/pages/Playlists.qml" line="84"/>
         <source>1 track</source>
         <translation>1 track</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Playlists.qml" line="100"/>
+        <location filename="../qml/pages/Playlists.qml" line="84"/>
         <source>%1 tracks</source>
         <translation>%1 tracks</translation>
     </message>
@@ -1468,52 +1468,62 @@
 <context>
     <name>StartPage</name>
     <message>
-        <location filename="../qml/pages/StartPage.qml" line="170"/>
+        <location filename="../qml/pages/StartPage.qml" line="186"/>
         <source>Updating music collection</source>
         <translation>Updaten muziek collectie</translation>
     </message>
     <message>
-        <location filename="../qml/pages/StartPage.qml" line="177"/>
+        <location filename="../qml/pages/StartPage.qml" line="193"/>
         <source>Cancel</source>
         <translation>Annuleren</translation>
     </message>
     <message>
-        <location filename="../qml/pages/StartPage.qml" line="235"/>
+        <location filename="../qml/pages/StartPage.qml" line="251"/>
         <source>Artists</source>
         <translation>Artiesten</translation>
     </message>
     <message>
-        <location filename="../qml/pages/StartPage.qml" line="259"/>
+        <location filename="../qml/pages/StartPage.qml" line="275"/>
         <source>Albums</source>
         <translation>Albums</translation>
     </message>
     <message>
-        <location filename="../qml/pages/StartPage.qml" line="282"/>
+        <location filename="../qml/pages/StartPage.qml" line="298"/>
         <source>Tracks</source>
         <translation>Tracks</translation>
     </message>
     <message>
-        <location filename="../qml/pages/StartPage.qml" line="300"/>
+        <location filename="../qml/pages/StartPage.qml" line="316"/>
+        <source>Queue</source>
+        <translation type="unfinished">Wachtrij</translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/StartPage.qml" line="323"/>
+        <source>Favorites</source>
+        <translation type="unfinished">Favorieten</translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/StartPage.qml" line="330"/>
         <source>Playlists</source>
         <translation>Afspeellijsten</translation>
     </message>
     <message>
-        <location filename="../qml/pages/StartPage.qml" line="310"/>
+        <location filename="../qml/pages/StartPage.qml" line="341"/>
         <source>Radio stations</source>
         <translation>Radiostations</translation>
     </message>
     <message>
-        <location filename="../qml/pages/StartPage.qml" line="192"/>
+        <location filename="../qml/pages/StartPage.qml" line="208"/>
         <source>Download album covers</source>
         <translation>Download album covers</translation>
     </message>
     <message>
-        <location filename="../qml/pages/StartPage.qml" line="199"/>
+        <location filename="../qml/pages/StartPage.qml" line="215"/>
         <source>Settings</source>
         <translation>Instellingen</translation>
     </message>
     <message>
-        <location filename="../qml/pages/StartPage.qml" line="206"/>
+        <location filename="../qml/pages/StartPage.qml" line="222"/>
         <source>Equalizer</source>
         <translation>Equalizer</translation>
     </message>

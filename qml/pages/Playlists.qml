@@ -24,28 +24,16 @@ Page {
             title: qsTr("Playlists")
         }
 
-        section.property: "type"
-        section.criteria: ViewSection.FullString
-        section.delegate: Item {
-            visible: section!==""
-            height: Theme.itemSizeSmall/2
-            width: parent.width
-            Separator {
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.left: parent.left
-                anchors.leftMargin: Theme.paddingLarge
-                width: parent.width -Theme.paddingLarge*2
-                color: "white"
-            }
-        }
-
-
         delegate: ListItem {
-            contentHeight: Theme.itemSizeSmall
+            // Queue and favorites stay in myPlaylists for the other pages,
+            // but have their own entries on the start page
+            readonly property bool builtIn: model.name==="00000000000000000000" || model.name==="00000000000000000001"
+            visible: !builtIn
+            contentHeight: builtIn ? 0 : Theme.itemSizeSmall
             width: parent.width
             clip: true
 
-            menu: model.name==="00000000000000000000" || model.name==="00000000000000000001"? undefined : contextMenu
+            menu: contextMenu
 
             function removeItem() {
                 remorseAction(qsTr("Deleting"),
@@ -59,8 +47,6 @@ Page {
             Component {
                 id: contextMenu
                 ContextMenu {
-                    visible: model.name!=="00000000000000000000" && model.name!=="00000000000000000001"
-
                     MenuItem {
                         text: qsTr("Rename")
                         onClicked: {
@@ -87,10 +73,8 @@ Page {
                 Label
                 {
                     width: parent.width
-                    text: model.name==="00000000000000000000"? qsTr("Queue") :
-                          model.name==="00000000000000000001"? qsTr("Favorites") : model.name
+                    text: model.name
                     truncationMode: TruncationMode.Fade
-                    color: model.name==="00000000000000000000" ? Theme.highlightColor : Theme.primaryColor
                 }
 
                 Label
@@ -99,7 +83,7 @@ Page {
                     text: model.count==="0"? qsTr("No tracks") : model.count==="1"?
                                                  qsTr("1 track") : qsTr("%1 tracks").arg(model.count)
                     truncationMode: TruncationMode.Fade
-                    color: name=="00000000000000000000" ? Theme.secondaryHighlightColor : Theme.secondaryColor
+                    color: Theme.secondaryColor
                     font.pixelSize: Theme.fontSizeExtraSmall
                     opacity: 0.8
                 }
@@ -113,6 +97,12 @@ Page {
             }
 
 
+        }
+
+        ViewPlaceholder {
+            enabled: myPlaylists.count<=2
+            text: qsTr("No playlists")
+            hintText: qsTr("Pull down to create a new playlist")
         }
 
     }
