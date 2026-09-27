@@ -2,67 +2,40 @@
 
 **FlowPlayer is a feature-rich music player for SailfishOS.**
 
-**This is an experimental fork with moderately heavy use of LLMs, with the intention of fixing some bugs and introducing some features (read section below). The fork is being tested on a Jolla Phone 2026 which I personally own.**
-
-## Warnings, background and LLM usage
-
-Some advice: do NOT take this as an example of necessarily good coding. It's used only for my own experiments. I'm sharing it here nevertheless.
-I am using it daily and it works well. As usual, use it at your own risk.
-I started with Deepseek and recently switched to Claude.
-
-NOTE: This shares the same config folder as the standard FlowPlayer so you may want to take a backup of your config directory, just in case (`~/.config/sailfishos-applications/flowplayer/`).
-
-This has only been tested on Sailfish 5.1 on a Jolla Phone 2026. The requirements are essentially the same of upstream FlowPlayer but no testing has been performed on older releases of SailfishOS.
-
-Scary-tone aside: the modifications have been introduced step-by-step, iteratively, and not in a single big-jump, bruteforcing my way through vibe-coding:
-I created branches, tags and did my best to understand what the LLMs were changing.
-I focused on single features, tested them one by one, ironed out the bugs and marched on.
-While I am no professional, full-time programmer, I am no total stranger either: I have experience with Python scripting at least.
-
-The documentation, merging, release notes, changelog entries and comments are hand-typed with love by yours truly (at least that I can still do).
-
-## Thanks
-
-Most importantly: all credit to the original developers who made this possible. I'm piggybacking greatly here.
-
-## Contributing
-
-You'll see some bugs and issues I created. Please feel free to add more, I'll do my best to consider what to add.
-Testing is fundamental so please try it out, I'm particularly interested in how the changes manage big collections of music.
-
-## Reason for the existence of this fork and what to do with it
+This is an experimental fork with moderately heavy use of LLMs (Deepseek first, Claude Code now), with the intention of fixing bugs and introducing new features.
+The fork is being used on a Jolla Phone 2026 which I personally own.
 
 The scope of the fork exercise is essentially:
 
 - playing with the Sailfish SDK
 - playing with development on Sailfish in general
 - playing with LLMs
-
-It's kept separate for the reasons explained in the beginning. In case the LLMs have produced useful changes to be merged upstream, please pick them!
+- improving FlowPlayer, a software I loved since the times of my first Jolla in 2013
 
 ## Changes and new features to the original FlowPlayer
 
+See screenshots in next section.
+
 **High Prio**
 
-- [x] Implement better track management in the player
+- [x] Better track management
     - [x] sort by track number by default
     - [x] handle multi-cd albums
 - [x] Multiple queuing strategies: in addition to "Add to (end of) the queue", now offers "Play Next"
-- [x] cover loading from file first (prefer embedded, fallback to manual)
-- [x] bulk cover loading fix
-- [x] fix radio streaming
-  - [x] change backend (now uses www.radio-browser.info)
-  - [x] support ICECast metadata (Artist/Track title/Radio Name)
-  - [x] remove progress bar and shuffle/repeat controls
 - [x] implement "Queue entire album"
-- [x] implement headphones event (play/pause/next track) // this needs further testing, it seemed already implemented but doesn't always work
+- [x] implement "Queue entire playlist"
 - [x] Queue advanced editing
-  - [x] Draggable items, even non contiguous (they become contiguous in that case)
-  - [x] Send items to end of queue or to top of queue
-  - [x] Send multiple items after now-playing track
-- [ ] implement resume from last state
-- [ ] implement "Queue entire playlist"
-- [ ] implement different strategies for track management (filesystem based, metadata based, hybrid) 
+  - [x] Draggable items, even multiple and non-contiguous
+  - [x] Append items to end of queue or prepend to top of queue
+  - [x] Play single or multiple items after now-playing track
+- [x] Album art loading from file first (prefer embedded, fallback to manual download)
+- [x] Bulk album art downloading now working
+- [x] Radio streaming now working and improved
+  - [x] Change radio search backend to www.radio-browser.info
+  - [x] Support ICECast metadata (Artist/Track title/Radio Name)
+- [x] implement headphones event (play/pause/next track) // this needs further testing, it seemed already implemented but doesn't always work
+- [ ] implement resume from last state/page opened
+- [ ] implement different strategies for track management and grouping (filesystem based, metadata based, hybrid)
 
 **Low Prio**
 
@@ -72,8 +45,6 @@ It's kept separate for the reasons explained in the beginning. In case the LLMs 
 **Won't implement**
 
 - [x] Advanced Radio Paradise support (pre-download for offline playing, PSD). This should probably warrant a dedicated app. For now, it shows the artist and track name, and the cover.
-
-
 
 ## New Features Screenshots
 
@@ -86,6 +57,42 @@ It's kept separate for the reasons explained in the beginning. In case the LLMs 
 | ![Radio now playing (Icecast metadata + cover)](./.xdata/screenshots/Screenshot_20260926_082838_001.png?raw=true) | ![Advanced Queue editor](./.xdata/screenshots/items_manager.png?raw=true) | ![Drag multiple selected tracks](./.xdata/screenshots/multi_drag.png?raw=true) | ![Play selected tracks next](./.xdata/screenshots/play_next.png?raw=true) |
 | Radio now playing (Icecast metadata + cover) | Advanced Queue editor | Drag multiple selected tracks | Play selected tracks next |
 
+## Background, LLM usage, warnings
+
+The work on this repos should not necessarily be taken as an example of good coding. It's used mostly for my own experiments. I'm sharing it here nevertheless.
+I am using the player daily and it works well. As usual, use it at your own risk.
+
+**Scary-tone aside**: the modifications have been introduced step-by-step, iteratively, and not in a single big-jump, bruteforcing my way through vibe-coding:
+- I created branches, tags and did my best to understand what the LLMs were changing.
+- I focused on single features, tested them one by one, ironed out the bugs and marched on.
+
+While I am no professional, full-time programmer, I am no total stranger either: I have experience with Python scripting at least.
+
+The documentation, merging, release notes, changelog entries and comments are hand-typed with love by yours truly (at least that I can still do).
+
+For the reasons of quality above, work is being done in this fork.
+
+NOTE: This fork shares the same config folder as the standard FlowPlayer so you may want to take a backup of your config directory, just in case (`~/.config/sailfishos-applications/flowplayer/`).
+
+This has only been tested on Sailfish 5.1 on a Jolla Phone 2026. The requirements are essentially the same of upstream FlowPlayer but no testing has been performed on older releases of SailfishOS.
+
+
+
+## Thanks
+
+Most importantly: all credit to the original developers who made this possible. I'm piggybacking greatly here.
+
+## Contributing
+
+You'll see some bugs and issues I created. Please feel free to add more, I'll do my best to consider what to add.
+Testing is fundamental so please try it out, I'm particularly interested in how the changes manage big collections of music.
+
+In case the LLMs have produced useful changes to be merged upstream, please pick them!
+
+
+Original README below :
+
+---
 
 ## Features
 
