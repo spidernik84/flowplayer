@@ -45,7 +45,7 @@ See screenshots in next section.
 
 **Won't implement**
 
-- [x] Advanced Radio Paradise support (pre-download for offline playing, PSD). This should probably warrant a dedicated app. For now, it shows the artist and track name, and the cover.
+- [x] Advanced Radio Paradise support (pre-download for offline playing, PSD). ~~This should probably warrant a dedicated app. For now, it shows the artist and track name, and the cover.~~ Use [Sailparadise](https://github.com/spidernik84/harbour-sailparadise), my other Radio Paradise dedicated client instead!
 
 ## New Features Screenshots
 
