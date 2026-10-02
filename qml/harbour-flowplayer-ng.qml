@@ -14,17 +14,6 @@ ApplicationWindow
     id: appWindow
     initialPage: startPage
 
-    onApplicationActiveChanged: {
-        if (appWindow.applicationActive) {
-            startPage.startTimers()
-        } else {
-            startPage.stopTimers()
-        }
-    }
-
-    property int lastArtistItem
-    property int lastAlbumItem
-
     property string savedorientation: utils.readSettings("Orientation", "auto")
 
     property int pagesOrientations: savedorientation==="auto"? (Orientation.All) :
@@ -47,10 +36,6 @@ ApplicationWindow
     signal playerSourceChanged(string source)
 
     property string totals;
-    property string artistsCovers;
-    property string albumsCovers;
-    ListModel { id: artistsCoversModel }
-    ListModel { id: albumsCoversModel }
 
 
     function favAdded() {
@@ -414,7 +399,7 @@ ApplicationWindow
         id: miniPlayer
         dock: Dock.Bottom
         width: parent.width
-        height: Theme.itemSizeExtraLarge
+        height: Theme.itemSizeLarge
         opacity: open && !Qt.inputMethod.visible? 1 : 0
         Behavior on opacity { FadeAnimation {} }
         open: false
@@ -437,85 +422,99 @@ ApplicationWindow
             source: "image://theme/graphic-gradient-edge"
         }
 
-        Item {
+        BackgroundItem {
             id: miniPlayerControls
             anchors.fill: parent
 
+            onClicked: {
+                if (nppOpened)
+                    pageStack.navigateBack()
+                else
+                    pageStack.push(nowPlayingPage)
+            }
+
+            // Playback progress along the top edge; streams have no duration
+            Rectangle {
+                anchors.top: parent.top
+                width: parent.width
+                height: Math.max(1, Math.round(Theme.paddingSmall/2))
+                color: Theme.rgba(Theme.highlightColor, 0.2)
+                visible: !playingRadio
+
+                Rectangle {
+                    height: parent.height
+                    width: myPlayer.duration>0 ? parent.width * Math.min(1, myPlayer.position / myPlayer.duration) : 0
+                    color: Theme.highlightColor
+                }
+            }
+
             CoverArtList {
                 id: thumb
-                x: 0
-                width: parent.height
+                x: Theme.horizontalPageMargin
+                anchors.verticalCenter: parent.verticalCenter
+                width: parent.height - Theme.paddingMedium*2
                 height: width
+                // Taps go to the panel
+                enabled: false
                 itemimg: playingRadio? (currentSongInfo.coverurl? currentSongInfo.coverurl : currentSongInfo.imageurl) : utils.thumbnail(currentSongInfo.artist, currentSongInfo.album)
-                text: qsTr("Cover not found")
-                onClicked: {
-                    if (nppOpened)
-                        pageStack.navigateBack()
-                    else
-                        pageStack.push(nowPlayingPage)
-                }
+                text: ""
+            }
+
+            HighlightImage {
+                anchors.centerIn: thumb
+                source: playingRadio ? "image://theme/icon-m-media-radio" : "image://theme/icon-m-media-songs"
+                color: Theme.highlightColor
+                visible: thumb.status!==Image.Ready
             }
 
             Column {
-                spacing: Theme.paddingSmall
                 anchors.left: thumb.right
-                width: parent.width - thumb.width
+                anchors.leftMargin: Theme.paddingLarge
+                anchors.right: controls.left
+                anchors.rightMargin: Theme.paddingSmall
                 anchors.verticalCenter: parent.verticalCenter
 
+                Label {
+                    width: parent.width
+                    text: currentSongInfo.title ? currentSongInfo.title : (playingRadio && currentSongInfo.name ? currentSongInfo.name : "")
+                    color: miniPlayerControls.highlighted ? Theme.highlightColor : Theme.primaryColor
+                    truncationMode: TruncationMode.Elide
+                }
 
                 Label {
-                    anchors.left: parent.left
-                    anchors.leftMargin: Theme.paddingLarge
-                    width: parent.width - Theme.paddingLarge*2
-                    text: playingRadio? "<font color=\"" + Theme.highlightColor + "\">" + (currentSongInfo.artist!==""?
-                                        currentSongInfo.artist : currentSongInfo.name) + "</font> " + currentSongInfo.title :
-                          "<font color=\"" + Theme.highlightColor + "\">" + currentSongInfo.artist + "</font> " + currentSongInfo.title
+                    width: parent.width
+                    visible: text!==""
+                    // A stream without a title shows the station name as title instead
+                    text: currentSongInfo.artist ? currentSongInfo.artist :
+                          (playingRadio && currentSongInfo.title && currentSongInfo.name ? currentSongInfo.name : "")
                     font.pixelSize: Theme.fontSizeSmall
-                    truncationMode: TruncationMode.Fade
-                    textFormat: Text.RichText
-                    //onTextChanged: console.log("NEW TEXT: " + text)
-                    //horizontalAlignment: Text.AlignHCenter
+                    color: miniPlayerControls.highlighted ? Theme.secondaryHighlightColor : Theme.secondaryColor
+                    truncationMode: TruncationMode.Elide
                 }
-
-
-                Row {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    spacing: parent.width/7
-
-                    IconButton {
-                        icon.source: "image://theme/icon-m-previous"
-                        enabled: queueList.count>1
-                        onClicked: {
-                            nowPlayingPage.prevSong()
-                            //nowPlayingPage.changeSong()
-                        }
-                    }
-
-                    IconButton {
-                        icon.source: myPlayer.state===2? "image://theme/icon-m-play" : "image://theme/icon-m-pause"
-                        onClicked: {
-                            if (myPlayer.state===2)
-                                myPlayer.resume()
-                            else
-                                myPlayer.pause()
-                        }
-
-                    }
-
-                    IconButton {
-                        icon.source: "image://theme/icon-m-next"
-                        enabled: queueList.count>1
-                        onClicked: {
-                            nowPlayingPage.nextSong()
-                            //nowPlayingPage.changeSong()
-                        }
-
-                    }
-
-                }
-
             }
 
+            Row {
+                id: controls
+                anchors.right: parent.right
+                anchors.rightMargin: Theme.horizontalPageMargin - Theme.paddingMedium
+                anchors.verticalCenter: parent.verticalCenter
+
+                IconButton {
+                    icon.source: myPlayer.state===2? "image://theme/icon-m-play" : "image://theme/icon-m-pause"
+                    onClicked: {
+                        if (myPlayer.state===2)
+                            myPlayer.resume()
+                        else
+                            myPlayer.pause()
+                    }
+                }
+
+                IconButton {
+                    icon.source: "image://theme/icon-m-next"
+                    enabled: queueList.count>1
+                    onClicked: nowPlayingPage.nextSong()
+                }
+            }
         }
 
         PushUpMenu {

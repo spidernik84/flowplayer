@@ -1467,62 +1467,137 @@
 <context>
     <name>StartPage</name>
     <message>
-        <location filename="../qml/pages/StartPage.qml" line="186"/>
+        <location filename="../qml/pages/StartPage.qml" line="173"/>
         <source>Updating music collection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/StartPage.qml" line="193"/>
+        <location filename="../qml/pages/StartPage.qml" line="180"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/StartPage.qml" line="251"/>
+        <location filename="../qml/pages/StartPage.qml" line="199"/>
+        <source>1 track</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/StartPage.qml" line="199"/>
+        <source>%1 tracks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/StartPage.qml" line="225"/>
+        <source>Rescan library</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/StartPage.qml" line="229"/>
+        <source>Search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/StartPage.qml" line="243"/>
+        <source>Library</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/StartPage.qml" line="247"/>
         <source>Artists</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/StartPage.qml" line="275"/>
+        <location filename="../qml/pages/StartPage.qml" line="248"/>
+        <source>1 artist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/StartPage.qml" line="248"/>
+        <source>%1 artists</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/StartPage.qml" line="270"/>
         <source>Albums</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/StartPage.qml" line="298"/>
+        <location filename="../qml/pages/StartPage.qml" line="271"/>
+        <source>1 album</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/StartPage.qml" line="271"/>
+        <source>%1 albums</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/StartPage.qml" line="293"/>
         <source>Tracks</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/StartPage.qml" line="316"/>
+        <location filename="../qml/pages/StartPage.qml" line="300"/>
         <source>Queue</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/StartPage.qml" line="323"/>
+        <location filename="../qml/pages/StartPage.qml" line="307"/>
         <source>Favorites</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/StartPage.qml" line="330"/>
+        <location filename="../qml/pages/StartPage.qml" line="316"/>
         <source>Playlists</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/StartPage.qml" line="341"/>
+        <location filename="../qml/pages/StartPage.qml" line="317"/>
+        <source>1 playlist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/StartPage.qml" line="317"/>
+        <source>%1 playlists</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/StartPage.qml" line="326"/>
+        <source>Online</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/StartPage.qml" line="330"/>
         <source>Radio stations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/StartPage.qml" line="208"/>
+        <location filename="../qml/pages/StartPage.qml" line="331"/>
+        <source>1 station</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/StartPage.qml" line="331"/>
+        <source>%1 stations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/StartPage.qml" line="348"/>
+        <source>Shuffle all</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/StartPage.qml" line="204"/>
         <source>Download album covers</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/StartPage.qml" line="215"/>
+        <location filename="../qml/pages/StartPage.qml" line="218"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/StartPage.qml" line="222"/>
+        <location filename="../qml/pages/StartPage.qml" line="211"/>
         <source>Equalizer</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1563,36 +1638,31 @@
 <context>
     <name>flowplayer</name>
     <message>
-        <location filename="../qml/flowplayer.qml" line="97"/>
-        <location filename="../qml/flowplayer.qml" line="145"/>
+        <location filename="../qml/flowplayer.qml" line="82"/>
+        <location filename="../qml/flowplayer.qml" line="130"/>
         <source>Already in queue</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/flowplayer.qml" line="101"/>
-        <location filename="../qml/flowplayer.qml" line="165"/>
+        <location filename="../qml/flowplayer.qml" line="86"/>
+        <location filename="../qml/flowplayer.qml" line="150"/>
         <source>Playing next</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/flowplayer.qml" line="101"/>
-        <location filename="../qml/flowplayer.qml" line="165"/>
+        <location filename="../qml/flowplayer.qml" line="86"/>
+        <location filename="../qml/flowplayer.qml" line="150"/>
         <source>Added to queue</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/flowplayer.qml" line="145"/>
+        <location filename="../qml/flowplayer.qml" line="130"/>
         <source>Already playing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/flowplayer.qml" line="283"/>
+        <location filename="../qml/flowplayer.qml" line="268"/>
         <source>(radio)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/flowplayer.qml" line="450"/>
-        <source>Cover not found</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
