@@ -667,12 +667,12 @@ QString Utils::reemplazar2(QString data)
 void Utils::createAlbumArt(QString imagepath)
 {
     removeAlbumArt();
-    QFile::link(imagepath, QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "currentAlbumArt.jpeg");
+    QFile::link(imagepath, QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/currentAlbumArt.jpeg");
 }
 
 void Utils::removeAlbumArt()
 {
-    QFile::remove(QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "currentAlbumArt.jpeg");
+    QFile::remove(QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/currentAlbumArt.jpeg");
 }
 
 void Utils::getFolders()

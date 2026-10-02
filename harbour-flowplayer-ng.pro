@@ -1,4 +1,4 @@
-TARGET = flowplayer
+TARGET = harbour-flowplayer-ng
 
 QT += core network sql xml dbus
 
@@ -14,6 +14,8 @@ CONFIG += link_pkgconfig
 PKGCONFIG += gstreamer-1.0 libresource libresource-glib taglib
 
 CONFIG += sailfishapp
+
+SAILFISHAPP_ICONS = 86x86 108x108 128x128 172x172
 
 SOURCES += src/FlowPlayer.cpp \
     src/utils.cpp \
@@ -37,12 +39,11 @@ SOURCES += src/FlowPlayer.cpp \
 
 OTHER_FILES += \
     qml/pages/FirstPage.qml \
-    rpm/FlowPlayer.changes.in \
-    rpm/FlowPlayer.spec \
-    rpm/FlowPlayer.yaml \
+    rpm/harbour-flowplayer-ng.changes \
+    rpm/harbour-flowplayer-ng.spec \
     translations/*.ts \
-    flowplayer.desktop \
-    qml/flowplayer.qml \
+    harbour-flowplayer-ng.desktop \
+    qml/harbour-flowplayer-ng.qml \
     qml/pages/createobject.js \
     qml/pages/dateandtime.js \
     qml/pages/FastScroll.js \

@@ -32,8 +32,11 @@ int main(int argc, char *argv[])
     QTextCodec::setCodecForLocale(linuxCodec);
 
     QGuiApplication *app = SailfishApp::application(argc, argv);
-    app->setOrganizationName("sailfishos-applications");
-    app->setApplicationName("flowplayer");
+    // Must match OrganizationName/ApplicationName in the [X-Sailjail] section of
+    // the .desktop file: the sandbox only exposes ~/.config, ~/.cache and
+    // ~/.local/share/<OrganizationName>/<ApplicationName>.
+    app->setOrganizationName("io.github.spidernik84");
+    app->setApplicationName("flowplayer-ng");
 
     QString lang;
     QTranslator translator;
@@ -63,10 +66,11 @@ int main(int argc, char *argv[])
         qDebug() << "Stored language: " << lang;
     }
 
-    if (QFile::exists("/usr/share/flowplayer/translations/"+ lang + ".qm"))
-        translator.load("/usr/share/flowplayer/translations/" + lang);
+    const QString translationsDir = SailfishApp::pathTo("translations").toLocalFile();
+    if (QFile::exists(translationsDir + "/" + lang + ".qm"))
+        translator.load(translationsDir + "/" + lang);
     else
-        translator.load("/usr/share/flowplayer/translations/en");
+        translator.load(translationsDir + "/en");
 
     app->installTranslator(&translator);
 
@@ -75,9 +79,9 @@ int main(int argc, char *argv[])
     QDir().mkpath(mediaCacheDir);
 
     QScopedPointer<QQuickView> window(SailfishApp::createView());
-    window->setTitle("FlowPlayer");
+    window->setTitle("FlowPlayer NG");
 
-    window->engine()->addImportPath("/usr/share/flowplayer/qml");
+    window->engine()->addImportPath(SailfishApp::pathTo("qml").toLocalFile());
     window->rootContext()->setContextProperty("appVersion", VERSION);
     bool hasPickers = false;
     for (const QString &path : window->engine()->importPathList()) {
@@ -102,7 +106,7 @@ int main(int argc, char *argv[])
     //qmlRegisterType<MyPlaylists>("FlowPlayer", 1, 0, "MyPlaylists");
     //qmlRegisterType<MusicModel>("FlowPlayer", 1, 0, "MusicModel");
 
-    window->setSource(SailfishApp::pathTo("qml/flowplayer.qml"));
+    window->setSource(SailfishApp::pathTo("qml/harbour-flowplayer-ng.qml"));
 
     window->showFullScreen();
     return app->exec();

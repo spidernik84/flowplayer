@@ -1,13 +1,14 @@
 [Desktop Entry]
 Type=Application
 X-Nemo-Application-Type=silica-qt5
-Icon=flowplayer
-Exec=flowplayer
-Name=FlowPlayer
+Icon=harbour-flowplayer-ng
+Exec=harbour-flowplayer-ng
+Name=FlowPlayer NG
 
 [X-Sailjail]
-OrganizationName=sailfishos-applications
+# Must match setOrganizationName()/setApplicationName() in src/FlowPlayer.cpp
+OrganizationName=io.github.spidernik84
 # ApplicationName does not have to be identical to Name
-ApplicationName=flowplayer
+ApplicationName=flowplayer-ng
 # Add the required permissions here
 Permissions=UserDirs;Audio;Bluetooth;Internet;RemovableMedia;dbus-user.talk org.freedesktop.systemd1

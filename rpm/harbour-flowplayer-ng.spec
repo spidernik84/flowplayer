@@ -1,4 +1,4 @@
-Name:       flowplayer
+Name:       harbour-flowplayer-ng
  
 # These macros should already be defined in the RPMbuild environment, see: rpm --showrc
 %{!?qtc_qmake:%define qtc_qmake %qmake}
@@ -10,7 +10,7 @@ Name:       flowplayer
 Summary:    Music Player for SailfishOS
 # The <version> tag must adhere to semantic versioning: Among multiple other
 # reasons due to its use for `qmake5` in line 104.  See https://semver.org/
-Version:    0.11.0
+Version:    1.0.0
 # The <release> tag comprises one of {alpha,beta,rc,release} postfixed with a
 # natural number greater or equal to 1 (e.g., "beta3") and may additionally be
 # postfixed with a plus character ("+"), the name of the packager and a release
@@ -26,12 +26,11 @@ Release:    release
 # https://github.com/mer-tools/spectacle/blob/master/data/GROUPS
 Group:      Applications/Multimedia
 License:    MPL-2.0-no-copyleft-exception
-URL:        https://github.com/spidernik84/%{name}
+URL:        https://github.com/spidernik84/flowplayer
 # Altering the `Vendor:` field breaks the update path on SailfishOS, see
 # https://en.opensuse.org/SDB:Vendor_change_update#Disabling_Vendor_stickiness
 #Vendor:     meego
-# The "Source0:" line below requires that the value of %%{name} is also the
-# project name at GitHub and the value of `%%{release}/%%{version}` is also
+# The value of `%%{release}/%%{version}` in the "Source0:" line below must be
 # the name of a correspondingly set Git tag.  For details and reasons, see
 # https://github.com/storeman-developers/harbour-storeman/wiki/Git-tag-format
 Source0:    %{url}/archive/%{release}/%{version}/%{name}-%{version}.tar.gz
@@ -57,10 +56,10 @@ BuildRequires:  desktop-file-utils
 # This description section includes metadata for SailfishOS:Chum, see
 # https://github.com/sailfishos-chum/main/blob/main/Metadata.md
 %description
-FlowPlayer is a music player for SailfishOS with lyrics support, online radio and 10-band equalizer.
+FlowPlayer NG is a music player for SailfishOS with lyrics support, online radio and 10-band equalizer.
 
 %if 0%{?_chum}
-Title: FlowPlayer for SailfishOS / Experimental fork
+Title: FlowPlayer NG
 Type: desktop-application
 Categories:
  - AudioVideo
@@ -77,22 +76,26 @@ Categories:
 DeveloperName: CepiPerez, olf, dcaliste, smokku, flypig, rubdos, poetaster, spidernik84
 Custom:
   Repo: %{url}
-PackageIcon: %{url}/raw/master/flowplayer.png
+PackageIcon: %{url}/raw/master/icons/172x172/%{name}.png
 Screenshots:
- - %{url}/raw/master/.xdata/screenshots/screenshot-20150711134510.jpg
- - %{url}/raw/master/.xdata/screenshots/screenshot-20150711134427.jpg
- - %{url}/raw/master/.xdata/screenshots/screenshot-20150711134124.jpg
- - %{url}/raw/master/.xdata/screenshots/screenshot-20150711134236.jpg
- - %{url}/raw/master/.xdata/screenshots/screenshot-20150711134206.jpg
- - %{url}/raw/master/.xdata/screenshots/screenshot-20150711134443.jpg
- - %{url}/raw/master/.xdata/screenshots/screenshot-20150711134615.jpg
- - %{url}/raw/master/.xdata/screenshots/screenshot-20150701221204.jpg
+ - %{url}/raw/master/assets/screenshots/screenshot-20150711134510.jpg
+ - %{url}/raw/master/assets/screenshots/screenshot-20150711134427.jpg
+ - %{url}/raw/master/assets/screenshots/screenshot-20150711134124.jpg
+ - %{url}/raw/master/assets/screenshots/screenshot-20150711134236.jpg
+ - %{url}/raw/master/assets/screenshots/screenshot-20150711134206.jpg
+ - %{url}/raw/master/assets/screenshots/screenshot-20150711134443.jpg
+ - %{url}/raw/master/assets/screenshots/screenshot-20150711134615.jpg
+ - %{url}/raw/master/assets/screenshots/screenshot-20150701221204.jpg
 Links:
   Homepage: https://openrepos.net/content/olf/flowplayer
   Help: %{url}/issues
   Bugtracker: %{url}/issues
   Donation: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=WTLJLQP2CSM7S
 %endif
+
+# Harbour: do not export or auto-require anything shipped in %%{_datadir}
+%define __provides_exclude_from ^%{_datadir}/.*$
+%define __requires_exclude ^%{_datadir}/.*$
 
 # Define (S)RPM compression sensibly, taking compatibility into account, see
 # https://github.com/sailfishos-patches/patchmanager/pull/417#issuecomment-1429068156
@@ -116,5 +119,5 @@ desktop-file-install --delete-original --dir %{buildroot}%{_datadir}/application
 %{_bindir}/%{name}
 %{_datadir}/%{name}
 %{_datadir}/applications/%{name}.desktop
-%{_datadir}/icons/hicolor/86x86/apps/%{name}.png
+%{_datadir}/icons/hicolor/*/apps/%{name}.png
 

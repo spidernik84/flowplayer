@@ -1,6 +1,6 @@
-# FlowPlayer for SailfishOS / Experimental Fork
+# FlowPlayer NG for SailfishOS / Experimental Fork
 
-**FlowPlayer is a feature-rich music player for SailfishOS.**
+**FlowPlayer NG is a feature-rich music player for SailfishOS, based on FlowPlayer.**
 
 This is an experimental fork with moderately heavy use of LLMs (Deepseek first, Claude Code now), with the intention of fixing bugs and introducing new features.
 The fork is being used on a Jolla Phone 2026 which I personally own.
@@ -18,6 +18,7 @@ See screenshots in next section.
 
 **High Prio**
 
+- [x] New Home Layout
 - [x] Better track management
     - [x] sort by track number by default
     - [x] handle multi-cd albums
@@ -51,14 +52,14 @@ See screenshots in next section.
 
 |   |   |   | |
 |:---:|:---:|:---:|:---:|
-| ![Multi-CD album](./.xdata/screenshots/Screenshot_20260921_211607_001.png?raw=true) | ![Multi-CD album](./.xdata/screenshots/Screenshot_20260921_211620_001.png?raw=true) | ![Lyrics synced to playback](./.xdata/screenshots/Screenshot_20260921_211645_001.png?raw=true) | ![Add to Queue + Play Next](./.xdata/screenshots/Screenshot_20260925_200055_001.png?raw=true) |
-| Multi-CD album  | Multi-CD Album  | Lyrics synced to playback  | Add to queue + play next |
-| ![Queue entire album (grid view)](./.xdata/screenshots/Screenshot_20260925_201423_001.png?raw=true) | ![Queue entire album (list view)](./.xdata/screenshots/Screenshot_20260925_201520_001.png?raw=true) | ![Radio station search (radio-browser.info)](./.xdata/screenshots/Screenshot_20260926_082925_001.png?raw=true) | ![Radio playing with station logo](./.xdata/screenshots/Screenshot_20260926_083016_001.png?raw=true) |
-| Queue entire album (grid view) | Queue entire album (list view) | Radio station search (radio-browser.info) | Radio playing with station logo |
-| ![Radio now playing (Icecast metadata + cover)](./.xdata/screenshots/Screenshot_20260926_082838_001.png?raw=true) | ![Advanced Queue editor](./.xdata/screenshots/items_manager.png?raw=true) | ![Drag multiple selected tracks](./.xdata/screenshots/multi_drag.png?raw=true) | ![Play selected tracks next](./.xdata/screenshots/play_next.png?raw=true) |
-| Radio now playing (Icecast metadata + cover) | Advanced Queue editor | Drag multiple selected tracks | Play selected tracks next |
-| ![Queue and Favorites in home](./.xdata/screenshots/new_home_1.png?raw=true) | | | |
-| Queue and Favorites in home | | | |
+| ![New Home Layout](./assets/screenshots/new_home.png?raw=true) | ![Multi-CD album](./assets/screenshots/Screenshot_20260921_211607_001.png?raw=true) | ![Multi-CD album](./assets/screenshots/Screenshot_20260921_211620_001.png?raw=true) | ![Lyrics synced to playback](./assets/screenshots/Screenshot_20260921_211645_001.png?raw=true) |
+| New Home Layout | Multi-CD album | Multi-CD Album | Lyrics synced to playback |
+| ![Add to Queue + Play Next](./assets/screenshots/Screenshot_20260925_200055_001.png?raw=true) | ![Queue entire album (grid view)](./assets/screenshots/Screenshot_20260925_201423_001.png?raw=true) | ![Queue entire album (list view)](./assets/screenshots/Screenshot_20260925_201520_001.png?raw=true) | ![Radio station search (radio-browser.info)](./assets/screenshots/Screenshot_20260926_082925_001.png?raw=true) |
+| Add to queue + play next | Queue entire album (grid view) | Queue entire album (list view) | Radio station search (radio-browser.info) |
+| ![Radio playing with station logo](./assets/screenshots/Screenshot_20260926_083016_001.png?raw=true) | ![Radio now playing (Icecast metadata + cover)](./assets/screenshots/Screenshot_20260926_082838_001.png?raw=true) | ![Advanced Queue editor](./assets/screenshots/items_manager.png?raw=true) | ![Drag multiple selected tracks](./assets/screenshots/multi_drag.png?raw=true) |
+| Radio playing with station logo | Radio now playing (Icecast metadata + cover) | Advanced Queue editor | Drag multiple selected tracks |
+| ![Play selected tracks next](./assets/screenshots/play_next.png?raw=true) |  |  |  |
+| Play selected tracks next |  |  |  |
 
 ## Background, LLM usage, warnings
 
@@ -75,7 +76,13 @@ The documentation, merging, release notes, changelog entries and comments are ha
 
 For the reasons of quality above, work is being done in this fork.
 
-NOTE: This fork shares the same config folder as the standard FlowPlayer so you may want to take a backup of your config directory, just in case (`~/.config/sailfishos-applications/flowplayer/`).
+NOTE: As of 1.0.0 the app is packaged as `harbour-flowplayer-ng` and no longer shares its data with the standard FlowPlayer. It uses its own sandboxed directories:
+
+- settings: `~/.config/io.github.spidernik84/flowplayer-ng/`
+- database: `~/.local/share/io.github.spidernik84/flowplayer-ng/`
+- cache (covers, lyrics): `~/.cache/io.github.spidernik84/flowplayer-ng/`
+
+To keep your previous setup, copy `flowplayer.conf` from `~/.config/sailfishos-applications/flowplayer/` to the new settings directory and `flowplayer.db` to the new database directory before the first launch.
 
 This has only been tested on Sailfish 5.1 on a Jolla Phone 2026. The requirements are essentially the same of upstream FlowPlayer but no testing has been performed on older releases of SailfishOS.
 
@@ -118,7 +125,7 @@ Original README below :
 - Lyrics support
 
 #### Currently broken features
-~~- Online radio~~
+- Online radio
 - Last.fm scrobbling
 
 <br />
@@ -138,11 +145,11 @@ If you want to translate FlowPlayer to a language it does not support yet or imp
 |       |       |       |       |
 | :---: | :---: | :---: | :---: |
 |       |       |       |       |
-| ![Music Player](./.xdata/screenshots/screenshot-20150711134510.jpg?raw=true) | ![Song list (album)](./.xdata/screenshots/screenshot-20150711134427.jpg?raw=true) | ![Album covers](./.xdata/screenshots/screenshot-20150711134124.jpg?raw=true) | ![Albums by artist](./.xdata/screenshots/screenshot-20150711134236.jpg?raw=true) |
+| ![Music Player](./assets/screenshots/screenshot-20150711134510.jpg?raw=true) | ![Song list (album)](./assets/screenshots/screenshot-20150711134427.jpg?raw=true) | ![Album covers](./assets/screenshots/screenshot-20150711134124.jpg?raw=true) | ![Albums by artist](./assets/screenshots/screenshot-20150711134236.jpg?raw=true) |
 | Music Player | Song list (album) | Album covers | Albums by artist |
 |       |       |       |       |
 |       |       |       |       |
-| ![Covers by artist](./.xdata/screenshots/screenshot-20150711134206.jpg?raw=true) | ![Playlists](./.xdata/screenshots/screenshot-20150711134443.jpg?raw=true) | ![FileCase's cover](./.xdata/screenshots/screenshot-20150711134615.jpg?raw=true) | ![Lyrics](./.xdata/screenshots/screenshot-20150701221204.jpg?raw=true)
+| ![Covers by artist](./assets/screenshots/screenshot-20150711134206.jpg?raw=true) | ![Playlists](./assets/screenshots/screenshot-20150711134443.jpg?raw=true) | ![FileCase's cover](./assets/screenshots/screenshot-20150711134615.jpg?raw=true) | ![Lyrics](./assets/screenshots/screenshot-20150701221204.jpg?raw=true)
 | &nbsp;&nbsp;Covers&nbsp;by&nbsp;artist&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Playlists&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | FlowPlayer's&nbsp;cover | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lyrics&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
 |       |       |       |       |
 <br />

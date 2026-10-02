@@ -16,12 +16,12 @@ void openDatabase()
 
     if (!database.connectionNames().join("-").contains("flowplayer")) {
         database = QSqlDatabase::addDatabase("QSQLITE", "flowplayer");
-        QString path(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/flowplayer.db");
+        QString path(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/flowplayer.db");
         qDebug() << "Database: " << path;
         database.setDatabaseName(path);
     }
     QDir d;
-    d.mkpath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
+    d.mkpath(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
 
     if (database.open()) {
         isDBOpened = true;

@@ -556,11 +556,11 @@ ApplicationWindow
             seeked(myPlayer.position * 1000)
         }
 
-        serviceName: "flowplayer"
+        serviceName: "flowplayerng"
 
         // Mpris2 Root Interface
-        identity: "FlowPlayer"
-        desktopEntry: "flowplayer"
+        identity: "FlowPlayer NG"
+        desktopEntry: "harbour-flowplayer-ng"
         supportedUriSchemes: ["file", "http", "https"]
         supportedMimeTypes: ["audio/x-wav", "audio/mp4", "audio/mpeg", "audio/x-vorbis+ogg", "audio/ogg", "audio/opus"]
 
