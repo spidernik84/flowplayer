@@ -22,26 +22,6 @@ Page {
                 misdatos.startup()
 
                 totals = misdatos.dataInfo()
-                artistsCovers = misdatos.getArtistsCovers()
-                albumsCovers = misdatos.getAlbumsCovers()
-                lastArtistItem = parseInt(utils.readSettings("LastArtistItem", "0"))
-                lastAlbumItem = parseInt(utils.readSettings("LastAlbumItem", "0"))
-
-                if (artistsCovers=="")
-                    artistsCovers = "../artist.png"
-
-                if (albumsCovers=="")
-                    albumsCovers = "../album.png"
-
-                artistsCoversModel.clear()
-                for (var i=0; i<artistsCovers.split("<||>").length; ++i) {
-                    artistsCoversModel.append({"url":artistsCovers.split("<||>")[i]})
-                }
-
-                albumsCoversModel.clear()
-                for (var j=0; j<albumsCovers.split("<||>").length; ++j) {
-                    albumsCoversModel.append({"url":albumsCovers.split("<||>")[j]})
-                }
 
                 misdatos.clearList()
 
@@ -82,21 +62,6 @@ Page {
                 startup = false
                 //pageStack.navigateForward(PageStackAction.Immediate)
             }
-
-            startTimers()
-
-        }
-        else if (status===PageStatus.Inactive)
-        {
-            stopTimers()
-        }
-    }
-
-    function startTimers() {
-        console.log("Starting timers")
-        if (artistsCoversModel.count>1) {
-            delegate1.startTimer()
-            timer.start()
         }
     }
 
@@ -115,19 +80,41 @@ Page {
         pageStack.push("PlaylistPage.qml")
     }
 
-    function stopTimers() {
-        utils.setSettings("LastArtistItem", delegate1.current + lastArtistItem)
-        utils.setSettings("LastAlbumItem", delegate2.current  + lastAlbumItem)
-        console.log("Stopping timers")
-        delegate1.stopTimer()
-        delegate2.stopTimer()
-        timer.stop()
+    function openTracks(search) {
+        if (lastGroup!=="songs") {
+            utils.setSettings("LastGroup", "songs")
+            lastGroup = "songs"
+            misdatos.clearList()
+            misdatos.loadSongs(utils.readSettings("TrackOrder", "number"))
+            console.log("Pushing attached: " + lastGroup)
+            //pageStack.popAttached()
+            pageStack.pushAttached("SongsPage.qml")
+        }
+        if (search)
+            pageStack.nextPage(root).showSearch = true
+        pageStack.navigateForward()
+    }
+
+    // Replaces the queue with the whole library and plays it shuffled
+    function shuffleAll() {
+        queueList.clear()
+        myplaylistmanager.clearList("00000000000000000000")
+        myplaylistmanager.addAlbumToList("00000000000000000000", "ALL", "ALL", "ALL", "")
+        myplaylistmanager.loadPlaylist("00000000000000000000")
+        if (queueList.count===0)
+            return
+        shuffle = true
+        var first = utils.getShuffleTrack(-1)
+        queueList.currentIndex = first
+        nowPlayingPage.playSong(first)
+        miniPlayer.open = true
     }
 
     Connections {
         target: database
         onLoadChanged: {
             if (database.loaded) {
+                totals = misdatos.dataInfo()
                 misdatos.clearList()
 
                 if (lastGroup=="albums")
@@ -200,8 +187,17 @@ Page {
     SilicaFlickable {
         id: mainPanel
         anchors.fill: parent
-        contentHeight: col1.height
+        contentHeight: col1.height + Theme.paddingLarge
         visible: database.loaded
+
+        property int albumsCount: parseInt(totals.split(",")[0]) || 0
+        property int artistsCount: parseInt(totals.split(",")[1]) || 0
+        property int tracksCount: parseInt(totals.split(",")[2]) || 0
+
+        function tracksText(count) {
+            count = parseInt(count) || 0
+            return count===1 ? qsTr("1 track") : qsTr("%1 tracks").arg(count)
+        }
 
         PullDownMenu {
             MenuItem {
@@ -212,6 +208,13 @@ Page {
                 }
             }
             MenuItem {
+                text: qsTr("Equalizer")
+                onClicked: {
+                    mainloaded = false
+                    pageStack.push("Equalizer.qml")
+                }
+            }
+            MenuItem {
                 text: qsTr("Settings")
                 onClicked: {
                     mainloaded = false
@@ -219,11 +222,12 @@ Page {
                 }
             }
             MenuItem {
-                text: qsTr("Equalizer")
-                onClicked: {
-                    mainloaded = false
-                    pageStack.push("Equalizer.qml")
-                }
+                text: qsTr("Rescan library")
+                onClicked: database.readMusic()
+            }
+            MenuItem {
+                text: qsTr("Search")
+                onClicked: openTracks(true)
             }
         }
 
@@ -235,22 +239,14 @@ Page {
                 title: "FlowPlayer"
             }
 
-            Timer {
-                id: timer
-                interval: 2500
-                repeat: false
-                running: false
-                onTriggered: {
-                    if (albumsCoversModel.count>1)
-                        delegate2.running = true
-                }
+            SectionHeader {
+                text: qsTr("Library")
             }
 
-            StartDelegate {
-                id: delegate1
+            HomeDelegate {
                 title: qsTr("Artists")
-                count: totals.split(",")[1]
-                model: artistsCoversModel
+                subtitle: mainPanel.artistsCount===1 ? qsTr("1 artist") : qsTr("%1 artists").arg(mainPanel.artistsCount)
+                iconSource: "image://theme/icon-m-media-artists"
                 onClicked: {
                     if (lastGroup!=="artists") {
                         utils.setSettings("LastGroup", "artists")
@@ -270,11 +266,10 @@ Page {
                 }
             }
 
-            StartDelegate {
-                id: delegate2
+            HomeDelegate {
                 title: qsTr("Albums")
-                count: totals.split(",")[0]
-                model: albumsCoversModel
+                subtitle: mainPanel.albumsCount===1 ? qsTr("1 album") : qsTr("%1 albums").arg(mainPanel.albumsCount)
+                iconSource: "image://theme/icon-m-media-albums"
                 onClicked: {
                     if (lastGroup!=="albums") {
                         utils.setSettings("LastGroup", "albums")
@@ -294,99 +289,71 @@ Page {
                 }
             }
 
-            StartDelegate {
+            HomeDelegate {
                 title: qsTr("Tracks")
-                model: ListModel { ListElement {url:"../tracks.png"} }
-                count: totals.split(",")[2]
-                onClicked: {
-                    if (lastGroup!=="songs") {
-                        utils.setSettings("LastGroup", "songs")
-                        lastGroup = "songs"
-                        misdatos.clearList()
-                        misdatos.loadSongs(utils.readSettings("TrackOrder", "number"))
-                        console.log("Pushing attached: " + lastGroup)
-                        //pageStack.popAttached()
-                        pageStack.pushAttached("SongsPage.qml")
-                    }
-                    pageStack.navigateForward()
-                }
+                subtitle: mainPanel.tracksText(mainPanel.tracksCount)
+                iconSource: "image://theme/icon-m-media-songs"
+                onClicked: openTracks(false)
             }
 
-            StartDelegate {
+            HomeDelegate {
                 title: qsTr("Queue")
-                model: ListModel { ListElement {url:"../queue.png"} }
-                count: listCount("00000000000000000000")
+                subtitle: mainPanel.tracksText(listCount("00000000000000000000"))
+                iconSource: "image://theme/icon-m-menu"
                 onClicked: openList("00000000000000000000")
             }
 
-            StartDelegate {
+            HomeDelegate {
                 title: qsTr("Favorites")
-                model: ListModel { ListElement {url:"../favorites.png"} }
-                count: listCount("00000000000000000001")
+                subtitle: mainPanel.tracksText(listCount("00000000000000000001"))
+                iconSource: "image://theme/icon-m-favorite"
                 onClicked: openList("00000000000000000001")
             }
 
-            StartDelegate {
-                title: qsTr("Playlists")
-                model: ListModel { ListElement {url:"../playlist.png"} }
+            HomeDelegate {
                 // Queue and favorites have their own entries
-                count: Math.max(0, myPlaylists.count - 2)
+                property int playlistsCount: Math.max(0, myPlaylists.count - 2)
+                title: qsTr("Playlists")
+                subtitle: playlistsCount===1 ? qsTr("1 playlist") : qsTr("%1 playlists").arg(playlistsCount)
+                iconSource: "image://theme/icon-m-media-playlists"
                 onClicked: {
                     mainloaded = false
                     pageStack.push("Playlists.qml")
                 }
             }
 
-            StartDelegate {
+            SectionHeader {
+                text: qsTr("Online")
+            }
+
+            HomeDelegate {
                 title: qsTr("Radio stations")
-                model: ListModel { ListElement {url:"../radio.png"} }
-                count: radioModel.count
+                subtitle: radioModel.count===1 ? qsTr("1 station") : qsTr("%1 stations").arg(radioModel.count)
+                iconSource: "image://theme/icon-m-media-radio"
                 onClicked: {
                     mainloaded = false
                     pageStack.push("OnlineRadios.qml")
                 }
             }
 
-            /*Item {
-                height: Theme.itemSizeSmall/2
+            // TODO: "Recently played" covers row. Nothing records play
+            // history yet, so the section is left out for now.
+
+            Item {
                 width: parent.width
-                Separator {
-                    width: parent.width-Theme.paddingLarge*2
-                    anchors.centerIn: parent
-                    color: Theme.highlightColor
-                }
+                height: Theme.paddingLarge
             }
 
-
-            SimpleDelegate {
-                title: qsTr("Download album covers")
-                iconimage: "image://theme/icon-m-health"
-                onClicked: {
-                    mainloaded = false
-                    pageStack.push("FullAlbumSearch.qml")
-                }
+            HomeDelegate {
+                title: qsTr("Shuffle all")
+                titleColor: Theme.highlightColor
+                iconSource: "image://theme/icon-m-shuffle"
+                enabled: mainPanel.tracksCount>0
+                onClicked: shuffleAll()
             }
-
-            SimpleDelegate {
-                title: qsTr("Settings")
-                iconimage: "image://theme/icon-m-developer-mode"
-                onClicked: {
-                    mainloaded = false
-                    pageStack.push("Settings.qml")
-                }
-            }
-
-            SimpleDelegate {
-                title: qsTr("Equalizer")
-                iconimage: "image://theme/icon-m-accessory-speaker"
-                onClicked: {
-                    mainloaded = false
-                    pageStack.push("Equalizer.qml")
-                }
-            }*/
         }
 
+        VerticalScrollDecorator {}
     }
 
 }
-

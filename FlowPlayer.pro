@@ -90,7 +90,7 @@ OTHER_FILES += \
     qml/pages/LastFM.qml \
     qml/pages/EditPreset.qml \
     qml/pages/MyMediaKeys.qml \
-    qml/pages/StartDelegate.qml \
+    qml/pages/HomeDelegate.qml \
     qml/pages/ReorderableListView.qml \
     qml/pages/EditBarButton.qml
 
