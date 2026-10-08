@@ -298,6 +298,12 @@ Page {
                 onClicked: addAllToFavorites()
             }
             MenuItem {
+                visible: !songlist.editing && isQueueList && !playingRadio
+                enabled: songlist.count>0
+                text: qsTr("Save as playlist")
+                onClicked: pageStack.push("NewPlaylist.qml", {"newListType":"QUEUE", "rows":listRows()})
+            }
+            MenuItem {
                 visible: !songlist.editing && !isQueueList
                 enabled: songlist.count>0
                 text: qsTr("Add to queue")

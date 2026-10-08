@@ -739,28 +739,38 @@
     <name>NewPlaylist</name>
     <message>
         <location filename="../qml/pages/NewPlaylist.qml" line="65"/>
+        <source>Queue saved as playlist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/NewPlaylist.qml" line="83"/>
         <source>Done</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/NewPlaylist.qml" line="66"/>
+        <location filename="../qml/pages/NewPlaylist.qml" line="84"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/NewPlaylist.qml" line="86"/>
+        <location filename="../qml/pages/NewPlaylist.qml" line="104"/>
         <source>Rename playlist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/NewPlaylist.qml" line="86"/>
+        <location filename="../qml/pages/NewPlaylist.qml" line="104"/>
         <source>New playlist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/NewPlaylist.qml" line="95"/>
-        <location filename="../qml/pages/NewPlaylist.qml" line="96"/>
+        <location filename="../qml/pages/NewPlaylist.qml" line="113"/>
+        <location filename="../qml/pages/NewPlaylist.qml" line="115"/>
         <source>Playlist name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/NewPlaylist.qml" line="114"/>
+        <source>A playlist with this name already exists</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -967,59 +977,64 @@
     </message>
     <message>
         <location filename="../qml/pages/PlaylistPage.qml" line="303"/>
-        <source>Add to queue</source>
+        <source>Save as playlist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/pages/PlaylistPage.qml" line="309"/>
-        <location filename="../qml/pages/PlaylistPage.qml" line="469"/>
+        <source>Add to queue</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/PlaylistPage.qml" line="315"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="475"/>
         <source>Play next</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="314"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="320"/>
         <source>Select none</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="314"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="320"/>
         <source>Select all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="324"/>
-        <location filename="../qml/pages/PlaylistPage.qml" line="485"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="330"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="491"/>
         <source>Done</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="330"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="336"/>
         <source>Undo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="354"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="360"/>
         <source>Deleting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="373"/>
-        <location filename="../qml/pages/PlaylistPage.qml" line="478"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="379"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="484"/>
         <source>Remove</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="415"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="421"/>
         <source>Playlist is empty</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="443"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="449"/>
         <source>Move to top</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="455"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="461"/>
         <source>Move to bottom</source>
         <translation type="unfinished"></translation>
     </message>

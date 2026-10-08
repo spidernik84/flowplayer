@@ -10,6 +10,18 @@ Dialog {
 
     property bool renamingPlaylist: false
     property string newListType: "NOTHING"
+    // Tracks to store in the new playlist, for newListType "QUEUE"
+    property var rows: []
+
+    // Saving the queue must not overwrite or extend an existing playlist
+    function nameTaken(name) {
+        name = name.trim()
+        for (var i=0; i<myPlaylists.count; ++i) {
+            if (myPlaylists.get(i).name===name)
+                return true
+        }
+        return false
+    }
 
     onAccepted: {
 
@@ -47,6 +59,12 @@ Dialog {
             myplaylistmanager.addAlbumToList(currentPlaylist, filterArtist, filterAlbum, filterArtistCount, filterSong)
         }
 
+        else if (newListType=="QUEUE") {
+            // currentPlaylist stays the queue: the queue page is still open
+            myplaylistmanager.saveListOrder(ren.text.trim(), rows)
+            ibanner.displayMessage(qsTr("Queue saved as playlist"), true)
+        }
+
         else if (newListType=="NOTHING") {
             currentPlaylist = ren.text
             myplaylistmanager.loadList(currentPlaylist)
@@ -58,7 +76,7 @@ Dialog {
     }
 
 
-    canAccept: ren.text.length>0
+    canAccept: ren.text.trim().length>0 && !(newListType=="QUEUE" && nameTaken(ren.text))
 
     DialogHeader {
         id: header
@@ -93,9 +111,11 @@ Dialog {
                 width: parent.width
                 text: renamingPlaylist? currentPlaylist : ""
                 placeholderText: qsTr("Playlist name")
-                label: qsTr("Playlist name")
+                label: newListType=="QUEUE" && nameTaken(text) ? qsTr("A playlist with this name already exists")
+                                                               : qsTr("Playlist name")
+                errorHighlight: newListType=="QUEUE" && nameTaken(text)
                 focus: true
-                EnterKey.enabled: ren.text.length>0
+                EnterKey.enabled: dialog.canAccept
                 EnterKey.iconSource: "image://theme/icon-m-enter-accept"
                 EnterKey.onClicked: dialog.accept()
             }
