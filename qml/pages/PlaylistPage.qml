@@ -44,6 +44,10 @@ Page {
         }
         else if (status===PageStatus.Active) {
             stackDepth = pageStack.depth
+            if (isQueueList)
+                rememberPage("queue")
+            else if (isFavorites)
+                rememberPage("favorites")
         }
         else if (status===PageStatus.Deactivating) {
             if (songlist.editing)

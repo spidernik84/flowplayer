@@ -150,6 +150,11 @@ ApplicationWindow
         ibanner.displayMessage(playNext ? qsTr("Playing next") : qsTr("Added to queue"), true)
     }
 
+    // Stores the page on top, so the app can reopen it on the next start
+    function rememberPage(page) {
+        utils.setSettings("LastPage", page)
+    }
+
     // Manual fallback: restarts mpris-proxy so it re-elects FlowPlayer.
     // Not called automatically any more — the direct BlueZ registration
     // through BluetoothMediaPlayer below should make this unnecessary on

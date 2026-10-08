@@ -31,10 +31,12 @@ Page {
             nppOpened = false
         }
         else if (status===PageStatus.Active && !playingRadio) {
+            rememberPage("player")
             if (currentSongInfo.artist!==qsTr("Unknown artist") || currentSongInfo.album!==qsTr("Unknown album"))
                 pageStack.pushAttached(lyricsPage)
         }
         else if (status===PageStatus.Active && playingRadio) {
+            rememberPage("player")
             console.log("Current radio: " + currentSongInfo.radioid)
             radioExists = radios.radioExists(currentSongInfo.name, currentSongInfo.url)
         }
@@ -105,6 +107,19 @@ Page {
         changeSong()
     }
 
+
+    // Loads a queued track paused, without starting playback
+    function cueSong(index) {
+        playingRadio = false
+        bigCoverList.positionViewAtIndex(index, PathView.Center)
+        queueList.currentIndex = index
+        songsList.currentIndex = index
+        var track = queueList.get(index)
+        currentSongInfo = {artist:track.artist, album:track.album, title:track.title,
+                           url:track.url, duration:track.duration}
+        myPlayer.setSource(decodeURIComponent(track.url))
+        myPlayer.pause()
+    }
 
     function changeSong() {
         playingRadio = false

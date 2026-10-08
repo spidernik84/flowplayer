@@ -57,12 +57,47 @@ Page {
             if (radioModel.count===0) {
                 radios.loadRadios()
             }
-
+        }
+        else if (status===PageStatus.Active) {
             if (startup) {
                 startup = false
-                //pageStack.navigateForward(PageStackAction.Immediate)
+                if (!openStartupPage())
+                    rememberPage("home")
+            }
+            else {
+                rememberPage("home")
             }
         }
+    }
+
+    // Opens the page chosen in the settings, or the one open when the app
+    // was last closed. Returns false when the start page stays on top.
+    function openStartupPage() {
+        var page = utils.readSettings("StartPage", "home")
+        if (page==="last")
+            page = utils.readSettings("LastPage", "home")
+        console.log("Startup page: " + page)
+
+        if (page==="artists" || page==="albums") {
+            openGroup(page, true)
+        } else if (page==="tracks") {
+            openTracks(false, true)
+        } else if (page==="queue") {
+            openList("00000000000000000000", true)
+        } else if (page==="favorites") {
+            openList("00000000000000000001", true)
+        } else if (page==="player") {
+            // Nothing plays at startup: the queue is shown paused instead
+            if (queueList.count===0)
+                myplaylistmanager.loadPlaylist("00000000000000000000")
+            if (queueList.count===0)
+                return false
+            nowPlayingPage.cueSong(0)
+            pageStack.push(nowPlayingPage, {}, PageStackAction.Immediate)
+        } else {
+            return false
+        }
+        return true
     }
 
     // Track count of the queue or favorites, as stored in myPlaylists
@@ -74,13 +109,32 @@ Page {
         return "0"
     }
 
-    function openList(name) {
+    function openList(name, immediate) {
         mainloaded = false
         currentPlaylist = name
-        pageStack.push("PlaylistPage.qml")
+        pageStack.push("PlaylistPage.qml", {}, immediate ? PageStackAction.Immediate : PageStackAction.Animated)
     }
 
-    function openTracks(search) {
+    // Shows the artists or albums of the library
+    function openGroup(group, immediate) {
+        if (lastGroup!==group) {
+            utils.setSettings("LastGroup", group)
+            mainPage.searchValue = ""
+            mainPage.showSearch = false
+            mainPage.enableSearch = false
+            misdatos.clearList()
+            if (group==="artists")
+                misdatos.loadArtists()
+            else
+                misdatos.loadAlbums(utils.order)
+            console.log("Pushing attached: " + lastGroup)
+            pageStack.pushAttached(mainPage)
+            lastGroup = group
+        }
+        pageStack.navigateForward(immediate ? PageStackAction.Immediate : PageStackAction.Animated)
+    }
+
+    function openTracks(search, immediate) {
         if (lastGroup!=="songs") {
             utils.setSettings("LastGroup", "songs")
             lastGroup = "songs"
@@ -92,7 +146,7 @@ Page {
         }
         if (search)
             pageStack.nextPage(root).showSearch = true
-        pageStack.navigateForward()
+        pageStack.navigateForward(immediate ? PageStackAction.Immediate : PageStackAction.Animated)
     }
 
     // Replaces the queue with the whole library and plays it shuffled
@@ -247,46 +301,14 @@ Page {
                 title: qsTr("Artists")
                 subtitle: mainPanel.artistsCount===1 ? qsTr("1 artist") : qsTr("%1 artists").arg(mainPanel.artistsCount)
                 iconSource: "image://theme/icon-m-media-artists"
-                onClicked: {
-                    if (lastGroup!=="artists") {
-                        utils.setSettings("LastGroup", "artists")
-                        mainPage.searchValue = ""
-                        mainPage.showSearch = false
-                        mainPage.enableSearch = false
-                        misdatos.clearList()
-                        misdatos.loadArtists()
-                        //if (lastGroup==="songs") {
-                            console.log("Pushing attached: " + lastGroup)
-                        //    pageStack.popAttached()
-                            pageStack.pushAttached(mainPage)
-                        //}
-                        lastGroup = "artists"
-                    }
-                    pageStack.navigateForward()
-                }
+                onClicked: openGroup("artists")
             }
 
             HomeDelegate {
                 title: qsTr("Albums")
                 subtitle: mainPanel.albumsCount===1 ? qsTr("1 album") : qsTr("%1 albums").arg(mainPanel.albumsCount)
                 iconSource: "image://theme/icon-m-media-albums"
-                onClicked: {
-                    if (lastGroup!=="albums") {
-                        utils.setSettings("LastGroup", "albums")
-                        mainPage.searchValue = ""
-                        mainPage.showSearch = false
-                        mainPage.enableSearch = false
-                        misdatos.clearList()
-                        misdatos.loadAlbums(utils.order)
-                        //if (lastGroup==="songs") {
-                            console.log("Pushing attached: " + lastGroup)
-                        //    pageStack.popAttached()
-                            pageStack.pushAttached(mainPage)
-                        //}
-                        lastGroup = "albums"
-                    }
-                    pageStack.navigateForward()
-                }
+                onClicked: openGroup("albums")
             }
 
             HomeDelegate {

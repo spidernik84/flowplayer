@@ -15,6 +15,7 @@ Page {
     onStatusChanged: {
         if (status===PageStatus.Active) {
             console.log("CURRENT: " + lastGroup)
+            rememberPage(lastGroup)
         }
     }
 

@@ -9,12 +9,16 @@ Page {
 
     property bool loaded: false
 
+    // Values of the "Open at startup" entries, in menu order
+    readonly property var startPages: ["home", "last", "artists", "albums", "tracks", "queue", "favorites", "player"]
+
     onStatusChanged: {
         if (status === PageStatus.Activating) {
             loaded = false
             orientationMenu.currentIndex = savedorientation==="auto"? 0 : (savedorientation==="portrait"? 1 : 2)
             albumsViewMenu.currentIndex = utils.viewmode==="flow"? 0 : utils.viewmode==="grid"? 1 : 2
             albumsSortMenu.currentIndex = utils.order==="album"? 0 : 1
+            startPageMenu.currentIndex = Math.max(0, startPages.indexOf(utils.readSettings("StartPage", "home")))
             loaded = true
         }
     }
@@ -103,6 +107,24 @@ Page {
                 }
             }
 
+            ComboBox {
+                id: startPageMenu
+                label: qsTr("Open at startup")
+                menu: ContextMenu {
+                    MenuItem { text: qsTr("Home page") }
+                    MenuItem { text: qsTr("Last opened page") }
+                    MenuItem { text: qsTr("Artists") }
+                    MenuItem { text: qsTr("Albums") }
+                    MenuItem { text: qsTr("Tracks") }
+                    MenuItem { text: qsTr("Queue") }
+                    MenuItem { text: qsTr("Favorites") }
+                    MenuItem { text: qsTr("Player") }
+                }
+                onCurrentItemChanged: {
+                    if (!loaded) return
+                    utils.setSettings("StartPage", startPages[currentIndex])
+                }
+            }
 
             ComboBox {
                 id: albumsViewMenu

@@ -15,6 +15,11 @@ Page {
     property string searchValue: ""
     property bool enableSearch: false
 
+    onStatusChanged: {
+        if (status===PageStatus.Active)
+            rememberPage("tracks")
+    }
+
     function searchData(text) {
         searchValue = text
         misdatos.setFilter(searchValue)
