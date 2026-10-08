@@ -18,6 +18,7 @@ See screenshots in next section.
 
 **High Prio**
 
+- [x] Omnisearch: search artists, albums and tracks at once, with filtering by type
 - [x] New Home Layout
 - [x] Better track management
     - [x] sort by track number by default
@@ -52,14 +53,14 @@ See screenshots in next section.
 
 |   |   |   | |
 |:---:|:---:|:---:|:---:|
-| ![New Home Layout](./assets/screenshots/new_home.png?raw=true) | ![Multi-CD album](./assets/screenshots/Screenshot_20260921_211607_001.png?raw=true) | ![Multi-CD album](./assets/screenshots/Screenshot_20260921_211620_001.png?raw=true) | ![Lyrics synced to playback](./assets/screenshots/Screenshot_20260921_211645_001.png?raw=true) |
-| New Home Layout | Multi-CD album | Multi-CD Album | Lyrics synced to playback |
-| ![Add to Queue + Play Next](./assets/screenshots/Screenshot_20260925_200055_001.png?raw=true) | ![Queue entire album (grid view)](./assets/screenshots/Screenshot_20260925_201423_001.png?raw=true) | ![Queue entire album (list view)](./assets/screenshots/Screenshot_20260925_201520_001.png?raw=true) | ![Radio station search (radio-browser.info)](./assets/screenshots/Screenshot_20260926_082925_001.png?raw=true) |
-| Add to queue + play next | Queue entire album (grid view) | Queue entire album (list view) | Radio station search (radio-browser.info) |
-| ![Radio playing with station logo](./assets/screenshots/Screenshot_20260926_083016_001.png?raw=true) | ![Radio now playing (Icecast metadata + cover)](./assets/screenshots/Screenshot_20260926_082838_001.png?raw=true) | ![Advanced Queue editor](./assets/screenshots/items_manager.png?raw=true) | ![Drag multiple selected tracks](./assets/screenshots/multi_drag.png?raw=true) |
-| Radio playing with station logo | Radio now playing (Icecast metadata + cover) | Advanced Queue editor | Drag multiple selected tracks |
-| ![Play selected tracks next](./assets/screenshots/play_next.png?raw=true) |  |  |  |
-| Play selected tracks next |  |  |  |
+| ![Home page with Omnisearch](./assets/screenshots/start_page_with_omnisearch.png?raw=true) | ![Omnisearch: artists and albums](./assets/screenshots/omnisearch1.png?raw=true) | ![Omnisearch: albums and tracks](./assets/screenshots/omnisearch2.png?raw=true) | ![Multi-CD album](./assets/screenshots/Screenshot_20260921_211607_001.png?raw=true) |
+| Home page with Omnisearch | Omnisearch: artists and albums | Omnisearch: albums and tracks | Multi-CD album |
+| ![Multi-CD album](./assets/screenshots/Screenshot_20260921_211620_001.png?raw=true) | ![Lyrics synced to playback](./assets/screenshots/Screenshot_20260921_211645_001.png?raw=true) | ![Add to Queue + Play Next](./assets/screenshots/Screenshot_20260925_200055_001.png?raw=true) | ![Queue entire album (grid view)](./assets/screenshots/Screenshot_20260925_201423_001.png?raw=true) |
+| Multi-CD Album | Lyrics synced to playback | Add to queue + play next | Queue entire album (grid view) |
+| ![Queue entire album (list view)](./assets/screenshots/Screenshot_20260925_201520_001.png?raw=true) | ![Radio station search (radio-browser.info)](./assets/screenshots/Screenshot_20260926_082925_001.png?raw=true) | ![Radio playing with station logo](./assets/screenshots/Screenshot_20260926_083016_001.png?raw=true) | ![Radio now playing (Icecast metadata + cover)](./assets/screenshots/Screenshot_20260926_082838_001.png?raw=true) |
+| Queue entire album (list view) | Radio station search (radio-browser.info) | Radio playing with station logo | Radio now playing (Icecast metadata + cover) |
+| ![Advanced Queue editor](./assets/screenshots/items_manager.png?raw=true) | ![Drag multiple selected tracks](./assets/screenshots/multi_drag.png?raw=true) | ![Play selected tracks next](./assets/screenshots/play_next.png?raw=true) |  |
+| Advanced Queue editor | Drag multiple selected tracks | Play selected tracks next |  |
 
 ## Background, LLM usage, warnings
 

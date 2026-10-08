@@ -1,3 +1,8 @@
+* Thu Oct 8 2026 spidernik84 <spidernik84@users.noreply.github.com> - 2.0.0
+- Introduced omnisearch feature
+- Remember last page/section feature
+- Introduced "save queue as playlist" feature
+
 * Fri Oct 2 2026 spidernik84 <spidernik84@users.noreply.github.com> - 1.0.0
 - Massive redesign of the startpage
 
