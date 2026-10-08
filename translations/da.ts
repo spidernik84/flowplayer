@@ -1283,6 +1283,11 @@
         <translation>Sortér albums efter</translation>
     </message>
     <message>
+        <location filename="../qml/pages/Settings.qml" line="232"/>
+        <source>Clear queue on startup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../qml/pages/Settings.qml" line="117"/>
         <location filename="../qml/pages/Settings.qml" line="182"/>
         <source>Albums</source>
@@ -1313,11 +1318,6 @@
         <location filename="../qml/pages/Settings.qml" line="209"/>
         <source>Filename</source>
         <translation>Filnavn</translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/Settings.qml" line="232"/>
-        <source>Clear queue on exit</source>
-        <translation>Tøm kø ved afslutning</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="240"/>

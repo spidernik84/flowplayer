@@ -229,7 +229,7 @@ Page {
             }
 
             TextSwitch {
-                text: qsTr("Clear queue on exit")
+                text: qsTr("Clear queue on startup")
                 checked: utils.cleanqueue==="yes"
                 onClicked: {
                     utils.setCleanQueue(checked?"yes":"no")

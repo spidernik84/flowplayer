@@ -538,7 +538,7 @@ QString Utils::autosearch() const
 QString Utils::cleanqueue() const
 {
     QSettings settings(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/flowplayer.conf", QSettings::NativeFormat);
-    return settings.value("CleanQueue", "yes").toString();
+    return settings.value("CleanQueue", "no").toString();
 }
 
 QString Utils::workoffline() const
