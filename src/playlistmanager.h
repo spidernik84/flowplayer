@@ -32,6 +32,7 @@ public slots:
     bool isInQueue(QString url);
     void insertIntoQueue(QStringList urls, int position);
     QVariantList getAlbumTracks(QString artist, QString album, QString various);
+    QVariantList searchLibrary(QString text, QString type, int limit);
     void removeFromList(QString link);
     void saveList(QString list);
     void saveListOrder(QString list, QVariantList rows);

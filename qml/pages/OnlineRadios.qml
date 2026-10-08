@@ -106,19 +106,7 @@ Page {
                 }
             }
 
-            onClicked: {
-                console.log("Playing radio: " + model.url + " - " + model.radioid )
-                playingRadio = true
-                queueList.clear()
-                currentSongInfo = {name:model.name, url:model.url, imageurl:model.image, radioid:model.radioid, artist:"", album:"", title:""}
-                queueList.append({"artist":"", "album":"", "title":"", "name":model.name, "radioid":model.radioid,
-                                   "imageurl":model.image, "url":model.url})
-                myPlayer.setSource(model.url)
-                myPlayer.play()
-                miniPlayer.open = true
-                utils.removeAlbumArt()
-
-            }
+            onClicked: playRadio(model.name, model.url, model.image, model.radioid)
 
 
         }

@@ -268,6 +268,69 @@ QVariantList PlaylistManager::getAlbumTracks(QString artist, QString album, QStr
     return tracks;
 }
 
+// Searches the library for artists, albums or tracks (type) whose name
+// contains the text, ignoring case. Albums also match on their artist.
+// Returns at most limit maps, with the fields the library pages use.
+QVariantList PlaylistManager::searchLibrary(QString text, QString type, int limit)
+{
+    QVariantList results;
+    text = text.trimmed();
+    if (text=="") return results;
+    if (!isDBOpened) openDatabase();
+
+    // Values are stored escaped, and % and _ are LIKE wildcards
+    QString pattern = xmlin(text);
+    pattern.replace("\\", "\\\\");
+    pattern.replace("%", "\\%");
+    pattern.replace("_", "\\_");
+    QString like = "like '%" + pattern + "%' escape '\\'";
+
+    QString qr;
+    if (type=="artists")
+        qr = QString("select artist, count(distinct album) from tracks where artist %1 "
+                     "group by artist order by artist collate nocase limit %2").arg(like).arg(limit);
+    else if (type=="albums")
+        qr = QString("select album, artist, count(distinct artist), count(distinct title), "
+                     "(case when count(distinct artist)=1 then artist else '%1' end) "
+                     "from tracks where album in (select album from tracks where album %2 or artist %2) "
+                     "group by album order by album collate nocase limit %3")
+                     .arg(tr("Various artists")).arg(like).arg(limit);
+    else if (type=="tracks")
+        qr = QString("select artist, album, title, duration, url from tracks where title %1 "
+                     "order by title collate nocase limit %2").arg(like).arg(limit);
+    else
+        return results;
+
+    QSqlQuery query = getQuery(qr);
+
+    while( query.next() )
+    {
+        QVariantMap map;
+        if (type=="artists") {
+            map.insert("artist", xmlout(query.value(0).toString()));
+            map.insert("albums", query.value(1).toString());
+        }
+        else if (type=="albums") {
+            map.insert("album", xmlout(query.value(0).toString()));
+            map.insert("artist", xmlout(query.value(1).toString()));
+            map.insert("acount", query.value(2).toString());
+            map.insert("songs", query.value(3).toString());
+            map.insert("band", xmlout(query.value(4).toString()));
+        }
+        else {
+            QString url = query.value(4).toString();
+            if (url=="") continue;
+            map.insert("artist", xmlout(query.value(0).toString()));
+            map.insert("album", xmlout(query.value(1).toString()));
+            map.insert("title", xmlout(query.value(2).toString()));
+            map.insert("duration", query.value(3).toString());
+            map.insert("url", xmlout(url));
+        }
+        results.append(map);
+    }
+    return results;
+}
+
 void PlaylistManager::saveList(QString list)
 {
     list = list.trimmed();

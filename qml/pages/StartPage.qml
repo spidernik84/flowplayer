@@ -81,7 +81,7 @@ Page {
         if (page==="artists" || page==="albums") {
             openGroup(page, true)
         } else if (page==="tracks") {
-            openTracks(false, true)
+            openTracks(true)
         } else if (page==="queue") {
             openList("00000000000000000000", true)
         } else if (page==="favorites") {
@@ -134,7 +134,7 @@ Page {
         pageStack.navigateForward(immediate ? PageStackAction.Immediate : PageStackAction.Animated)
     }
 
-    function openTracks(search, immediate) {
+    function openTracks(immediate) {
         if (lastGroup!=="songs") {
             utils.setSettings("LastGroup", "songs")
             lastGroup = "songs"
@@ -144,8 +144,6 @@ Page {
             //pageStack.popAttached()
             pageStack.pushAttached("SongsPage.qml")
         }
-        if (search)
-            pageStack.nextPage(root).showSearch = true
         pageStack.navigateForward(immediate ? PageStackAction.Immediate : PageStackAction.Animated)
     }
 
@@ -279,10 +277,6 @@ Page {
                 text: qsTr("Rescan library")
                 onClicked: database.readMusic()
             }
-            MenuItem {
-                text: qsTr("Search")
-                onClicked: openTracks(true)
-            }
         }
 
         Column {
@@ -291,10 +285,6 @@ Page {
 
             Header {
                 title: "FlowPlayer"
-            }
-
-            SectionHeader {
-                text: qsTr("Library")
             }
 
             HomeDelegate {
@@ -315,7 +305,7 @@ Page {
                 title: qsTr("Tracks")
                 subtitle: mainPanel.tracksText(mainPanel.tracksCount)
                 iconSource: "image://theme/icon-m-media-songs"
-                onClicked: openTracks(false)
+                onClicked: openTracks()
             }
 
             HomeDelegate {
@@ -344,10 +334,6 @@ Page {
                 }
             }
 
-            SectionHeader {
-                text: qsTr("Online")
-            }
-
             HomeDelegate {
                 title: qsTr("Radio stations")
                 subtitle: radioModel.count===1 ? qsTr("1 station") : qsTr("%1 stations").arg(radioModel.count)
@@ -361,9 +347,27 @@ Page {
             // TODO: "Recently played" covers row. Nothing records play
             // history yet, so the section is left out for now.
 
+            // Sets the actions apart from the library entries
             Item {
                 width: parent.width
-                height: Theme.paddingLarge
+                height: Theme.paddingLarge*2
+
+                Separator {
+                    anchors.centerIn: parent
+                    width: parent.width - Theme.horizontalPageMargin*2
+                    color: Theme.primaryColor
+                    horizontalAlignment: Qt.AlignHCenter
+                }
+            }
+
+            HomeDelegate {
+                title: qsTr("Search")
+                titleColor: Theme.highlightColor
+                iconSource: "image://theme/icon-m-search"
+                onClicked: {
+                    mainloaded = false
+                    pageStack.push("SearchPage.qml")
+                }
             }
 
             HomeDelegate {

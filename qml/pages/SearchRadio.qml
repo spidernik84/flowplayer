@@ -45,16 +45,7 @@ Page {
                 return;
             }
 
-            console.log("Playing radio: " + radiourl + " - " + selectedRadioId)
-            playingRadio = true
-            queueList.clear()
-            currentSongInfo = {name:selectedRadio, url:radiourl, imageurl:selectedRadioImage, radioid:selectedRadioId, artist:"", album:"", title:""}
-            queueList.append({"artist":"", "title":"", "album":"", "name":selectedRadio, "radioid":selectedRadioId,
-                               "imageurl":selectedRadioImage, "url":radiourl})
-            myPlayer.setSource(radiourl)
-            myPlayer.play()
-            miniPlayer.open = true
-            utils.removeAlbumArt()
+            playRadio(selectedRadio, radiourl, selectedRadioImage, selectedRadioId)
 
         }
 

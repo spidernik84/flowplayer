@@ -150,6 +150,20 @@ ApplicationWindow
         ibanner.displayMessage(playNext ? qsTr("Playing next") : qsTr("Added to queue"), true)
     }
 
+    // Replaces the queue with a radio station and plays it
+    function playRadio(name, url, image, radioid) {
+        console.log("Playing radio: " + url + " - " + radioid)
+        playingRadio = true
+        queueList.clear()
+        currentSongInfo = {name:name, url:url, imageurl:image, radioid:radioid, artist:"", album:"", title:""}
+        queueList.append({"artist":"", "album":"", "title":"", "name":name, "radioid":radioid,
+                           "imageurl":image, "url":url})
+        myPlayer.setSource(url)
+        myPlayer.play()
+        miniPlayer.open = true
+        utils.removeAlbumArt()
+    }
+
     // Stores the page on top, so the app can reopen it on the next start
     function rememberPage(page) {
         utils.setSettings("LastPage", page)
