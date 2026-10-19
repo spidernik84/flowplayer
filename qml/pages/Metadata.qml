@@ -15,6 +15,8 @@ Dialog {
     onAccepted: {
         //titleField.text = meta.title
 
+        // Only write the genre when edited, so its tag stays untouched
+        var genreEdited = genreField.visible && genreField.text.trim()!==meta.genre
 
         if (artistField.visible) {
             meta.setData(titleField.text, artistField.text, albumField.text, yearField.text)
@@ -23,6 +25,9 @@ Dialog {
             meta.setData(titleField.text, artist, album, 0)
             albumMetadataChanged(artist, artist, album, album, title, titleField.text)
         }
+
+        if (genreEdited)
+            meta.setGenre(genreField.text)
 
         if (artist!==artistField.text || album!==albumField.text) {
             misdatos.clearList()
@@ -117,7 +122,18 @@ Dialog {
                 EnterKey.enabled: yearField.text.length>0
                 EnterKey.iconSource: "image://theme/icon-m-enter-accept"
                 inputMethodHints: Qt.ImhDigitsOnly
-                //EnterKey.onClicked: dialog.accept()
+                EnterKey.onClicked: genreField.forceActiveFocus()
+                visible: meta.filename.indexOf(".mod")===-1 && meta.filename.indexOf(".xm")===-1
+            }
+
+            TextField {
+                id: genreField
+                width: parent.width
+                text: meta.genre
+                placeholderText: qsTr("Genre")
+                label: qsTr("Genre, several separated by ;")
+                EnterKey.iconSource: "image://theme/icon-m-enter-accept"
+                EnterKey.onClicked: root.accept()
                 visible: meta.filename.indexOf(".mod")===-1 && meta.filename.indexOf(".xm")===-1
             }
 

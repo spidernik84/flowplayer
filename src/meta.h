@@ -10,6 +10,7 @@
 #include "taglib/fileref.h"
 #include "taglib/tag.h"
 
+#include "globalutils.h"
 #include "mydatabase.h"
 
 class Meta : public QQuickItem
@@ -19,6 +20,7 @@ class Meta : public QQuickItem
     Q_PROPERTY(QString album READ album NOTIFY dataChanged)
     Q_PROPERTY(QString artist READ artist NOTIFY dataChanged)
     Q_PROPERTY(QString year READ year NOTIFY dataChanged)
+    Q_PROPERTY(QString genre READ genre NOTIFY dataChanged)
     Q_PROPERTY(QString filename READ filename NOTIFY dataChanged)
 
 public:
@@ -28,11 +30,13 @@ public:
     QString album() const { return m_album; }
     QString artist() const { return m_artist; }
     QString year() const { return m_year; }
+    QString genre() const { return m_genre; }
     QString filename() const { return m_filename; }
     QString m_title;
     QString m_artist;
     QString m_album;
     QString m_year;
+    QString m_genre;
     QString m_filename;
 
     QString currentFile;
@@ -43,16 +47,19 @@ public:
 private:
     TagLib::FileRef *tagFile;
     TagLib::File* getFileByMimeType(QString file);
+    QString readGenre();
     QSqlDatabase db;
 
 public slots:
     void setFile(QString file, QString update="true");
     void setData(QString title, QString artist, QString album, QString year);
     void setAlbumData(QString artist, QString album, QString year);
+    void setGenre(QString genre);
 
 signals:
     void dataChanged();
     void dataAlbumChanged();
+    void genreSaved();
 
 };
 

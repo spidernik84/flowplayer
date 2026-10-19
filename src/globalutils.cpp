@@ -70,3 +70,19 @@ QString cleanItem(QString data)
     data = data.remove(QRegExp("\\W")).remove(" ");
     return data;
 }
+
+// Splits genre values into single genres, trimmed and without duplicates.
+// Some taggers put several genres in one value as "Rock;Pop", and the
+// database joins them with "; ", so ";" always separates genres.
+QStringList splitGenres(QStringList values)
+{
+    QStringList genres;
+    foreach (const QString &value, values) {
+        foreach (QString genre, value.split(";")) {
+            genre = genre.trimmed();
+            if (genre!="" && !genres.contains(genre))
+                genres.append(genre);
+        }
+    }
+    return genres;
+}

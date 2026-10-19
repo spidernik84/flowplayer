@@ -43,6 +43,7 @@ Page {
             // The queue and favorites counts shown here change on other pages
             myPlaylists.clear()
             myplaylistmanager.loadPlaylists()
+            mainPanel.countGenres()
 
             /*if (!mainloaded) {
                 mainloaded = true
@@ -176,6 +177,7 @@ Page {
         onLoadChanged: {
             if (database.loaded) {
                 totals = misdatos.dataInfo()
+                mainPanel.countGenres()
                 misdatos.clearList()
 
                 if (lastGroup=="albums")
@@ -254,6 +256,16 @@ Page {
         property int albumsCount: parseInt(totals.split(",")[0]) || 0
         property int artistsCount: parseInt(totals.split(",")[1]) || 0
         property int tracksCount: parseInt(totals.split(",")[2]) || 0
+        property int genresCount: 0
+
+        // Tracks without a genre are listed too, but aren't a genre
+        function countGenres() {
+            var genres = myplaylistmanager.getGenres()
+            var count = genres.length
+            if (count>0 && genres[count-1].genre==="")
+                count--
+            genresCount = count
+        }
 
         function tracksText(count) {
             count = parseInt(count) || 0
@@ -308,6 +320,16 @@ Page {
                 subtitle: mainPanel.albumsCount===1 ? qsTr("1 album") : qsTr("%1 albums").arg(mainPanel.albumsCount)
                 iconSource: "image://theme/icon-m-media-albums"
                 onClicked: openGroup("albums")
+            }
+
+            HomeDelegate {
+                title: qsTr("Genres")
+                subtitle: mainPanel.genresCount===1 ? qsTr("1 genre") : qsTr("%1 genres").arg(mainPanel.genresCount)
+                iconSource: "image://theme/icon-m-sounds"
+                onClicked: {
+                    mainloaded = false
+                    pageStack.push("GenresPage.qml")
+                }
             }
 
             HomeDelegate {

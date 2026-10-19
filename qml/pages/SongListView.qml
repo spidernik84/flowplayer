@@ -57,7 +57,7 @@ Page {
         onAddItemToAlbum: {
             songListModel.append({"index":songListModel.count, "artist":item.artist, "album":item.album, "title":item.title,
                                      "duration":item.duration, "url":item.url, "fav":item.fav,
-                                     "tracknum":item.tracknum, "discnum":item.discnum})
+                                     "tracknum":item.tracknum, "discnum":item.discnum, "genre":item.genre})
             if (item.discnum > 1) multiDisc = true
         }
 

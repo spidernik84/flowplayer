@@ -19,6 +19,7 @@
 #include <mpcfile.h>
 #include <modfile.h>
 #include <xmfile.h>
+#include <tpropertymap.h>
 
 Meta::Meta(QQuickItem *parent)
     : QQuickItem(parent)
@@ -47,6 +48,7 @@ void Meta::setFile(QString file, QString update)
         m_album = QString::fromUtf8(tagFile->tag()->album().toCString(true));
         m_artist = QString::fromUtf8(tagFile->tag()->artist().toCString(true));
         m_year = QString::number(tagFile->tag()->year());
+        m_genre = readGenre();
         m_filename = path;
         emit dataChanged();
     }
@@ -125,6 +127,43 @@ void Meta::setAlbumData(QString artist, QString album, QString year)
 
     emit dataAlbumChanged();
 
+}
+
+// Genres of the current file, joined by "; " as the database stores them
+QString Meta::readGenre()
+{
+    QStringList values;
+    TagLib::PropertyMap props = tagFile->file()->properties();
+    for (const auto &v : props["GENRE"])
+        values.append(QString::fromUtf8(v.toCString(true)));
+    return splitGenres(values).join("; ");
+}
+
+// Writes the genres of the current file. Several genres are separated by
+// ";", and are saved as separate values where the tag format allows it.
+void Meta::setGenre(QString genre)
+{
+    QStringList genres = splitGenres(QStringList(genre));
+
+    TagLib::StringList values;
+    foreach (const QString &g, genres)
+        values.append(TagLib::String(g.toStdWString()));
+
+    TagLib::PropertyMap props = tagFile->file()->properties();
+    if (values.isEmpty())
+        props.erase("GENRE");
+    else
+        props.replace("GENRE", values);
+    tagFile->file()->setProperties(props);
+    tagFile->save();
+
+    executeQuery(QString("UPDATE tracks SET genre='%1' where url='%2'")
+                 .arg(reemplazar1(genres.join("; "))).arg(currentFile));
+
+    m_genre = readGenre();
+
+    emit dataChanged();
+    emit genreSaved();
 }
 
 TagLib::File* Meta::getFileByMimeType(QString file)

@@ -5,6 +5,11 @@
 #include <QFileInfo>
 #include <QXmlStreamReader>
 #include <QDir>
+#include <QSet>
+
+#include "globalutils.h"
+
+#include <algorithm>
 
 extern bool databaseWorking;
 extern bool isDBOpened;
@@ -267,6 +272,142 @@ QVariantList PlaylistManager::getAlbumTracks(QString artist, QString album, QStr
         tracks.append(map);
     }
     return tracks;
+}
+
+// Track order of the TrackOrder setting, as an ORDER BY clause
+QString PlaylistManager::trackOrder()
+{
+    QSettings sets(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/flowplayer.conf", QSettings::NativeFormat);
+    QString torder = sets.value("TrackOrder", "number").toString();
+    if (torder=="title") return "title";
+    if (torder=="filename") return "url";
+    return "album, COALESCE(discnum,1), tracknum";
+}
+
+// Tracks store their genres joined as "Rock; Indie": matches one of them
+// exactly. An empty genre matches the tracks that have none. The stored
+// value is unescaped first, since entities such as "&amp;" contain the ";"
+// separator.
+QString PlaylistManager::genreCondition(QString genre)
+{
+    if (genre=="")
+        return "(genre is null or genre='')";
+    genre.replace("'", "''");
+    return QString("instr('; ' || replace(replace(replace(replace(replace(genre, "
+                   "'&quot;', '\"'), '&lt;', '<'), '&gt;', '>'), '&apos;', ''''), '&amp;', '&') "
+                   "|| '; ', '; %1; ')>0").arg(genre);
+}
+
+// FROM, WHERE and ORDER BY of the query listing a genre's tracks
+QString PlaylistManager::genreTracksQuery(QString genre)
+{
+    return QString("from tracks where %1 order by artist collate nocase, year, %2 collate nocase")
+            .arg(genreCondition(genre)).arg(trackOrder());
+}
+
+// Lists the genres of the library, sorted by name, with the number of
+// albums and tracks of each. Tracks without a genre come last, under "".
+QVariantList PlaylistManager::getGenres()
+{
+    if (!isDBOpened) openDatabase();
+
+    QHash<QString, QSet<QString> > albums;
+    QHash<QString, int> songs;
+
+    QSqlQuery query = getQuery("select genre, album, count(*) from tracks group by genre, album");
+    while( query.next() )
+    {
+        QStringList genres = splitGenres(QStringList(xmlout(query.value(0).toString())));
+        if (genres.isEmpty())
+            genres.append("");
+
+        foreach (const QString &genre, genres) {
+            albums[genre].insert(query.value(1).toString());
+            songs[genre] += query.value(2).toInt();
+        }
+    }
+
+    QStringList names = songs.keys();
+    std::sort(names.begin(), names.end(), [](const QString &a, const QString &b) {
+        if (a=="" || b=="") return b=="" && a!="";
+        return QString::localeAwareCompare(a.toLower(), b.toLower()) < 0;
+    });
+
+    QVariantList results;
+    foreach (const QString &genre, names) {
+        QVariantMap map;
+        map.insert("genre", genre);
+        map.insert("albums", albums[genre].count());
+        map.insert("songs", songs[genre]);
+        results.append(map);
+    }
+    return results;
+}
+
+// Lists the albums with tracks of the genre. acount is the number of
+// artists of the whole album, as the album pages expect it.
+QVariantList PlaylistManager::getGenreAlbums(QString genre)
+{
+    if (!isDBOpened) openDatabase();
+
+    QVariantList results;
+    QSqlQuery query = getQuery(QString("select album, artist, "
+                                       "(select count(distinct artist) from tracks t where t.album=tracks.album), "
+                                       "count(*) from tracks where %1 group by album order by album collate nocase")
+                               .arg(genreCondition(genre)));
+    while( query.next() )
+    {
+        QVariantMap map;
+        map.insert("album", xmlout(query.value(0).toString()));
+        map.insert("artist", xmlout(query.value(1).toString()));
+        map.insert("acount", query.value(2).toString());
+        map.insert("songs", query.value(3).toString());
+        results.append(map);
+    }
+    return results;
+}
+
+// Tracks of the genre, in the format of getAlbumTracks()
+QVariantList PlaylistManager::getGenreTracks(QString genre)
+{
+    if (!isDBOpened) openDatabase();
+
+    QVariantList tracks;
+    QSqlQuery query = getQuery("select artist, album, title, duration, url " + genreTracksQuery(genre));
+
+    while( query.next() )
+    {
+        QString url = query.value(4).toString();
+        if (url=="") continue;
+
+        QString title = query.value(2).toString();
+        if (title=="") title = QFileInfo(url).baseName();
+
+        QVariantMap map;
+        map.insert("artist", xmlout(query.value(0).toString()));
+        map.insert("album", xmlout(query.value(1).toString()));
+        map.insert("title", xmlout(title));
+        map.insert("duration", query.value(3).toString());
+        map.insert("url", xmlout(url));
+        tracks.append(map);
+    }
+    return tracks;
+}
+
+// Appends the tracks of the genre to the queue or a playlist
+void PlaylistManager::addGenreToList(QString list, QString genre)
+{
+    qDebug() << "ADDING GENRE TO LIST: " << list << genre;
+
+    if (!isDBOpened) openDatabase();
+
+    if (list=="00000000000000000000")
+        executeQuery("insert into queue (url, artist, album, title, duration) "
+                     "select url, artist, album, title, duration " + genreTracksQuery(genre));
+    else
+        executeQuery(QString("insert into playlists (playlist, url, artist, album, title, duration) "
+                             "select '%1', url, artist, album, title, duration ").arg(list)
+                     + genreTracksQuery(genre));
 }
 
 // Searches the library for artists, albums or tracks (type) whose name
@@ -615,16 +756,16 @@ QString PlaylistManager::albumQuery(QString artist, QString album, QString vario
     QString qr;
 
     if (artist=="ALL" && album=="ALL" && various=="ALL")
-        qr = QString("select artist, album, title, duration, url, tracknum, year, fav, discnum "
+        qr = QString("select artist, album, title, duration, url, tracknum, year, fav, discnum, genre "
                      "from tracks order by %1 collate nocase").arg(order);
 
     else if (various=="1")
-        qr = QString("select artist, album, title, duration, url, tracknum, year, fav, discnum "
+        qr = QString("select artist, album, title, duration, url, tracknum, year, fav, discnum, genre "
                      "from tracks where artist='%1' and album='%2' order by %3 collate nocase")
                     .arg(artist).arg(album).arg(order);
 
     else
-        qr = QString("select artist, album, title, duration, url, tracknum, year, fav, discnum "
+        qr = QString("select artist, album, title, duration, url, tracknum, year, fav, discnum, genre "
                      "from tracks where album='%1' order by %2 collate nocase")
                      .arg(album).arg(order);
 
@@ -653,6 +794,7 @@ void PlaylistManager::loadAlbum(QString artist, QString album, QString various)
         dato7 = query.value(6).toString();   // year
         dato8 = query.value(7).toString();   // fav
         dato9 = query.value(8).toString();   // discnum
+        QString genre = query.value(9).toString();
 
         if ( dato5!="") {
             QVariantMap map;
@@ -665,6 +807,7 @@ void PlaylistManager::loadAlbum(QString artist, QString album, QString various)
             map.insert("fav", dato8);
             map.insert("tracknum", dato6.toInt());
             map.insert("discnum", dato9.toInt());
+            map.insert("genre", xmlout(genre));
 
             totaltime += dato4.toInt();
 
