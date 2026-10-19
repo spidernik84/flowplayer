@@ -51,7 +51,7 @@ void DataReader::openDB()
     {
         executeQuery("create table tracks (url text, artist text, album text, "
             "title text, year integer, tracknum integer, discnum integer, "
-            "duration integer, fav integer)");
+            "duration integer, fav integer, genre text)");
 
         executeQuery("create table playlists (playlist text, url text, artist text, album text, "
                    "title text, duration integer)");
@@ -62,26 +62,31 @@ void DataReader::openDB()
         executeQuery("create table temp (url text, artist text, album text, "
                    "title text, year integer, tracknum integer, duration integer, fav integer)");
 
-        // Migration: ensure the "discnum" column exists on databases created
-        // by older versions of the app. CREATE TABLE above is a no-op when the
-        // table already exists, so we must ALTER older tables explicitly.
+        // Migration: ensure the "discnum" and "genre" columns exist on
+        // databases created by older versions of the app. CREATE TABLE above
+        // is a no-op when the table already exists, so we must ALTER older
+        // tables explicitly.
         QSqlQuery info = getQuery("pragma table_info(tracks)");
         bool hasDiscnum = false;
+        bool hasGenre = false;
         while (info.next()) {
-            if (info.value(1).toString() == "discnum") {
-                hasDiscnum = true;
-                break;
-            }
+            const QString column = info.value(1).toString();
+            if (column == "discnum") hasDiscnum = true;
+            if (column == "genre") hasGenre = true;
         }
         if (!hasDiscnum) {
             qDebug() << "MIGRATING tracks table: adding discnum column";
             executeQuery("alter table tracks add discnum integer");
         }
+        if (!hasGenre) {
+            qDebug() << "MIGRATING tracks table: adding genre column";
+            executeQuery("alter table tracks add genre text");
+        }
     }
 }
 
 void DataReader::insertData(QString url, QString artist, QString album,
-    QString title, int year, int tracknum, int discnum, int duration)
+    QString title, int year, int tracknum, int discnum, int duration, QString genre)
 {
 
     QVariantMap m;
@@ -93,6 +98,7 @@ void DataReader::insertData(QString url, QString artist, QString album,
     m.insert("tracknum", tracknum);
     m.insert("discnum", discnum);
     m.insert("duration", duration);
+    m.insert("genre", genre);
 
     if (favFiles.indexOf(url)>-1)
         m.insert("fav", "1");
@@ -115,14 +121,18 @@ void DataReader::saveData()
 
     if (!isDBOpened) openDatabase();
 
-    QString qr = "insert into tracks";
+    // Name the columns explicitly: columns added by migrations are appended
+    // at the end of the table, so positional inserts would misplace values.
+    QString qr = "insert into tracks (url, artist, album, title, year, tracknum, "
+                 "discnum, duration, fav, genre)";
 
     for (int i=0; i<map.count(); ++i)
     {
         if (i==0)
         {
             qr += QString(" select '%1' as url, '%2' as artist, '%3' as album, '%4' as title, "
-                    "%5 as year, %6 as tracknum, %7 as discnum, %8 as duration, '%9' as fav")
+                    "%5 as year, %6 as tracknum, %7 as discnum, %8 as duration, '%9' as fav, "
+                    "'%10' as genre")
                     .arg(map.at(i).value("url","").toString())
                     .arg(map.at(i).value("artist","").toString())
                     .arg(map.at(i).value("album","").toString())
@@ -131,11 +141,12 @@ void DataReader::saveData()
                     .arg(map.at(i).value("tracknum",0).toInt())
                     .arg(map.at(i).value("discnum",0).toInt())
                     .arg(map.at(i).value("duration",0).toInt())
-                    .arg(map.at(i).value("fav","").toString());
+                    .arg(map.at(i).value("fav","").toString())
+                    .arg(map.at(i).value("genre","").toString());
         }
         else
         {
-            qr += QString(" union select '%1', '%2','%3', '%4',%5, %6, %7, %8, '%9'")
+            qr += QString(" union select '%1', '%2','%3', '%4',%5, %6, %7, %8, '%9', '%10'")
                           .arg(map.at(i).value("url","").toString())
                           .arg(map.at(i).value("artist","").toString())
                           .arg(map.at(i).value("album","").toString())
@@ -144,7 +155,8 @@ void DataReader::saveData()
                           .arg(map.at(i).value("tracknum",0).toInt())
                           .arg(map.at(i).value("discnum",0).toInt())
                           .arg(map.at(i).value("duration",0).toInt())
-                          .arg(map.at(i).value("fav","").toInt());
+                          .arg(map.at(i).value("fav","").toInt())
+                          .arg(map.at(i).value("genre","").toString());
         }
     }
 
@@ -304,6 +316,13 @@ void DataReader::readFile(QString file)
                      << "from discStr =" << discStr;
 
             m_discnum = QString::number(discnum);
+
+            // Genre: use the PropertyMap rather than Tag::genre() so that
+            // multi-valued genres (e.g. several Vorbis GENRE fields) are kept.
+            m_genre = "";
+            if (props.contains("GENRE"))
+                m_genre = QString::fromUtf8(props["GENRE"].toString("; ").toCString(true));
+
             if (m_title=="") m_title = QFileInfo(file).baseName();
 
             // Cover art priority: embedded > cover.jpg/folder.jpg > user-downloaded.
@@ -362,7 +381,7 @@ void DataReader::readFile(QString file)
 
             insertData(reemplazar1(file), reemplazar1(m_artist), reemplazar1(m_album),
                        reemplazar1(m_title), m_year.toInt(), m_tracknum.toInt(),
-                       m_discnum.toInt(), m_duration.toInt());
+                       m_discnum.toInt(), m_duration.toInt(), reemplazar1(m_genre));
 
         }
         else
