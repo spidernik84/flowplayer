@@ -37,13 +37,13 @@ See screenshots in next section.
   - [x] Support ICECast metadata (Artist/Track title/Radio Name)
 - [x] implement headphones event (play/pause/next track) // this needs further testing, it seemed already implemented but doesn't always work
 - [x] dedicated favorites and queue buttons in home
-- [ ] implement resume from last state/page opened
+- [x] implement resume from last state/page opened
 - [ ] implement different strategies for track management and grouping (filesystem based, metadata based, hybrid)
 
 **Low Prio**
 
 - [x] Implement Lyrics download + synced highlight to playback
-- [ ] Implement Queue in own menu section
+- [x] Implement Queue in own menu section
 
 **Won't implement**
 
