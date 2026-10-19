@@ -17,6 +17,10 @@ Page {
     readonly property bool isFavorites: currentPlaylist==="00000000000000000001"
     // While a radio plays, queueList holds the station instead of the queue
     readonly property bool canEdit: !isFavorites && !(isQueueList && playingRadio)
+    // The queue is in the player, filled from this list
+    readonly property bool isPlayingList: myPlayer.source!=="" && !playingRadio &&
+                                          (isQueueList || queueSource===currentPlaylist)
+    readonly property bool canResume: !isPlayingList && playbackStates[currentPlaylist]!==undefined
 
     // Snapshots of the list taken before each edit, oldest first. The first
     // one is the list as it was when editing began.
@@ -36,11 +40,14 @@ Page {
             loaded = true
             if (startEditing && canEdit)
                 songlist.editing = true
-            if (isQueueList && queueList.count>0)
-                return;
+            if (!isQueueList || queueList.count===0) {
+                playlistModel.clear()
+                myplaylistmanager.loadPlaylist(currentPlaylist)
+            }
 
-            playlistModel.clear()
-            myplaylistmanager.loadPlaylist(currentPlaylist)
+            var index = playbackIndex(currentPlaylist, listModel())
+            if (index>=0)
+                songlist.positionViewAtIndex(index, ListView.Center)
         }
         else if (status===PageStatus.Active) {
             stackDepth = pageStack.depth
@@ -314,6 +321,11 @@ Page {
                 enabled: songlist.count>0
                 text: qsTr("Play next")
                 onClicked: queueTracks(listRows(), true)
+            }
+            MenuItem {
+                visible: !songlist.editing && canResume
+                text: qsTr("Resume")
+                onClicked: resumePlayback(currentPlaylist)
             }
             MenuItem {
                 visible: songlist.editing

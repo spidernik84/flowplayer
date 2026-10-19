@@ -194,6 +194,7 @@ void PlaylistManager::copyListToQueue(QString source)
 
     executeQuery(qr);
 
+    emit queueReplaced(source);
 }
 
 bool PlaylistManager::isInQueue(QString url)
@@ -428,6 +429,7 @@ void PlaylistManager::removeList(QString name)
     else
         executeQuery(QString("delete from playlists where playlist='%1'").arg(xmlin(name)));
 
+    emit listRemoved(name);
 }
 
 void PlaylistManager::clearList(QString list)
@@ -441,6 +443,11 @@ void PlaylistManager::clearList(QString list)
         listado.clear();
         saveList(list);
     }
+
+    if (list=="00000000000000000000")
+        emit queueReplaced("");
+    else
+        emit listCleared(list);
 }
 
 QString PlaylistManager::xmlin(QString data)
@@ -475,6 +482,7 @@ void PlaylistManager::renameList(QString oldname, QString newname)
 
     executeQuery(qr);
 
+    emit listRenamed(oldname, newname);
 }
 
 void PlaylistManager::loadPlaylists()

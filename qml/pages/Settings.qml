@@ -236,6 +236,13 @@ Page {
                 }
             }
 
+            TextSwitch {
+                text: qsTr("Remember last played track")
+                description: qsTr("The queue and each playlist resume from the track and position where they were left")
+                checked: rememberPlayback
+                onClicked: setRememberPlayback(checked)
+            }
+
             SectionHeader {
                 text: qsTr("Lyrics")
             }

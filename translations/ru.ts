@@ -789,47 +789,47 @@
         <translation>Неизвестный альбом</translation>
     </message>
     <message>
-        <location filename="../qml/pages/NowPlaying.qml" line="262"/>
+        <location filename="../qml/pages/NowPlaying.qml" line="267"/>
         <source>Equalizer</source>
         <translation>Эквалайзер</translation>
     </message>
     <message>
-        <location filename="../qml/pages/NowPlaying.qml" line="270"/>
+        <location filename="../qml/pages/NowPlaying.qml" line="275"/>
         <source>Edit metadata</source>
         <translation>Редактировать метаданные</translation>
     </message>
     <message>
-        <location filename="../qml/pages/NowPlaying.qml" line="284"/>
+        <location filename="../qml/pages/NowPlaying.qml" line="289"/>
         <source>Remove from favorites</source>
         <translation>Убрать из избранного</translation>
     </message>
     <message>
-        <location filename="../qml/pages/NowPlaying.qml" line="284"/>
+        <location filename="../qml/pages/NowPlaying.qml" line="289"/>
         <source>Add to favorites</source>
         <translation>Добавить в избранное</translation>
     </message>
     <message>
-        <location filename="../qml/pages/NowPlaying.qml" line="294"/>
+        <location filename="../qml/pages/NowPlaying.qml" line="299"/>
         <source>Add to playlist</source>
         <translation>Добавить в плейлист</translation>
     </message>
     <message>
-        <location filename="../qml/pages/NowPlaying.qml" line="310"/>
+        <location filename="../qml/pages/NowPlaying.qml" line="315"/>
         <source>Save station</source>
         <translation>Сохранить станцию</translation>
     </message>
     <message>
-        <location filename="../qml/pages/NowPlaying.qml" line="389"/>
+        <location filename="../qml/pages/NowPlaying.qml" line="394"/>
         <source>Cover not found</source>
         <translation>Обложка не найдена</translation>
     </message>
     <message>
-        <location filename="../qml/pages/NowPlaying.qml" line="492"/>
+        <location filename="../qml/pages/NowPlaying.qml" line="497"/>
         <source>Online radio</source>
         <translation>Онлайн радио</translation>
     </message>
     <message>
-        <location filename="../qml/pages/NowPlaying.qml" line="590"/>
+        <location filename="../qml/pages/NowPlaying.qml" line="595"/>
         <source>Edit queue</source>
         <translation type="unfinished"></translation>
     </message>
@@ -896,12 +896,12 @@
 <context>
     <name>PlaylistManager</name>
     <message>
-        <location filename="../src/playlistmanager.cpp" line="297"/>
+        <location filename="../src/playlistmanager.cpp" line="298"/>
         <source>Various artists</source>
         <translation type="unfinished">Различные исполнители</translation>
     </message>
     <message>
-        <location filename="../src/playlistmanager.cpp" line="513"/>
+        <location filename="../src/playlistmanager.cpp" line="521"/>
         <source>Custom playlists</source>
         <translation>Собственные плейлисты</translation>
     </message>
@@ -909,37 +909,37 @@
 <context>
     <name>PlaylistPage</name>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="61"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="68"/>
         <source>Queue changes discarded</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="62"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="69"/>
         <source>Playlist changes discarded</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="221"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="228"/>
         <source>Added to favorites</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="221"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="228"/>
         <source>Already in favorites</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="250"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="257"/>
         <source>Queue</source>
         <translation>Очередь</translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="251"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="258"/>
         <source>Favorites</source>
         <translation>Избранное</translation>
     </message>
     <message numerus="yes">
-        <location filename="../qml/pages/PlaylistPage.qml" line="255"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="262"/>
         <source>%n selected</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -948,100 +948,105 @@
         </translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="256"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="263"/>
         <source>Drag the handle to move, tap to select</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="262"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="269"/>
         <source>Rename playlist</source>
         <translation>Переименовать плейлист</translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="269"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="276"/>
         <source>Clear playlist</source>
         <translation>Очистить плейлист</translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="271"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="278"/>
         <source>Clearing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="288"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="295"/>
         <source>Edit queue</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="288"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="295"/>
         <source>Edit playlist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="297"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="304"/>
         <source>Add to favorites</source>
         <translation type="unfinished">Добавить в избранное</translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="303"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="310"/>
         <source>Save as playlist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="309"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="316"/>
         <source>Add to queue</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="320"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="327"/>
+        <source>Resume</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/PlaylistPage.qml" line="332"/>
         <source>Select none</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="320"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="332"/>
         <source>Select all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="330"/>
-        <location filename="../qml/pages/PlaylistPage.qml" line="491"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="342"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="503"/>
         <source>Done</source>
         <translation type="unfinished">Готово</translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="336"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="348"/>
         <source>Undo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="360"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="372"/>
         <source>Deleting</source>
         <translation>Удаление</translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="379"/>
-        <location filename="../qml/pages/PlaylistPage.qml" line="484"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="391"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="496"/>
         <source>Remove</source>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="421"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="433"/>
         <source>Playlist is empty</source>
         <translation>Плейлист пуст</translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="449"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="461"/>
         <source>Move to top</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="461"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="473"/>
         <source>Move to bottom</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="315"/>
-        <location filename="../qml/pages/PlaylistPage.qml" line="475"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="322"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="487"/>
         <source>Play next</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1432,41 +1437,51 @@
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="240"/>
+        <source>Remember last played track</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/Settings.qml" line="241"/>
+        <source>The queue and each playlist resume from the track and position where they were left</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/Settings.qml" line="247"/>
         <source>Lyrics</source>
         <translation>Текст песни</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="245"/>
+        <location filename="../qml/pages/Settings.qml" line="252"/>
         <source>Fetch lyrics automatically</source>
         <translation>Загружать тексты автоматически</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="253"/>
+        <location filename="../qml/pages/Settings.qml" line="260"/>
         <source>Save lyrics automatically</source>
         <translation>Сохранять тексты автоматически</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="261"/>
+        <location filename="../qml/pages/Settings.qml" line="268"/>
         <source>Extras</source>
         <translation>Дополнительно</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="265"/>
+        <location filename="../qml/pages/Settings.qml" line="272"/>
         <source>Gapless playback</source>
         <translation>Gapless playback</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="274"/>
+        <location filename="../qml/pages/Settings.qml" line="281"/>
         <source>Collection</source>
         <translation>Коллекция</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="286"/>
+        <location filename="../qml/pages/Settings.qml" line="293"/>
         <source>Manage folders</source>
         <translation>Управление папками</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="300"/>
+        <location filename="../qml/pages/Settings.qml" line="307"/>
         <source>Update collection</source>
         <translation>Обновить коллекцию</translation>
     </message>
@@ -1616,127 +1631,127 @@
 <context>
     <name>StartPage</name>
     <message>
-        <location filename="../qml/pages/StartPage.qml" line="225"/>
+        <location filename="../qml/pages/StartPage.qml" line="234"/>
         <source>Updating music collection</source>
         <translation>Обновление музыкальной коллекции</translation>
     </message>
     <message>
-        <location filename="../qml/pages/StartPage.qml" line="232"/>
+        <location filename="../qml/pages/StartPage.qml" line="241"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../qml/pages/StartPage.qml" line="251"/>
+        <location filename="../qml/pages/StartPage.qml" line="260"/>
         <source>1 track</source>
         <translation type="unfinished">1 трек</translation>
     </message>
     <message>
-        <location filename="../qml/pages/StartPage.qml" line="251"/>
+        <location filename="../qml/pages/StartPage.qml" line="260"/>
         <source>%1 tracks</source>
         <translation type="unfinished">%1 треков</translation>
     </message>
     <message>
-        <location filename="../qml/pages/StartPage.qml" line="277"/>
+        <location filename="../qml/pages/StartPage.qml" line="286"/>
         <source>Rescan library</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/StartPage.qml" line="364"/>
+        <location filename="../qml/pages/StartPage.qml" line="373"/>
         <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/StartPage.qml" line="291"/>
+        <location filename="../qml/pages/StartPage.qml" line="300"/>
         <source>Artists</source>
         <translation>Исполнители</translation>
     </message>
     <message>
-        <location filename="../qml/pages/StartPage.qml" line="292"/>
+        <location filename="../qml/pages/StartPage.qml" line="301"/>
         <source>1 artist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/StartPage.qml" line="292"/>
+        <location filename="../qml/pages/StartPage.qml" line="301"/>
         <source>%1 artists</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/StartPage.qml" line="298"/>
+        <location filename="../qml/pages/StartPage.qml" line="307"/>
         <source>Albums</source>
         <translation>Альбомы</translation>
     </message>
     <message>
-        <location filename="../qml/pages/StartPage.qml" line="299"/>
+        <location filename="../qml/pages/StartPage.qml" line="308"/>
         <source>1 album</source>
         <translation type="unfinished">1 альбом</translation>
     </message>
     <message>
-        <location filename="../qml/pages/StartPage.qml" line="299"/>
+        <location filename="../qml/pages/StartPage.qml" line="308"/>
         <source>%1 albums</source>
         <translation type="unfinished">%1 альбомов</translation>
     </message>
     <message>
-        <location filename="../qml/pages/StartPage.qml" line="305"/>
+        <location filename="../qml/pages/StartPage.qml" line="314"/>
         <source>Tracks</source>
         <translation>Треки</translation>
     </message>
     <message>
-        <location filename="../qml/pages/StartPage.qml" line="312"/>
+        <location filename="../qml/pages/StartPage.qml" line="321"/>
         <source>Queue</source>
         <translation type="unfinished">Очередь</translation>
     </message>
     <message>
-        <location filename="../qml/pages/StartPage.qml" line="319"/>
+        <location filename="../qml/pages/StartPage.qml" line="328"/>
         <source>Favorites</source>
         <translation type="unfinished">Избранное</translation>
     </message>
     <message>
-        <location filename="../qml/pages/StartPage.qml" line="328"/>
+        <location filename="../qml/pages/StartPage.qml" line="337"/>
         <source>Playlists</source>
         <translation>Плейлисты</translation>
     </message>
     <message>
-        <location filename="../qml/pages/StartPage.qml" line="329"/>
+        <location filename="../qml/pages/StartPage.qml" line="338"/>
         <source>1 playlist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/StartPage.qml" line="329"/>
+        <location filename="../qml/pages/StartPage.qml" line="338"/>
         <source>%1 playlists</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/StartPage.qml" line="338"/>
+        <location filename="../qml/pages/StartPage.qml" line="347"/>
         <source>Radio stations</source>
         <translation>Радиостанции</translation>
     </message>
     <message>
-        <location filename="../qml/pages/StartPage.qml" line="339"/>
+        <location filename="../qml/pages/StartPage.qml" line="348"/>
         <source>1 station</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/StartPage.qml" line="339"/>
+        <location filename="../qml/pages/StartPage.qml" line="348"/>
         <source>%1 stations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/StartPage.qml" line="374"/>
+        <location filename="../qml/pages/StartPage.qml" line="383"/>
         <source>Shuffle all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/StartPage.qml" line="256"/>
+        <location filename="../qml/pages/StartPage.qml" line="265"/>
         <source>Download album covers</source>
         <translation>Загрузить обложки альбомов</translation>
     </message>
     <message>
-        <location filename="../qml/pages/StartPage.qml" line="270"/>
+        <location filename="../qml/pages/StartPage.qml" line="279"/>
         <source>Settings</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../qml/pages/StartPage.qml" line="263"/>
+        <location filename="../qml/pages/StartPage.qml" line="272"/>
         <source>Equalizer</source>
         <translation>Эквалайзер</translation>
     </message>
@@ -1800,7 +1815,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/harbour-flowplayer-ng.qml" line="287"/>
+        <location filename="../qml/harbour-flowplayer-ng.qml" line="410"/>
         <source>(radio)</source>
         <translation type="unfinished">(радио)</translation>
     </message>

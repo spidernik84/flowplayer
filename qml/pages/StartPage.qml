@@ -92,7 +92,16 @@ Page {
                 myplaylistmanager.loadPlaylist("00000000000000000000")
             if (queueList.count===0)
                 return false
-            nowPlayingPage.cueSong(0)
+            var index = playbackIndex("00000000000000000000", queueList)
+            if (index>=0) {
+                var state = playbackState("00000000000000000000")
+                // Loading the track must not overwrite its stored position
+                savedUrl = state.url
+                savedPosition = state.position
+                nowPlayingPage.cueSong(index, state.position)
+            } else {
+                nowPlayingPage.cueSong(0)
+            }
             pageStack.push(nowPlayingPage, {}, PageStackAction.Immediate)
         } else {
             return false

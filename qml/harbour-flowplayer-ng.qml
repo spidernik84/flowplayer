@@ -169,6 +169,125 @@ ApplicationWindow
         utils.setSettings("LastPage", page)
     }
 
+    // Last played track and position (seconds) of the queue and of each
+    // playlist, by list name: {name: {url, position}}
+    property bool rememberPlayback: utils.readSettings("RememberPlayback", "yes")==="yes"
+    property var playbackStates: parsePlaybackStates()
+    // Playlist the queue was copied from, which shares its state
+    property string queueSource: utils.readSettings("QueueSource", "")
+    property string savedUrl
+    property int savedPosition
+
+    function parsePlaybackStates() {
+        try {
+            return JSON.parse(utils.readSettings("PlaybackStates", "{}"))
+        } catch (e) {
+            return {}
+        }
+    }
+
+    // Returns a copy of the states to change: assigning a new object is
+    // what notifies the bindings
+    function copyPlaybackStates() {
+        return JSON.parse(JSON.stringify(playbackStates))
+    }
+
+    function writePlaybackStates(states) {
+        playbackStates = states
+        utils.setSettings("PlaybackStates", JSON.stringify(states))
+    }
+
+    function setRememberPlayback(enabled) {
+        rememberPlayback = enabled
+        utils.setSettings("RememberPlayback", enabled ? "yes" : "no")
+        if (!enabled)
+            writePlaybackStates({})
+    }
+
+    function setQueueSource(source) {
+        queueSource = source
+        utils.setSettings("QueueSource", source)
+    }
+
+    function playbackState(list) {
+        return rememberPlayback && playbackStates[list] ? playbackStates[list] : null
+    }
+
+    // Index of the list's remembered track in model, or -1
+    function playbackIndex(list, model) {
+        var state = playbackState(list)
+        for (var i=0; state && i<model.count; ++i) {
+            if (model.get(i).url===state.url)
+                return i
+        }
+        return -1
+    }
+
+    // Stores the playing queue track for the queue and its source playlist.
+    // A new track is stored right away, the position every few seconds.
+    function savePlaybackState(force) {
+        if (!rememberPlayback || playingRadio || myPlayer.source==="" ||
+                queueList.currentIndex<0 || queueList.currentIndex>=queueList.count)
+            return
+        var url = queueList.get(queueList.currentIndex).url
+        // While a track changes, the player and the queue briefly disagree
+        if (decodeURIComponent(url)!==decodeURIComponent(myPlayer.source))
+            return
+        var position = Math.max(0, Math.floor(myPlayer.position))
+        if (url===savedUrl) {
+            // stop() and end of media reset the position: keep the stored one
+            if (position===0 || (!force && Math.abs(position-savedPosition)<5))
+                return
+        }
+        savedUrl = url
+        savedPosition = position
+
+        var states = copyPlaybackStates()
+        states["00000000000000000000"] = {"url":url, "position":position}
+        if (queueSource!=="")
+            states[queueSource] = {"url":url, "position":position}
+        writePlaybackStates(states)
+    }
+
+    function forgetPlaybackState(list) {
+        if (playbackStates[list]===undefined)
+            return
+        var states = copyPlaybackStates()
+        delete states[list]
+        writePlaybackStates(states)
+    }
+
+    // Loads the queue, or the playlist given, into the player and continues
+    // from its remembered track and position
+    function resumePlayback(list) {
+        var state = playbackState(list)
+        if (list!=="00000000000000000000") {
+            myplaylistmanager.copyListToQueue(list)
+            queueList.clear()
+        } else if (playingRadio) {
+            queueList.clear()
+        }
+        if (queueList.count===0)
+            myplaylistmanager.loadPlaylist("00000000000000000000")
+        myPlaylists.clear()
+        myplaylistmanager.loadPlaylists()
+        if (queueList.count===0)
+            return
+
+        // A track since removed from the list starts it over
+        var index = state ? playbackIndex(list, queueList) : -1
+        var position = index>=0 ? state.position : 0
+        index = Math.max(0, index)
+        // Loading the track must not overwrite its stored position
+        if (position>0) {
+            savedUrl = state.url
+            savedPosition = position
+        }
+        queueList.currentIndex = index
+        nowPlayingPage.playSong(index, position)
+        miniPlayer.open = true
+    }
+
     // Manual fallback: restarts mpris-proxy so it re-elects FlowPlayer.
     // Not called automatically any more — the direct BlueZ registration
     // through BluetoothMediaPlayer below should make this unnecessary on
@@ -205,6 +324,9 @@ ApplicationWindow
         }
 
         onStateChanged: {
+            if (myPlayer.state===2)
+                savePlaybackState(true)
+
             if (myPlayer.state===0) {
                 if (queueList.count==1)
                     nowPlayingPage.changeSong()
@@ -220,6 +342,7 @@ ApplicationWindow
         onPositionChanged: {
             mprisPlayer.position = myPlayer.position * 1000
             playerPositionChanged(myPlayer.position)
+            savePlaybackState(false)
         }
 
         onStreamMetadataChanged: {
@@ -374,6 +497,31 @@ ApplicationWindow
         onAddItemToListDone: {
             if (list==="00000000000000000000")
                 utils.setShuffle(queueList.count)
+        }
+
+        onQueueReplaced: {
+            setQueueSource(source)
+            forgetPlaybackState("00000000000000000000")
+            savedUrl = ""
+        }
+
+        onListCleared: forgetPlaybackState(list)
+
+        onListRemoved: {
+            forgetPlaybackState(list)
+            if (list===queueSource)
+                setQueueSource("")
+        }
+
+        onListRenamed: {
+            if (playbackStates[oldname]!==undefined) {
+                var states = copyPlaybackStates()
+                states[newname] = states[oldname]
+                delete states[oldname]
+                writePlaybackStates(states)
+            }
+            if (oldname===queueSource)
+                setQueueSource(newname)
         }
 
     }

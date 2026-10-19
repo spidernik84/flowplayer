@@ -55,6 +55,7 @@ public slots:
     void pause();
     void resume();
     void seek(int val);
+    void setStartPosition(int val);
     void backend_seek(gint value);
     void backend_seek_absolute(guint64 value);
     void backend_reset();
@@ -100,6 +101,7 @@ private:
     GstMessage *msg;
 
     bool m_pausedByBT = false; // used to track if playback paused by BT event
+    int m_startPosition = 0; // seconds to seek to once the source is loaded
 
     QString m_streamTitle;
     QString m_streamCover;

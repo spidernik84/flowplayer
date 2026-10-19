@@ -54,6 +54,12 @@ signals:
     void addItemToArtist(QVariantMap item);
     void albumLoaded(int totaltime);
     void artistLoaded(int totalsongs);
+    // The queue was replaced: source is the playlist it was copied from,
+    // or empty when it was cleared
+    void queueReplaced(QString source);
+    void listCleared(QString list);
+    void listRemoved(QString list);
+    void listRenamed(QString oldname, QString newname);
 
 
 };

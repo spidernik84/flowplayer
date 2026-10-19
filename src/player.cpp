@@ -93,6 +93,16 @@ gboolean Player::handleBusMessage (GstBus *, GstMessage *msg)
             timer->stop();
             break;
         }
+        case GST_MESSAGE_ASYNC_DONE:
+        {
+            // A seek only works once the pipeline is prerolled
+            if (m_startPosition>0 && GST_MESSAGE_SRC(msg)==GST_OBJECT(pipeline)) {
+                int position = m_startPosition;
+                m_startPosition = 0;
+                seek(position);
+            }
+            break;
+        }
         /*case GST_MESSAGE_DURATION_CHANGED:
         {
             qDebug() << "Duration changed";
@@ -318,6 +328,7 @@ void Player::setSource(QString file, bool stopcurrent)
     //gst_element_set_state (pipeline, GST_STATE_NULL);
 
     m_source = file;
+    m_startPosition = 0;
     qDebug() << "Set source: " << m_source;
     clearStreamMetadata();
 
@@ -458,6 +469,13 @@ void Player::seek(int val)
         m_position = val;
         emit positionChanged();
     }
+}
+
+// Starts the next source loaded at the given position, in seconds.
+// Call it after setSource() and before play() or pause().
+void Player::setStartPosition(int val)
+{
+    m_startPosition = val;
 }
 
 void Player::backend_reset()

@@ -101,15 +101,16 @@ Page {
 
     }
 
-    function playSong(index) {
+    // startAt: optional position to start from, in seconds
+    function playSong(index, startAt) {
         console.log("Change index to " + index + " - count: " + bigCoverList.count)
         bigCoverList.positionViewAtIndex(index, PathView.Center)
-        changeSong()
+        changeSong(startAt)
     }
 
 
     // Loads a queued track paused, without starting playback
-    function cueSong(index) {
+    function cueSong(index, startAt) {
         playingRadio = false
         bigCoverList.positionViewAtIndex(index, PathView.Center)
         queueList.currentIndex = index
@@ -118,10 +119,12 @@ Page {
         currentSongInfo = {artist:track.artist, album:track.album, title:track.title,
                            url:track.url, duration:track.duration}
         myPlayer.setSource(decodeURIComponent(track.url))
+        if (startAt>0)
+            myPlayer.setStartPosition(startAt)
         myPlayer.pause()
     }
 
-    function changeSong() {
+    function changeSong(startAt) {
         playingRadio = false
         console.log("Playing " + bigCoverList.currentItem.myData.title)
         queueList.currentIndex = bigCoverList.currentIndex
@@ -129,6 +132,8 @@ Page {
         //player.source = "file://" + decodeURIComponent(bigCoverList.currentItem.myData.url)
         //player.play()
         myPlayer.setSource(decodeURIComponent(bigCoverList.currentItem.myData.url))
+        if (startAt>0)
+            myPlayer.setStartPosition(startAt)
         myPlayer.play()
     }
 
