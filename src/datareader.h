@@ -30,6 +30,7 @@ public:
     QString m_duration;
     QString m_tracknum;
     QString m_discnum;
+    QString m_genre;
 
     QString reemplazar1(QString data);
     QString reemplazar2(QString data);
@@ -47,7 +48,7 @@ private:
 public slots:
     void openDB();
     void insertData(QString url, QString artist, QString album,
-        QString title, int year, int tracknum, int discnum, int duration);
+        QString title, int year, int tracknum, int discnum, int duration, QString genre);
     void saveData();
     void readFile(QString file);
     void addFile(QString file);
