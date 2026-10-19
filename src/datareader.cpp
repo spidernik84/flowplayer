@@ -319,9 +319,10 @@ void DataReader::readFile(QString file)
 
             // Genre: use the PropertyMap rather than Tag::genre() so that
             // multi-valued genres (e.g. several Vorbis GENRE fields) are kept.
-            m_genre = "";
-            if (props.contains("GENRE"))
-                m_genre = QString::fromUtf8(props["GENRE"].toString("; ").toCString(true));
+            QStringList genreValues;
+            for (const auto &v : props["GENRE"])
+                genreValues.append(QString::fromUtf8(v.toCString(true)));
+            m_genre = splitGenres(genreValues).join("; ");
 
             if (m_title=="") m_title = QFileInfo(file).baseName();
 

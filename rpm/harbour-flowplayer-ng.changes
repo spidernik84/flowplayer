@@ -1,3 +1,9 @@
+* Mon Oct 19 2026 spidernik84 <spidernik84@users.noreply.github.com> - 2.2.0
+- Introduced support for genre
+
+* Mon Oct 19 2026 spidernik84 <spidernik84@users.noreply.github.com> - 2.1.0
+- Introduced resume player state
+
 * Thu Oct 8 2026 spidernik84 <spidernik84@users.noreply.github.com> - 2.0.0
 - Introduced omnisearch feature
 - Remember last page/section feature

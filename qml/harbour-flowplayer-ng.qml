@@ -313,6 +313,10 @@ ApplicationWindow
     property string filterAlbum
     property string filterArtistCount
     property string filterSong
+    // Set by the genre pages: SelectPlaylist then adds the tracks of
+    // filterGenre ("" being the tracks without one) instead of the above
+    property bool filterByGenre: false
+    property string filterGenre
 
     property bool gaplessPlayback: utils.readSettings("GaplessPlayback", "no")==="yes"
 

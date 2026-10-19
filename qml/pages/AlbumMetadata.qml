@@ -12,15 +12,37 @@ Dialog {
     property string album
     property string artistcount
 
+    // Genre shared by all tracks, or "" when they have different ones
+    property string albumGenre: ""
+    property bool mixedGenres: false
+
+    Component.onCompleted: {
+        for (var i=0; i<helperList2.count; ++i) {
+            var genre = helperList2.get(i).genre || ""
+            if (i===0)
+                albumGenre = genre
+            else if (genre!==albumGenre) {
+                albumGenre = ""
+                mixedGenres = true
+                break
+            }
+        }
+    }
 
     onAccepted: {
         //titleField.text = meta.title
         //meta.setData(titleField.text, artistField.text, albumField.text, yearField.text)
+
+        // Only write the genre when edited, so differing genres are kept
+        var genreEdited = genreField.text.trim()!==albumGenre
+
         for ( var i=0; i<helperList2.count; ++i )
         {
             meta.setFile(helperList2.get(i).url,"false")
             console.log("TAG: " + artistField.text + " - " + albumField.text + " - " + yearField.text)
             meta.setAlbumData(artistField.text, albumField.text, yearField.text)
+            if (genreEdited)
+                meta.setGenre(genreField.text)
         }
 
         albumMetadataChanged(artist, artistField.text, album, albumField.text, "!album!", "!album!")
@@ -96,7 +118,17 @@ Dialog {
                 EnterKey.enabled: yearField.text.length>0
                 EnterKey.iconSource: "image://theme/icon-m-enter-accept"
                 inputMethodHints: Qt.ImhDigitsOnly
-                //EnterKey.onClicked: dialog.accept()
+                EnterKey.onClicked: genreField.forceActiveFocus()
+            }
+
+            TextField {
+                id: genreField
+                width: parent.width
+                text: albumGenre
+                placeholderText: mixedGenres ? qsTr("Several genres") : qsTr("Genre")
+                label: qsTr("Genre, several separated by ;")
+                EnterKey.iconSource: "image://theme/icon-m-enter-accept"
+                EnterKey.onClicked: root.accept()
             }
 
         }

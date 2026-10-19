@@ -22,6 +22,9 @@ public:
 
 private:
     QString albumQuery(QString artist, QString album, QString various);
+    QString trackOrder();
+    QString genreCondition(QString genre);
+    QString genreTracksQuery(QString genre);
 
 public slots:
     void loadList(QString list);
@@ -33,6 +36,10 @@ public slots:
     void insertIntoQueue(QStringList urls, int position);
     QVariantList getAlbumTracks(QString artist, QString album, QString various);
     QVariantList searchLibrary(QString text, QString type, int limit);
+    QVariantList getGenres();
+    QVariantList getGenreAlbums(QString genre);
+    QVariantList getGenreTracks(QString genre);
+    void addGenreToList(QString list, QString genre);
     void removeFromList(QString link);
     void saveList(QString list);
     void saveListOrder(QString list, QVariantList rows);

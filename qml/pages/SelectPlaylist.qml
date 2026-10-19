@@ -11,7 +11,10 @@ Dialog {
     canAccept: selectedList!==""
 
     onAccepted: {
-        myplaylistmanager.addAlbumToList(selectedList, filterArtist, filterAlbum, filterArtistCount, filterSong)
+        if (filterByGenre)
+            myplaylistmanager.addGenreToList(selectedList, filterGenre)
+        else
+            myplaylistmanager.addAlbumToList(selectedList, filterArtist, filterAlbum, filterArtistCount, filterSong)
 
         if (selectedList==="00000000000000000000") {
             queueList.clear()
@@ -22,6 +25,9 @@ Dialog {
     onStatusChanged: {
         if (status===PageStatus.Activating && myPlaylists.count==0)
             myplaylistmanager.loadPlaylists()
+        // The other pages don't reset it, so it lasts only for this dialog
+        else if (status===PageStatus.Inactive)
+            filterByGenre = false
     }
 
     DialogHeader {

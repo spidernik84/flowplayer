@@ -26,6 +26,9 @@ void openDatabase()
     if (database.open()) {
         isDBOpened = true;
             executeQuery("alter table tracks add discnum integer");
+            // Fails harmlessly when the column exists. Done here and not only
+            // when rescanning, as the library pages query it.
+            executeQuery("alter table tracks add genre text");
     } else {
         qWarning() << "cannot open database" << database.databaseName() << database.lastError().text();
     }
