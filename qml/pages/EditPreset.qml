@@ -40,6 +40,7 @@ Dialog {
 
             PageHeader {
                 id: header2
+                _minimumTopMargin: 0 // DialogHeader above already clears the notch
                 title: editingRadio? qsTr("Edit preset") : qsTr("Save preset")
                 anchors.top: header.bottom
                 width: parent.width

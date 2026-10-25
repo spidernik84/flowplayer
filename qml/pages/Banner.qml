@@ -5,7 +5,9 @@ MouseArea {
     id: popup
     anchors.top: parent.top
     width: parent.width
-    height: Math.max(message.paintedHeight, icon.height) + Theme.paddingLarge
+    // Grow behind the display notch so the message stays below it
+    property real _cutoutMargin: appWindow.orientation === Orientation.Portrait ? Screen.topCutout.height : 0
+    height: Math.max(message.paintedHeight, icon.height) + Theme.paddingLarge + _cutoutMargin
     property alias title: message.text
     property alias timeout: hideTimer.interval
     property alias background: bg.color
@@ -56,11 +58,13 @@ MouseArea {
         anchors.left: parent.left
         anchors.leftMargin: Theme.paddingMedium
         anchors.verticalCenter: parent.verticalCenter
+        anchors.verticalCenterOffset: popup._cutoutMargin / 2
     }
 
     Label {
         id: message
         anchors.verticalCenter: popup.verticalCenter
+        anchors.verticalCenterOffset: popup._cutoutMargin / 2
         //font.pixelSize: 32
         anchors.left: icon.right
         anchors.leftMargin: Theme.paddingMedium

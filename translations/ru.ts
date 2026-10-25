@@ -42,22 +42,22 @@
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../qml/pages/AddFolder.qml" line="51"/>
+        <location filename="../qml/pages/AddFolder.qml" line="52"/>
         <source>Select folder</source>
         <translation>Выбрать папку</translation>
     </message>
     <message>
-        <location filename="../qml/pages/AddFolder.qml" line="85"/>
+        <location filename="../qml/pages/AddFolder.qml" line="86"/>
         <source>Deleting</source>
         <translation>Удаление</translation>
     </message>
     <message>
-        <location filename="../qml/pages/AddFolder.qml" line="96"/>
+        <location filename="../qml/pages/AddFolder.qml" line="97"/>
         <source>Remove</source>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="../qml/pages/AddFolder.qml" line="136"/>
+        <location filename="../qml/pages/AddFolder.qml" line="137"/>
         <source>No items</source>
         <translation>Нет файлов</translation>
     </message>
@@ -75,24 +75,24 @@
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../qml/pages/AddRadio.qml" line="50"/>
+        <location filename="../qml/pages/AddRadio.qml" line="51"/>
         <source>Edit station</source>
         <translation>Изменить станцию</translation>
     </message>
     <message>
-        <location filename="../qml/pages/AddRadio.qml" line="50"/>
+        <location filename="../qml/pages/AddRadio.qml" line="51"/>
         <source>Add station</source>
         <translation>Добавить станцию</translation>
     </message>
     <message>
-        <location filename="../qml/pages/AddRadio.qml" line="59"/>
         <location filename="../qml/pages/AddRadio.qml" line="60"/>
+        <location filename="../qml/pages/AddRadio.qml" line="61"/>
         <source>Station name</source>
         <translation>Название станции</translation>
     </message>
     <message>
-        <location filename="../qml/pages/AddRadio.qml" line="70"/>
         <location filename="../qml/pages/AddRadio.qml" line="71"/>
+        <location filename="../qml/pages/AddRadio.qml" line="72"/>
         <source>Station url</source>
         <translation>Адрес станции</translation>
     </message>
@@ -179,45 +179,45 @@
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../qml/pages/AlbumMetadata.qml" line="74"/>
+        <location filename="../qml/pages/AlbumMetadata.qml" line="75"/>
         <source>Metadata editor</source>
         <translation>Редактор метаданных</translation>
     </message>
     <message>
-        <location filename="../qml/pages/AlbumMetadata.qml" line="83"/>
+        <location filename="../qml/pages/AlbumMetadata.qml" line="84"/>
         <source>Cover not found</source>
         <translation>Обложка не найдена</translation>
     </message>
     <message>
-        <location filename="../qml/pages/AlbumMetadata.qml" line="91"/>
         <location filename="../qml/pages/AlbumMetadata.qml" line="92"/>
+        <location filename="../qml/pages/AlbumMetadata.qml" line="93"/>
         <source>Artist</source>
         <translation>Исполнители</translation>
     </message>
     <message>
-        <location filename="../qml/pages/AlbumMetadata.qml" line="103"/>
         <location filename="../qml/pages/AlbumMetadata.qml" line="104"/>
+        <location filename="../qml/pages/AlbumMetadata.qml" line="105"/>
         <source>Album</source>
         <translation>Альбомы</translation>
     </message>
     <message>
-        <location filename="../qml/pages/AlbumMetadata.qml" line="115"/>
         <location filename="../qml/pages/AlbumMetadata.qml" line="116"/>
+        <location filename="../qml/pages/AlbumMetadata.qml" line="117"/>
         <source>Year</source>
         <translation>Год</translation>
     </message>
     <message>
-        <location filename="../qml/pages/AlbumMetadata.qml" line="128"/>
+        <location filename="../qml/pages/AlbumMetadata.qml" line="129"/>
         <source>Several genres</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/AlbumMetadata.qml" line="128"/>
+        <location filename="../qml/pages/AlbumMetadata.qml" line="129"/>
         <source>Genre</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/AlbumMetadata.qml" line="129"/>
+        <location filename="../qml/pages/AlbumMetadata.qml" line="130"/>
         <source>Genre, several separated by ;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -305,18 +305,18 @@
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../qml/pages/EditPreset.qml" line="43"/>
+        <location filename="../qml/pages/EditPreset.qml" line="44"/>
         <source>Edit preset</source>
         <translation>Изменить пресет</translation>
     </message>
     <message>
-        <location filename="../qml/pages/EditPreset.qml" line="43"/>
+        <location filename="../qml/pages/EditPreset.qml" line="44"/>
         <source>Save preset</source>
         <translation>Сохранить пресет</translation>
     </message>
     <message>
-        <location filename="../qml/pages/EditPreset.qml" line="52"/>
         <location filename="../qml/pages/EditPreset.qml" line="53"/>
+        <location filename="../qml/pages/EditPreset.qml" line="54"/>
         <source>Preset name</source>
         <translation>Название пресета</translation>
     </message>
@@ -779,46 +779,46 @@
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Metadata.qml" line="64"/>
+        <location filename="../qml/pages/Metadata.qml" line="65"/>
         <source>Metadata editor</source>
         <translation>Редактор метаданных</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Metadata.qml" line="73"/>
+        <location filename="../qml/pages/Metadata.qml" line="74"/>
         <source>Cover not found</source>
         <translation>Обложка не найдена</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Metadata.qml" line="81"/>
         <location filename="../qml/pages/Metadata.qml" line="82"/>
+        <location filename="../qml/pages/Metadata.qml" line="83"/>
         <source>Artist</source>
         <translation>Исполнитель</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Metadata.qml" line="94"/>
         <location filename="../qml/pages/Metadata.qml" line="95"/>
+        <location filename="../qml/pages/Metadata.qml" line="96"/>
         <source>Album</source>
         <translation>Альбомы</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Metadata.qml" line="107"/>
         <location filename="../qml/pages/Metadata.qml" line="108"/>
+        <location filename="../qml/pages/Metadata.qml" line="109"/>
         <source>Title</source>
         <translation>Название</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Metadata.qml" line="119"/>
         <location filename="../qml/pages/Metadata.qml" line="120"/>
+        <location filename="../qml/pages/Metadata.qml" line="121"/>
         <source>Year</source>
         <translation>Год</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Metadata.qml" line="133"/>
+        <location filename="../qml/pages/Metadata.qml" line="134"/>
         <source>Genre</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/Metadata.qml" line="134"/>
+        <location filename="../qml/pages/Metadata.qml" line="135"/>
         <source>Genre, several separated by ;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -886,23 +886,23 @@
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../qml/pages/NewPlaylist.qml" line="104"/>
+        <location filename="../qml/pages/NewPlaylist.qml" line="105"/>
         <source>Rename playlist</source>
         <translation>Переименовать плейлист</translation>
     </message>
     <message>
-        <location filename="../qml/pages/NewPlaylist.qml" line="104"/>
+        <location filename="../qml/pages/NewPlaylist.qml" line="105"/>
         <source>New playlist</source>
         <translation>Новый плейлист</translation>
     </message>
     <message>
-        <location filename="../qml/pages/NewPlaylist.qml" line="113"/>
-        <location filename="../qml/pages/NewPlaylist.qml" line="115"/>
+        <location filename="../qml/pages/NewPlaylist.qml" line="114"/>
+        <location filename="../qml/pages/NewPlaylist.qml" line="116"/>
         <source>Playlist name</source>
         <translation>Название плейлиста</translation>
     </message>
     <message>
-        <location filename="../qml/pages/NewPlaylist.qml" line="114"/>
+        <location filename="../qml/pages/NewPlaylist.qml" line="115"/>
         <source>A playlist with this name already exists</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1241,31 +1241,31 @@
     <name>SearchPage</name>
     <message>
         <location filename="../qml/pages/SearchPage.qml" line="30"/>
-        <location filename="../qml/pages/SearchPage.qml" line="150"/>
+        <location filename="../qml/pages/SearchPage.qml" line="156"/>
         <source>Artists</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/pages/SearchPage.qml" line="31"/>
-        <location filename="../qml/pages/SearchPage.qml" line="151"/>
+        <location filename="../qml/pages/SearchPage.qml" line="157"/>
         <source>Albums</source>
         <translation type="unfinished">Альбомы</translation>
     </message>
     <message>
         <location filename="../qml/pages/SearchPage.qml" line="32"/>
-        <location filename="../qml/pages/SearchPage.qml" line="152"/>
+        <location filename="../qml/pages/SearchPage.qml" line="158"/>
         <source>Tracks</source>
         <translation type="unfinished">Треки</translation>
     </message>
     <message>
         <location filename="../qml/pages/SearchPage.qml" line="33"/>
-        <location filename="../qml/pages/SearchPage.qml" line="153"/>
+        <location filename="../qml/pages/SearchPage.qml" line="159"/>
         <source>Playlists</source>
         <translation type="unfinished">Плейлисты</translation>
     </message>
     <message>
         <location filename="../qml/pages/SearchPage.qml" line="34"/>
-        <location filename="../qml/pages/SearchPage.qml" line="154"/>
+        <location filename="../qml/pages/SearchPage.qml" line="160"/>
         <source>Radio stations</source>
         <translation type="unfinished">Радиостанции</translation>
     </message>
@@ -1290,39 +1290,39 @@
         <translation type="unfinished">%1 треков</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SearchPage.qml" line="139"/>
+        <location filename="../qml/pages/SearchPage.qml" line="145"/>
         <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/SearchPage.qml" line="147"/>
+        <location filename="../qml/pages/SearchPage.qml" line="153"/>
         <source>Search in</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/SearchPage.qml" line="149"/>
+        <location filename="../qml/pages/SearchPage.qml" line="155"/>
         <source>Everything</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/SearchPage.qml" line="184"/>
-        <location filename="../qml/pages/SearchPage.qml" line="198"/>
+        <location filename="../qml/pages/SearchPage.qml" line="190"/>
+        <location filename="../qml/pages/SearchPage.qml" line="204"/>
         <source>Play next</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/SearchPage.qml" line="188"/>
-        <location filename="../qml/pages/SearchPage.qml" line="202"/>
+        <location filename="../qml/pages/SearchPage.qml" line="194"/>
+        <location filename="../qml/pages/SearchPage.qml" line="208"/>
         <source>Add to queue</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/SearchPage.qml" line="288"/>
+        <location filename="../qml/pages/SearchPage.qml" line="294"/>
         <source>Search your music, playlists and radio stations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/SearchPage.qml" line="289"/>
+        <location filename="../qml/pages/SearchPage.qml" line="295"/>
         <source>No results</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1366,17 +1366,17 @@
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SelectPlaylist.qml" line="50"/>
+        <location filename="../qml/pages/SelectPlaylist.qml" line="51"/>
         <source>Select playlist</source>
         <translation>Выбрать плейлист</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SelectPlaylist.qml" line="71"/>
+        <location filename="../qml/pages/SelectPlaylist.qml" line="72"/>
         <source>New playlist</source>
         <translation>Новый плейлист</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SelectPlaylist.qml" line="101"/>
+        <location filename="../qml/pages/SelectPlaylist.qml" line="102"/>
         <source>Queue</source>
         <translation>Очередь</translation>
     </message>

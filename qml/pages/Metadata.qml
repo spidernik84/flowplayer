@@ -61,6 +61,7 @@ Dialog {
             spacing: Theme.paddingLarge
 
             Header {
+                avoidCutout: false // DialogHeader above already clears the notch
                 title: qsTr("Metadata editor")
             }
 

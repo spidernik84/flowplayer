@@ -133,6 +133,12 @@ Page {
         id: searchBar
         width: parent.width
 
+        // Keep the search field clear of the display notch
+        Item {
+            width: parent.width
+            height: root.orientation === Orientation.Portrait ? Screen.topCutout.height : 0
+        }
+
         SearchField {
             id: searchField
             width: parent.width

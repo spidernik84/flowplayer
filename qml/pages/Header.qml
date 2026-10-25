@@ -6,8 +6,22 @@ Item {
 
     property alias title: headerText.text
     property alias description: descText.text
+    // Keep the title clear of the display notch, like Silica's PageHeader.
+    // Disable for headers that are not at the top of the page.
+    property bool avoidCutout: true
 
-    height: col1.height + Theme.paddingLarge*2
+    property Item _page
+    readonly property real _cutoutMargin: (avoidCutout && _page && _page.orientation === Orientation.Portrait)
+                                          ? Screen.topCutout.height : 0
+
+    Component.onCompleted: {
+        var p = parent
+        while (p && !p.hasOwnProperty("__silica_page"))
+            p = p.parent
+        _page = p
+    }
+
+    height: col1.height + Theme.paddingLarge*2 + _cutoutMargin
     width: parent.width
 
     Column {
@@ -15,6 +29,7 @@ Item {
         width: parent.width
         anchors.topMargin: Theme.paddingLarge
         anchors.verticalCenter: parent.verticalCenter
+        anchors.verticalCenterOffset: header._cutoutMargin / 2
 
         Label {
             id: headerText

@@ -47,6 +47,7 @@ Dialog {
             width: parent.width
 
             Header {
+                avoidCutout: false // DialogHeader above already clears the notch
                 title: qsTr("Select playlist")
             }
 

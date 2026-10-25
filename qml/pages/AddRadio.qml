@@ -47,6 +47,7 @@ Dialog {
 
             PageHeader {
                 id: header2
+                _minimumTopMargin: 0 // DialogHeader above already clears the notch
                 title: editingRadio? qsTr("Edit station") : qsTr("Add station")
                 anchors.top: header.bottom
                 width: parent.width

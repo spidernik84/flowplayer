@@ -101,6 +101,7 @@ Dialog {
 
             PageHeader {
                 id: header2
+                _minimumTopMargin: 0 // DialogHeader above already clears the notch
                 title: renamingPlaylist ? qsTr("Rename playlist") : qsTr("New playlist")
                 anchors.top: header.bottom
                 width: parent.width

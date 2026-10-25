@@ -48,6 +48,7 @@ Dialog {
 
         Header {
             id: header2
+            avoidCutout: false // DialogHeader above already clears the notch
             title: qsTr("Select folder")
         }
 
