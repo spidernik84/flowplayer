@@ -20,6 +20,7 @@ See screenshots in next section.
 
 - [x] Omnisearch: search artists, albums and tracks at once, with filtering by type
 - [x] New Home Layout
+- [x] Device notch handling 
 - [x] Better track management
     - [x] sort by track number by default
     - [x] handle multi-cd albums
