@@ -513,27 +513,22 @@
     </message>
     <message>
         <location filename="../qml/pages/ImagesPage.qml" line="27"/>
-        <source>Album covers</source>
+        <source>Missing Images Download</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/ImagesPage.qml" line="39"/>
+        <location filename="../qml/pages/ImagesPage.qml" line="36"/>
+        <source>Images are provided by TheAudioDB and iTunes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/ImagesPage.qml" line="48"/>
         <source>Download missing album covers</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/ImagesPage.qml" line="52"/>
-        <source>Artist pictures</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/ImagesPage.qml" line="64"/>
+        <location filename="../qml/pages/ImagesPage.qml" line="69"/>
         <source>Download missing artist pictures</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/ImagesPage.qml" line="82"/>
-        <source>Artist pictures are provided by TheAudioDB</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

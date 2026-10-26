@@ -24,7 +24,16 @@ Page {
             }
 
             SectionHeader {
-                text: qsTr("Album covers")
+                text: qsTr("Missing Images Download")
+            }
+
+            Label {
+                x: Theme.horizontalPageMargin
+                width: parent.width - Theme.horizontalPageMargin*2
+                wrapMode: Text.Wrap
+                font.pixelSize: Theme.fontSizeExtraSmall
+                color: Theme.secondaryColor
+                text: qsTr("Images are provided by TheAudioDB and iTunes")
             }
 
             ListItem {
@@ -48,10 +57,6 @@ Page {
                 onClicked: pageStack.push("FullAlbumSearch.qml")
             }
 
-            SectionHeader {
-                text: qsTr("Artist pictures")
-            }
-
             ListItem {
                 width: parent.width
                 height: Theme.itemSizeSmall
@@ -71,15 +76,6 @@ Page {
                     source: "image://theme/icon-m-right"
                 }
                 onClicked: pageStack.push("ArtistImageSearch.qml")
-            }
-
-            Label {
-                x: Theme.horizontalPageMargin
-                width: parent.width - Theme.horizontalPageMargin*2
-                wrapMode: Text.Wrap
-                font.pixelSize: Theme.fontSizeExtraSmall
-                color: Theme.secondaryColor
-                text: qsTr("Artist pictures are provided by TheAudioDB")
             }
 
         }
