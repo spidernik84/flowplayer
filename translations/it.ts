@@ -285,7 +285,7 @@
     <name>DataReader</name>
     <message>
         <location filename="../src/datareader.cpp" line="376"/>
-        <location filename="../src/missingartists.cpp" line="128"/>
+        <location filename="../src/missingartists.cpp" line="102"/>
         <source>Unknown artist</source>
         <translation>Artista sconosciuto</translation>
     </message>
@@ -911,12 +911,12 @@
 <context>
     <name>MissingArtists</name>
     <message>
-        <location filename="../src/missingartists.cpp" line="151"/>
+        <location filename="../src/missingartists.cpp" line="120"/>
         <source>1 album</source>
         <translation type="unfinished">1 album</translation>
     </message>
     <message>
-        <location filename="../src/missingartists.cpp" line="151"/>
+        <location filename="../src/missingartists.cpp" line="120"/>
         <source>%1 albums</source>
         <translation type="unfinished">%1 album</translation>
     </message>

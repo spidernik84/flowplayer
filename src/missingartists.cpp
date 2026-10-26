@@ -5,10 +5,8 @@
 
 #include <QCoreApplication>
 #include <QDebug>
-#include <QFile>
 #include <QFileInfo>
 #include <QImage>
-#include <QImageReader>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -25,30 +23,6 @@
 static QString artistImagePath(const QString &artist)
 {
     return QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/artist-" + hash(artist) + ".jpeg";
-}
-
-// Last.fm used to hand out the same 300x300 grey star for every artist, and
-// older versions saved it as the artist picture. It is flat light grey and
-// white, which no real photo is.
-static bool isLastFmPlaceholder(const QString &path)
-{
-    QImageReader reader(path);
-    if (reader.size() != QSize(300, 300))
-        return false;
-
-    QImage image = reader.read();
-    if (image.isNull())
-        return false;
-
-    for (int y = 2; y < image.height(); y += 6) {
-        for (int x = 2; x < image.width(); x += 6) {
-            QRgb px = image.pixel(x, y);
-            int r = qRed(px), g = qGreen(px), b = qBlue(px);
-            if (qMin(r, qMin(g, b)) < 220 || qMax(r, qMax(g, b)) - qMin(r, qMin(g, b)) > 8)
-                return false;
-        }
-    }
-    return true;
 }
 
 static QString unescape(QString data)
@@ -137,13 +111,8 @@ void MissingArtists::loadData()
         QString artist = unescape(query.value(0).toString());
         if (artist.trimmed().isEmpty() || artist==unknown || artist=="Unknown artist")
             continue;
-        QString path = artistImagePath(artist);
-        if (QFileInfo(path).exists()) {
-            if (!isLastFmPlaceholder(path))
-                continue;
-            qDebug() << "Removing Last.fm placeholder for" << artist;
-            QFile::remove(path);
-        }
+        if (QFileInfo(artistImagePath(artist)).exists())
+            continue;
 
         int albums = query.value(1).toInt();
         Item item;
