@@ -14,6 +14,11 @@
 #include <QJsonDocument>
 #include <QString>
 #include <QJsonObject>
+#include <QUrlQuery>
+
+// TheAudioDB free API key allows 30 requests per minute
+#define AUDIODB_URL "https://www.theaudiodb.com/api/v1/json/123/searchalbum.php"
+#define AUDIODB_INTERVAL 2100
 
 QString hmacSha1(QByteArray key, QByteArray baseString)
 {
@@ -45,6 +50,8 @@ WebThread::WebThread()
 {
     wdatos = new QNetworkAccessManager(this);
     connect(wdatos, SIGNAL(finished(QNetworkReply*)), this, SLOT(downloaded(QNetworkReply*)));
+    queryTimer.setSingleShot(true);
+    connect(&queryTimer, SIGNAL(timeout()), this, SLOT(queryAudioDb()));
 
 }
 
@@ -152,20 +159,29 @@ void WebThread::checkAll()
         return;
     }
 
-    QString artist = files[0][0];
-    QString album = files[0][1];
+    // Space out TheAudioDB queries to stay within the rate limit
+    if (lastQuery.isValid() && lastQuery.elapsed() < AUDIODB_INTERVAL)
+        queryTimer.start(AUDIODB_INTERVAL - lastQuery.elapsed());
+    else
+        queryAudioDb();
+}
 
+void WebThread::queryAudioDb()
+{
+    if (canceled || files.isEmpty())
+        return;
 
-    QString url = "http://ws.audioscrobbler.com/2.0/?method=album.getinfo";
-    url += "&api_key=7f338c7458e7d1a9a6204221ff904ba1";
-    url += "&artist=" + QUrl::toPercentEncoding(artist);
-    url += "&album=" + QUrl::toPercentEncoding(album);
+    QUrl url(AUDIODB_URL);
+    QUrlQuery q;
+    q.addQueryItem("s", files[0][0]);
+    q.addQueryItem("a", files[0][1]);
+    url.setQuery(q);
 
     action = "link";
-    QNetworkRequest req{QUrl(url)};
+    lastQuery.start();
+    QNetworkRequest req(url);
     req.setHeader(QNetworkRequest::UserAgentHeader, "FlowPlayer/1.0");
     wdatos->get(req);
-
 }
 
 void WebThread::downloaded(QNetworkReply *respuesta)
@@ -179,34 +195,29 @@ void WebThread::downloaded(QNetworkReply *respuesta)
     else
         current = curImageIndex;
 
-    // --- Stage 1: last.fm query ---
+    // --- Stage 1: TheAudioDB query ---
     if (action == "link")
     {
         bool gotLink = false;
 
         if (respuesta->error() == QNetworkReply::NoError) {
-            QString body = QString::fromUtf8(respuesta->readAll());
-            QString mega;
-            int x = body.indexOf("<image size=\"mega\">");
-            if (x >= 0) {
-                body.remove(0, x + 19);
-                x = body.indexOf("<");
-                if (x >= 0)
-                    body.remove(x, body.length() - x);
-                mega = body.trimmed();
-            }
-            if (!mega.isEmpty() && mega.startsWith("http")) {
-                qDebug() << "last.fm link for" << files[0][0] << files[0][1] << mega;
-                downloadImage(mega);   // sets action = "image"
+            QJsonArray albums = QJsonDocument::fromJson(respuesta->readAll())
+                                    .object().value("album").toArray();
+            QString thumb;
+            if (!albums.isEmpty())
+                thumb = albums.first().toObject().value("strAlbumThumb").toString();
+            if (thumb.startsWith("http")) {
+                qDebug() << "TheAudioDB link for" << files[0][0] << files[0][1] << thumb;
+                downloadImage(thumb);   // sets action = "image"
                 gotLink = true;
             }
         } else {
-            qDebug() << "last.fm error:" << files[0][0] << files[0][1]
+            qDebug() << "TheAudioDB error:" << files[0][0] << files[0][1]
                      << respuesta->error();
         }
 
         if (!gotLink) {
-            qDebug() << "last.fm miss, trying iTunes for"
+            qDebug() << "TheAudioDB miss, trying iTunes for"
                      << files[0][0] << files[0][1];
             QString url = "https://itunes.apple.com/search?";
             url += "term=" + QUrl::toPercentEncoding(files[0][0] + " " + files[0][1])
@@ -293,6 +304,7 @@ void WebThread::downloaded(QNetworkReply *respuesta)
 
 void WebThread::cancel()
 {
+    queryTimer.stop();
     files.clear();
 }
 

@@ -13,7 +13,7 @@
 #include <QUrlQuery>
 
 #define AUDIODB_URL "https://www.theaudiodb.com/api/v1/json/123/search.php"
-#define BING_ID "A16EECFD14108C2794E4BC29D4DE59C308685B4A"
+#define AUDIODB_ALBUM_URL "https://www.theaudiodb.com/api/v1/json/123/searchalbum.php"
 
 struct CoverSearchItem
 {
@@ -191,9 +191,15 @@ void CoverSearch::searchCover(QString artist, QString album, QString data)
 
     disconnect(datos, 0, 0, 0);
     connect(datos, SIGNAL(finished(QNetworkReply*)), this, SLOT(downloaded(QNetworkReply*)));
-    QString url = "http://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=7f338c7458e7d1a9a6204221ff904ba1";
-    reply = datos->get(QNetworkRequest(QUrl(url+"&artist="+d->searchArt+"&album="+d->searchAlb)));
 
+    QUrl url(AUDIODB_ALBUM_URL);
+    QUrlQuery q;
+    q.addQueryItem("s", d->searchArt);
+    q.addQueryItem("a", d->searchAlb);
+    url.setQuery(q);
+    QNetworkRequest req(url);
+    req.setHeader(QNetworkRequest::UserAgentHeader, "FlowPlayer/1.0");
+    reply = datos->get(req);
 }
 
 // Artist pictures come from TheAudioDB, like the bulk download
@@ -262,30 +268,22 @@ void CoverSearch::downloaded(QNetworkReply *respuesta)
         }
         else
         {
-            QString datos1 = respuesta->readAll();
-            //qDebug() << datos1;
-            QString tmp = datos1;
-            int x = tmp.indexOf("<image size=\"mega\">");
-            tmp.remove(0,x+19);
-            x = tmp.indexOf("<");
-            tmp.remove(x,tmp.length()-x);
-            tmp = tmp.trimmed();
-            qDebug() << "Image founded... downloading... " << tmp;
-            if (tmp!="") {
-                d->foundedCovers.append(tmp);
-            }
+            QJsonArray albums = QJsonDocument::fromJson(respuesta->readAll()).object().value("album").toArray();
+            foreach (const QJsonValue &album, albums)
+                d->foundedCovers.append(album.toObject().value("strAlbumThumb").toString());
         }
 
+        // Then iTunes, with the text typed in the search field
         d->searchTry = 2;
-        //QString url = "http://api.bing.net/xml.aspx?Appid=8818f55e-2fe5-4ce3-a617-0b8ba8419f65&query=" +
-        //        d->searchData + "&sources=image"; //&Image.Filters=Size:medium";
-
-        QString url = "https://www.googleapis.com/customsearch/v1?cx=017908193050600132175%3Ayspmyfc3vkg&";
-        url += "q=" + d->searchData + "&searchType=image&imgSize=large&start=1";
-        url += "&fields=items%2Flink%2Curl&key=AIzaSyClwjXKlbh7fQnrNajj3x1YEkxfHSqQqsE";
-        //url += "&artist="+QUrl::toPercentEncoding(d->searchArt)+"&album="+QUrl::toPercentEncoding(d->searchAlb)+"&search=Search";
-
-        reply = datos->get(QNetworkRequest(QUrl(url)));
+        QUrl url("https://itunes.apple.com/search");
+        QUrlQuery q;
+        q.addQueryItem("term", d->searchData);
+        q.addQueryItem("entity", "album");
+        q.addQueryItem("limit", "12");
+        url.setQuery(q);
+        QNetworkRequest req(url);
+        req.setHeader(QNetworkRequest::UserAgentHeader, "FlowPlayer/1.0");
+        reply = datos->get(req);
 
     }
     else if ( d->searchTry == 2 )
@@ -296,62 +294,27 @@ void CoverSearch::downloaded(QNetworkReply *respuesta)
         }
         else
         {
-            QString datoshtml = respuesta->readAll();
-            //qDebug() << datoshtml;
-            /*QStringList rawmatches;
-            QString tmp;
-            QRegExp rx;
-            int pos = 0;
-            int count = 0;
-
-            rx.setPattern("<ul title=\"Cover Arts\">(.*)</ul>");
-            rx.setMinimal(true);
-            while ((pos = rx.indexIn(datoshtml, pos)) != -1) {
-                 ++count;
-                 rawmatches.append(datoshtml.mid(pos, rx.matchedLength()));
-                 pos += rx.matchedLength();
-            }
-
-            rx.setPattern("<li>(.*)</li>");
-            QStringList::iterator i;
-            for (i = rawmatches.begin(); i != rawmatches.end(); ++i) {
-                pos = 0;
-                while ((pos = rx.indexIn(*i, pos)) != -1)
-                {
-                    ++count;
-                    tmp = (*i).mid(pos, rx.matchedLength());
-                    pos += rx.matchedLength();
-                    int j = tmp.indexOf("<a href");
-                    tmp.remove(0, j+9);
-                    j = tmp.indexOf("\">");
-                    tmp.remove(j, tmp.length() - j);
-                    d->foundedCovers.append(tmp);
-                }
-            }*/
-
-            QJsonDocument jsonResponse = QJsonDocument::fromJson(datoshtml.toUtf8());
-
-            foreach(const QVariant &itemJson, jsonResponse.object().toVariantMap()["items"].toList())
+            QJsonArray results = QJsonDocument::fromJson(respuesta->readAll()).object().value("results").toArray();
+            foreach (const QJsonValue &result, results)
             {
-                QVariantMap itemMap = itemJson.toMap();
-                d->foundedCovers.append(itemMap["link"].toString());
+                QString art = result.toObject().value("artworkUrl100").toString();
+                art.replace("100x100bb", "600x600bb");
+                art.replace("100x100", "600x600");
+                d->foundedCovers.append(art);
             }
+        }
 
-            //for (int i=0; i<map.count(); ++i)
-            //    d->foundedCovers.append(map.v);
+        d->populateItems();
 
-
-            if ( d->foundedCovers.count() > 0 )
-            {
-                d->populateItems();
-
-                d->curDown = 0;
-                d->searchTry = 3;
-                QString url = d->foundedCovers.at(0);
-                reply = datos->get(QNetworkRequest(QUrl(url)));
-
-            }
-
+        if ( d->foundedCovers.count() > 0 )
+        {
+            d->curDown = 0;
+            d->searchTry = 3;
+            reply = datos->get(QNetworkRequest(QUrl(d->foundedCovers.at(0))));
+        }
+        else
+        {
+            emit downloadFinished();
         }
         emit searchFinished();
     }

@@ -8,6 +8,8 @@
 #include <QNetworkRequest>
 #include <QNetworkReply>
 #include <QBuffer>
+#include <QElapsedTimer>
+#include <QTimer>
 
 
 class WebThread : public QThread
@@ -37,6 +39,7 @@ public slots:
     void downloadImageExtern(QString link, int index);
     void downloadImage(QString link);
     void checkAll();
+    void queryAudioDb();
     void run();
     void cancel();
     bool checkInternal();
@@ -49,6 +52,8 @@ private:
     QBuffer *buffer;
     QByteArray bytes;
     int Request;
+    QElapsedTimer lastQuery;
+    QTimer queryTimer;
 
 };
 
