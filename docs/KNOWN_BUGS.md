@@ -27,3 +27,16 @@ tags, but playlists and the queue keep the old values.
 
 Likely fix: drop `year` from those two statements, as `Meta::setAlbumData()`
 already does.
+
+## Artist info still downloads an image from Last.fm
+
+`LFM::getBio()` (`src/lfm.cpp`), called from the lyrics and Last.fm pages, also
+fetches the artist's `mega` image and saves it as the artist picture. Last.fm
+no longer serves artist images: every artist gets the same grey star
+placeholder. A guard in the `getbio` branch skips the placeholder by its URL
+hash (`2a96cbd8b46e442fc41c2b86b821562f`), so the whole image step does
+nothing useful and only works as long as that hash stays the same.
+
+Likely fix: drop the `getbioimage` step and only fetch the bio text. Artist
+pictures already come from TheAudioDB (bulk download and the artist view
+search).
