@@ -19,6 +19,7 @@
 #include "lfm.h"
 #include "datos.h"
 #include "missing.h"
+#include "missingartists.h"
 #include "database.h"
 #include "radios.h"
 #include "player.h"
@@ -96,6 +97,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<Datos>("FlowPlayer", 1, 0, "Datos");
     qmlRegisterType<PlaylistManager>("FlowPlayer", 1, 0, "MyPlaylistManager");
     qmlRegisterType<Missing>("FlowPlayer", 1, 0, "Missing");
+    qmlRegisterType<MissingArtists>("FlowPlayer", 1, 0, "MissingArtists");
     qmlRegisterType<Database>("FlowPlayer", 1, 0, "Database");
     qmlRegisterType<Radios>("FlowPlayer", 1, 0, "Radios");
 

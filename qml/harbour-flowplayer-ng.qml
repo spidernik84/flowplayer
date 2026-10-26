@@ -434,6 +434,7 @@ ApplicationWindow
     CoverSearch { id: coversearch }
     MyPlaylistManager { id: myplaylistmanager }
     Missing { id: missing }
+    MissingArtists { id: missingArtists }
     Datos { id: misdatos } //NOSPARQL
     LFM { id: lfm }
     Radios { id: radios }

@@ -90,7 +90,10 @@ void LFM::downloaded1(QNetworkReply *respuesta)
                 tmp = tmp.trimmed();
                 //artistImage = tmp;
 
-                if (artistImage=="")
+                // Last.fm no longer serves artist images: every artist gets
+                // the same grey star placeholder, which must not be saved
+                if (artistImage=="" && tmp.startsWith("http")
+                    && !tmp.contains("2a96cbd8b46e442fc41c2b86b821562f"))
                 {
                     action = "getbioimage";
                     QString url = tmp;

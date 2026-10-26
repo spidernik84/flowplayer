@@ -26,6 +26,7 @@ SOURCES += src/FlowPlayer.cpp \
     src/loadimage.cpp \
     src/playlistmanager.cpp \
     src/missing.cpp \
+    src/missingartists.cpp \
     src/loadwebimage.cpp \
     src/datareader.cpp \
     src/database.cpp \
@@ -97,7 +98,8 @@ OTHER_FILES += \
     qml/pages/SearchPage.qml \
     qml/pages/GenresPage.qml \
     qml/pages/GenreAlbumsPage.qml \
-    qml/pages/ImagesPage.qml
+    qml/pages/ImagesPage.qml \
+    qml/pages/ArtistImageSearch.qml
 
 # to disable building translations every time, comment out the
 # following CONFIG line
@@ -121,6 +123,7 @@ HEADERS += \
     src/loadimage.h \
     src/playlistmanager.h \
     src/missing.h \
+    src/missingartists.h \
     src/loadwebimage.h \
     src/datareader.h \
     src/database.h \

@@ -1,0 +1,1 @@
+- Old last.fm placeholder detection logic should be removed once we settle for the final art fetching mechanism. 

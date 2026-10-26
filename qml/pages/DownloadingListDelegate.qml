@@ -15,6 +15,7 @@ Item
     property bool isSel
     property bool loadSel
     property int cindex
+    property string emptyText: qsTr("No cover")
 
     signal loadFinished()
 
@@ -28,7 +29,7 @@ Item
         anchors.verticalCenter: parent.verticalCenter
         height: width
         itemimg: img==="" || img==="ERROR"? "" : img
-        text: loadSel && img!=="ERROR"? "" : img==="ERROR"? qsTr("Not found") : qsTr("No cover")
+        text: loadSel && img!=="ERROR"? "" : img==="ERROR"? qsTr("Not found") : emptyText
     }
 
     /*CoverArtList {

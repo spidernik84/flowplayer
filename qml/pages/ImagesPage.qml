@@ -48,6 +48,40 @@ Page {
                 onClicked: pageStack.push("FullAlbumSearch.qml")
             }
 
+            SectionHeader {
+                text: qsTr("Artist pictures")
+            }
+
+            ListItem {
+                width: parent.width
+                height: Theme.itemSizeSmall
+                Label {
+                    anchors.left: parent.left
+                    anchors.leftMargin: Theme.paddingLarge
+                    anchors.right: artistsIcon.left
+                    anchors.rightMargin: Theme.paddingLarge
+                    anchors.verticalCenter: parent.verticalCenter
+                    text: qsTr("Download missing artist pictures")
+                }
+                Image {
+                    id: artistsIcon
+                    anchors.right: parent.right
+                    anchors.rightMargin: Theme.paddingMedium
+                    anchors.verticalCenter: parent.verticalCenter
+                    source: "image://theme/icon-m-right"
+                }
+                onClicked: pageStack.push("ArtistImageSearch.qml")
+            }
+
+            Label {
+                x: Theme.horizontalPageMargin
+                width: parent.width - Theme.horizontalPageMargin*2
+                wrapMode: Text.Wrap
+                font.pixelSize: Theme.fontSizeExtraSmall
+                color: Theme.secondaryColor
+                text: qsTr("Artist pictures are provided by TheAudioDB")
+            }
+
         }
 
     }

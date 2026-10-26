@@ -64,6 +64,14 @@ BackgroundItem
     }
 
     Connections {
+        target: missingArtists
+        onArtistImageChanged: {
+            if (itemimg===imagepath)
+                reload()
+        }
+    }
+
+    Connections {
         target: coversearch
         onImageChanged: {
             if ((artist===dartist && album==dalbum)

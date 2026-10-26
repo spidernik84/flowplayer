@@ -223,6 +223,39 @@
     </message>
 </context>
 <context>
+    <name>ArtistImageSearch</name>
+    <message>
+        <location filename="../qml/pages/ArtistImageSearch.qml" line="29"/>
+        <source>Start downloading</source>
+        <translation type="unfinished">Starta nedladdning</translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/ArtistImageSearch.qml" line="34"/>
+        <source>Stop downloading</source>
+        <translation type="unfinished">Stoppa nedladdning</translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/ArtistImageSearch.qml" line="41"/>
+        <source>Download artist pictures</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/ArtistImageSearch.qml" line="43"/>
+        <source>%1 of %2 found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/ArtistImageSearch.qml" line="54"/>
+        <source>No image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/ArtistImageSearch.qml" line="64"/>
+        <source>There are no missing artist pictures in your music collection</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CoverDownload</name>
     <message>
         <location filename="../qml/pages/CoverDownload.qml" line="61"/>
@@ -252,6 +285,7 @@
     <name>DataReader</name>
     <message>
         <location filename="../src/datareader.cpp" line="376"/>
+        <location filename="../src/missingartists.cpp" line="128"/>
         <source>Unknown artist</source>
         <translation>Okänd artist</translation>
     </message>
@@ -282,12 +316,12 @@
 <context>
     <name>DownloadingListDelegate</name>
     <message>
-        <location filename="../qml/pages/DownloadingListDelegate.qml" line="31"/>
+        <location filename="../qml/pages/DownloadingListDelegate.qml" line="32"/>
         <source>Not found</source>
         <translation>Kunde inte hittas</translation>
     </message>
     <message>
-        <location filename="../qml/pages/DownloadingListDelegate.qml" line="31"/>
+        <location filename="../qml/pages/DownloadingListDelegate.qml" line="18"/>
         <source>No cover</source>
         <translation>Inget omslag</translation>
     </message>
@@ -487,12 +521,27 @@
         <source>Download missing album covers</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../qml/pages/ImagesPage.qml" line="52"/>
+        <source>Artist pictures</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/ImagesPage.qml" line="64"/>
+        <source>Download missing artist pictures</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/ImagesPage.qml" line="82"/>
+        <source>Artist pictures are provided by TheAudioDB</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>LFM</name>
     <message>
         <location filename="../src/lfm.cpp" line="48"/>
-        <location filename="../src/lfm.cpp" line="108"/>
+        <location filename="../src/lfm.cpp" line="111"/>
         <source>Error fetching artist information</source>
         <translation>Fel vid hämtning av artistinformation</translation>
     </message>
@@ -502,37 +551,37 @@
         <translation>Artisten kunde inte hittas</translation>
     </message>
     <message>
-        <location filename="../src/lfm.cpp" line="125"/>
+        <location filename="../src/lfm.cpp" line="128"/>
         <source>Error fetching album information</source>
         <translation>Fel vid hämtning av albuminformation</translation>
     </message>
     <message>
-        <location filename="../src/lfm.cpp" line="137"/>
+        <location filename="../src/lfm.cpp" line="140"/>
         <source>The album could not be found</source>
         <translation>Albumet kunde inte hittas</translation>
     </message>
     <message>
-        <location filename="../src/lfm.cpp" line="164"/>
+        <location filename="../src/lfm.cpp" line="167"/>
         <source>No album information available</source>
         <translation>Ingen albuminformation tillgänglig</translation>
     </message>
     <message>
-        <location filename="../src/lfm.cpp" line="200"/>
+        <location filename="../src/lfm.cpp" line="203"/>
         <source>Error fetching track information</source>
         <translation>Fel vid hämtning av spårinformation</translation>
     </message>
     <message>
-        <location filename="../src/lfm.cpp" line="214"/>
+        <location filename="../src/lfm.cpp" line="217"/>
         <source>The track could not be found</source>
         <translation>Spåret kunde inte hittas</translation>
     </message>
     <message>
-        <location filename="../src/lfm.cpp" line="239"/>
+        <location filename="../src/lfm.cpp" line="242"/>
         <source>No track information available</source>
         <translation>Ingen spårinformation tillgänglig</translation>
     </message>
     <message>
-        <location filename="../src/lfm.cpp" line="282"/>
+        <location filename="../src/lfm.cpp" line="285"/>
         <source>Fetching artist information</source>
         <translation>Hämtar artistinformation</translation>
     </message>
@@ -857,6 +906,19 @@
         <location filename="../src/missing.cpp" line="78"/>
         <source>Unknown artist</source>
         <translation>Okänd artist</translation>
+    </message>
+</context>
+<context>
+    <name>MissingArtists</name>
+    <message>
+        <location filename="../src/missingartists.cpp" line="151"/>
+        <source>1 album</source>
+        <translation type="unfinished">1 album</translation>
+    </message>
+    <message>
+        <location filename="../src/missingartists.cpp" line="151"/>
+        <source>%1 albums</source>
+        <translation type="unfinished">%1 album</translation>
     </message>
 </context>
 <context>
