@@ -1,3 +1,8 @@
+* Mon Oct 26 2026 spidernik84 <spidernik84@users.noreply.github.com> - 2.4.0
+- Moved artists and albums images management under settings, own section (images)
+- Implemented initial bulk artist image download
+- Initial work to move to TheAudioDb
+
 * Sun Oct 25 2026 spidernik84 <spidernik84@users.noreply.github.com> - 2.3.0
 - Fixed Icon size
 - Flowplayer is now device-notch-aware
