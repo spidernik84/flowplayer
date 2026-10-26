@@ -46,6 +46,7 @@ public slots:
     void clearData();
     void stopSearch();
     void searchCover(QString artist, QString album, QString data);
+    void searchArtist(QString data);
     void paintImg(QString image, int index);
     void saveImage(QString artist, QString album, QString imagepath);
     void saveArtistImage(QString artist, QString imagepath);

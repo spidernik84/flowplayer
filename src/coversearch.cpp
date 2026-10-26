@@ -5,11 +5,14 @@
 #include <QDir>
 #include <QString>
 #include <QStringList>
+#include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QSettings>
 #include <QStandardPaths>
+#include <QUrlQuery>
 
+#define AUDIODB_URL "https://www.theaudiodb.com/api/v1/json/123/search.php"
 #define BING_ID "A16EECFD14108C2794E4BC29D4DE59C308685B4A"
 
 struct CoverSearchItem
@@ -193,9 +196,63 @@ void CoverSearch::searchCover(QString artist, QString album, QString data)
 
 }
 
+// Artist pictures come from TheAudioDB, like the bulk download
+void CoverSearch::searchArtist(QString data)
+{
+    d->searchData = data;
+    d->searchTry = 4;
+
+    disconnect(datos, 0, 0, 0);
+    connect(datos, SIGNAL(finished(QNetworkReply*)), this, SLOT(downloaded(QNetworkReply*)));
+
+    QUrl url(AUDIODB_URL);
+    QUrlQuery q;
+    q.addQueryItem("s", data);
+    url.setQuery(q);
+    QNetworkRequest req(url);
+    req.setHeader(QNetworkRequest::UserAgentHeader, "FlowPlayer/1.0");
+    reply = datos->get(req);
+}
+
 void CoverSearch::downloaded(QNetworkReply *respuesta)
 {
-    if ( d->searchTry == 1 )
+    if ( d->searchTry == 4 )
+    {
+        d->foundedCovers.clear();
+
+        if (respuesta->error() != QNetworkReply::NoError)
+        {
+            qDebug() << "error: " << respuesta->error();
+        }
+        else
+        {
+            QJsonArray artists = QJsonDocument::fromJson(respuesta->readAll()).object().value("artists").toArray();
+            foreach (const QJsonValue &artist, artists)
+            {
+                QJsonObject a = artist.toObject();
+                d->foundedCovers.append(a.value("strArtistThumb").toString());
+                d->foundedCovers.append(a.value("strArtistFanart").toString());
+                d->foundedCovers.append(a.value("strArtistFanart2").toString());
+                d->foundedCovers.append(a.value("strArtistFanart3").toString());
+                d->foundedCovers.append(a.value("strArtistFanart4").toString());
+            }
+        }
+
+        d->populateItems();
+
+        if ( d->foundedCovers.count() > 0 )
+        {
+            d->curDown = 0;
+            d->searchTry = 3;
+            reply = datos->get(QNetworkRequest(QUrl(d->foundedCovers.at(0))));
+        }
+        else
+        {
+            emit downloadFinished();
+        }
+        emit searchFinished();
+    }
+    else if ( d->searchTry == 1 )
     {
         d->foundedCovers.clear();
 

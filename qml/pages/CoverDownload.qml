@@ -94,7 +94,10 @@ Page {
                         {
                             searching = true
                             view.visible = false
-                            coversearch.searchCover(artist, album, searchField.text)
+                            if (searchingArtist)
+                                coversearch.searchArtist(searchField.text)
+                            else
+                                coversearch.searchCover(artist, album, searchField.text)
                         }
                         else
                         {
@@ -145,7 +148,8 @@ Page {
                         source: "file://" + model.art
                         asynchronous: true
                         anchors.fill: parent
-                        fillMode: Image.Stretch
+                        fillMode: Image.PreserveAspectCrop
+                        clip: true
                         //cache: false
                     }
 
