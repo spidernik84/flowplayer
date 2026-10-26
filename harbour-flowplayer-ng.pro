@@ -96,7 +96,8 @@ OTHER_FILES += \
     qml/pages/EditBarButton.qml \
     qml/pages/SearchPage.qml \
     qml/pages/GenresPage.qml \
-    qml/pages/GenreAlbumsPage.qml
+    qml/pages/GenreAlbumsPage.qml \
+    qml/pages/ImagesPage.qml
 
 # to disable building translations every time, comment out the
 # following CONFIG line

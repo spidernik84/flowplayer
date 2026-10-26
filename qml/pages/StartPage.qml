@@ -274,13 +274,6 @@ Page {
 
         PullDownMenu {
             MenuItem {
-                text: qsTr("Download album covers")
-                onClicked: {
-                    mainloaded = false
-                    pageStack.push("FullAlbumSearch.qml")
-                }
-            }
-            MenuItem {
                 text: qsTr("Equalizer")
                 onClicked: {
                     mainloaded = false

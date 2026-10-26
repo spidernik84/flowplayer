@@ -302,6 +302,27 @@ Page {
                 onClicked: pageStack.push("ManageFolders.qml")
             }
 
+            ListItem {
+                width: parent.width
+                height: Theme.itemSizeSmall
+                Label {
+                    anchors.left: parent.left
+                    anchors.leftMargin: Theme.paddingLarge
+                    anchors.right: imagesIcon.left
+                    anchors.rightMargin: Theme.paddingLarge
+                    anchors.verticalCenter: parent.verticalCenter
+                    text: qsTr("Images")
+                }
+                Image {
+                    id: imagesIcon
+                    anchors.right: parent.right
+                    anchors.rightMargin: Theme.paddingMedium
+                    anchors.verticalCenter: parent.verticalCenter
+                    source: "image://theme/icon-m-right"
+                }
+                onClicked: pageStack.push("ImagesPage.qml")
+            }
+
             Button {
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: qsTr("Update collection")
