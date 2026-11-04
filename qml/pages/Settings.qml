@@ -128,7 +128,7 @@ Page {
 
             ComboBox {
                 id: albumsViewMenu
-                label: qsTr("Albums view mode")
+                label: qsTr("Artists and Albums view mode")
                 menu: ContextMenu {
                     MenuItem { text: qsTr("Flow") }
                     MenuItem { text: qsTr("Grid") }

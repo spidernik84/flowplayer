@@ -52,6 +52,7 @@ public:
 
     Q_INVOKABLE QString showReflection();
     Q_INVOKABLE QString readSettings(QString set, QString val);
+    Q_INVOKABLE QString findMusicFolder(QString base);
 
     Q_INVOKABLE QString plainLyrics(QString text);
 

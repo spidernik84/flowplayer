@@ -86,6 +86,7 @@ OTHER_FILES += \
     qml/pages/SongsPage.qml \
     qml/pages/ManageFolders.qml \
     qml/pages/AddFolder.qml \
+    qml/pages/FirstStart.qml \
     qml/pages/PickFolder.qml \
     qml/pages/AboutPage.qml \
     qml/pages/SelectPreset.qml \

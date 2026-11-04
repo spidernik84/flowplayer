@@ -62,7 +62,9 @@ Page {
         else if (status===PageStatus.Active) {
             if (startup) {
                 startup = false
-                if (!openStartupPage())
+                if (utils.readSettings("FirstStartDone", "no")!=="yes" && utils.readSettings("Folders", "")==="")
+                    pageStack.push("FirstStart.qml", {}, PageStackAction.Immediate)
+                else if (!openStartupPage())
                     rememberPage("home")
             }
             else {

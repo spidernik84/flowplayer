@@ -7,9 +7,16 @@ Dialog {
 
     allowedOrientations: appWindow.pagesOrientations
 
+    // Set by the first start page: the chosen folder is scanned right away
+    property bool firstStart: false
+
     onAccepted: {
         utils.addFolderToList(currentPath)
         //pageStack.pop()
+        if (firstStart) {
+            utils.setSettings("FirstStartDone", "yes")
+            database.readMusic()
+        }
     }
 
     onStatusChanged: {
@@ -80,7 +87,7 @@ Dialog {
 
                 enabled: model.icon==="folder"
 
-                menu: contextMenu
+                menu: firstStart ? null : contextMenu
 
                 function removeItem() {
                     remorseAction(qsTr("Deleting"),

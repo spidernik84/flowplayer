@@ -496,7 +496,7 @@ QString Utils::showReflection()
 QString Utils::viewmode() const
 {
     QSettings settings(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/flowplayer.conf", QSettings::NativeFormat);
-    return settings.value("ViewMode", "grid").toString();
+    return settings.value("ViewMode", "list").toString();
 }
 
 QString Utils::paging() const
@@ -734,6 +734,18 @@ void Utils::getFolderItems(QString path)
     }
 
     emit appendFilesDone(path);
+}
+
+// The folder called "music" inside base, in any case, or base without one
+QString Utils::findMusicFolder(QString base)
+{
+    QDir dir(base);
+    const QStringList folders = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
+    for (const QString &folder : folders) {
+        if (folder.compare("music", Qt::CaseInsensitive)==0)
+            return dir.filePath(folder);
+    }
+    return base;
 }
 
 void Utils::addFolderToList(QString path)
