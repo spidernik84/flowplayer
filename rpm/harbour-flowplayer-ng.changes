@@ -1,3 +1,7 @@
+* Wed Nov 4 2026 spidernik84 <spidernik84@users.noreply.github.com> - 2.5.0
+- Added wizard to select where music is stored
+- new defaults (List-view for Albums and Artists)
+
 * Mon Oct 26 2026 spidernik84 <spidernik84@users.noreply.github.com> - 2.4.0
 - Moved artists and albums images management under settings, own section (images)
 - Implemented initial bulk artist image download
