@@ -1,3 +1,8 @@
+* Thu Nov 5 2026 spidernik84 <spidernik84@users.noreply.github.com> - 2.6.0
+- Instant search in Albums, Artists, Track view
+- Possibility to save searched radios
+- "Edit" menu item in queue view is now better reachable
+
 * Wed Nov 4 2026 spidernik84 <spidernik84@users.noreply.github.com> - 2.5.0
 - Added wizard to select where music is stored
 - new defaults (List-view for Albums and Artists)
