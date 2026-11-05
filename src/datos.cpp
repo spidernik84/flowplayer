@@ -85,6 +85,7 @@ void Datos::setFilter(QString text)
 {
     filtrado = text.toLower().trimmed();
     emit d->q->beginResetModel();
+    qDeleteAll(d->items);
     d->items.clear();
     emit d->q->endResetModel();
     d->populateItems();

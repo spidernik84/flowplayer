@@ -13,35 +13,67 @@ Page {
 
     property bool showSearch: false
     property string searchValue: ""
-    property bool enableSearch: false
+    property string pendingSearch: ""
+
+    signal searchOpened
 
     onStatusChanged: {
         if (status===PageStatus.Active)
             rememberPage("tracks")
     }
 
+    // Filters shortly after typing stops, as resetting the model rebuilds the view
+    function queueSearch(text) {
+        if (text===searchValue) {
+            searchTimer.stop()
+            return
+        }
+        pendingSearch = text
+        searchTimer.restart()
+    }
+
     function searchData(text) {
+        // The filter ignores surrounding spaces, so adding one changes nothing
+        var changed = text.trim()!==searchValue.trim()
         searchValue = text
-        misdatos.setFilter(searchValue)
-        enableSearch = false
-        isqueue = false
+        if (changed) {
+            misdatos.setFilter(searchValue)
+            isqueue = false
+        }
+    }
+
+    function closeSearch() {
+        searchTimer.stop()
+        searchData("")
+        showSearch = false
+    }
+
+    Timer {
+        id: searchTimer
+        interval: 300
+        onTriggered: searchData(pendingSearch)
     }
 
     SilicaListView {
         id: songlist
         anchors.fill: parent
         clip: true
+        // A current item would take focus from the search field on every model reset
+        currentIndex: -1
 
         PullDownMenu {
             MenuItem {
-                text: showSearch? qsTr("Hide search field") : qsTr("Show search field")
+                text: showSearch? qsTr("Hide search") : qsTr("Search")
                 onClicked: {
-                    if (searchValue!="") {
-                        searchValue = ""
-                        misdatos.setFilter(searchValue)
-                    }
-                    showSearch = !showSearch
-                    enableSearch = false
+                    if (showSearch)
+                        closeSearch()
+                    else
+                        showSearch = true
+                }
+                // Focus can only be taken once the menu has closed
+                onDelayedClick: {
+                    if (showSearch)
+                        searchOpened()
                 }
             }
         }
@@ -66,44 +98,34 @@ Page {
                 onHeightChanged: songlist.positionViewAtBeginning()
                 clip: true
 
-                TextField {
+                SearchField {
                     id: searchInput2
                     anchors.bottom: parent.bottom
-                    width: parent.width - sbutton2.width
-                    //placeholderText: qsTr("Search")
-                    inputMethodHints: Qt.ImhNoPredictiveText
-                    //enabled: showSearch
-                    //onEnabledChanged: text = ""
-                    //focus: enabled
-                    //visible: opacity > 0
+                    width: parent.width
                     opacity: showSearch ? 1 : 0
                     Behavior on opacity { FadeAnimation { duration: 200 } }
-                    onTextChanged: enableSearch = searchInput2.text!==searchValue
-                    EnterKey.enabled: enableSearch && searchInput2.text!==""
-                    EnterKey.onClicked: searchData(searchInput2.text)
+                    onTextChanged: queueSearch(text)
+                    EnterKey.iconSource: "image://theme/icon-m-enter-close"
+                    EnterKey.onClicked: focus = false
                 }
 
                 Connections {
                     target: misdatos
-                    onLoadChanged: searchInput2.text = searchValue
+                    // Don't overwrite what's still being typed
+                    onLoadChanged: {
+                        if (!searchTimer.running)
+                            searchInput2.text = searchValue
+                    }
                 }
 
-                IconButton {
-                    id: sbutton2
-                    smooth: true
-                    anchors.top: parent.top
-                    anchors.right: parent.right
-                    anchors.rightMargin: Theme.paddingMedium
-                    height: Theme.itemSizeExtraSmall
-                    width: height
-                    icon.source: enableSearch && searchInput2.text!==""? "image://theme/icon-m-search" : "image://theme/icon-m-cancel"
-                    icon.height: height -Theme.paddingMedium
-                    icon.width: icon.height
-                    enabled: searchInput2.text!=="" || searchValue!==""
-                    onClicked: {
-                        if (!enableSearch)
+                Connections {
+                    target: root
+                    onSearchOpened: searchInput2.forceActiveFocus()
+                    onShowSearchChanged: {
+                        if (!showSearch) {
+                            searchInput2.focus = false
                             searchInput2.text = ""
-                        searchData(searchInput2.text)
+                        }
                     }
                 }
             }
@@ -111,8 +133,8 @@ Page {
 
         delegate: AlbumDelegate {
             myData: model
-            name: replaceText(model.title, searchValue)
-            desc: replaceText(model.artist + " - " + model.album, searchValue)
+            name: replaceText(model.title, searchValue.trim())
+            desc: replaceText(model.artist + " - " + model.album, searchValue.trim())
             img: ""
             time: DT.getDuration(model.duration)
             cindex: index
@@ -172,7 +194,7 @@ Page {
                     queueList.clear()
                     myplaylistmanager.clearList("00000000000000000000")
 
-                    if (searchValue==="")
+                    if (searchValue.trim()==="")
                     {
                         myplaylistmanager.addAlbumToList("00000000000000000000", "ALL", "ALL", "ALL", "")
                     }
@@ -193,7 +215,7 @@ Page {
         ViewPlaceholder {
             enabled: songlist.count===0
             flickable: songlist
-            text: qsTr("No music")
+            text: searchValue.trim()!=="" ? qsTr("No results") : qsTr("No music")
         }
     }
 

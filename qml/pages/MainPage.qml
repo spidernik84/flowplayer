@@ -21,16 +21,39 @@ Page {
 
     property bool showSearch: false
     property string searchValue: ""
-    property bool enableSearch: false
+    property string pendingSearch: ""
 
-    function searchData(text) {
-        searchValue = text
-        misdatos.setFilter(searchValue)
-        enableSearch = false
-        //searchInput.text = text
-        //searchInput2.text = text
+    signal searchOpened
+
+    // Filters shortly after typing stops, as resetting the model rebuilds the view
+    function queueSearch(text) {
+        if (text===searchValue) {
+            searchTimer.stop()
+            return
+        }
+        pendingSearch = text
+        searchTimer.restart()
     }
 
+    function searchData(text) {
+        // The filter ignores surrounding spaces, so adding one changes nothing
+        var changed = text.trim()!==searchValue.trim()
+        searchValue = text
+        if (changed)
+            misdatos.setFilter(searchValue)
+    }
+
+    function closeSearch() {
+        searchTimer.stop()
+        searchData("")
+        showSearch = false
+    }
+
+    Timer {
+        id: searchTimer
+        interval: 300
+        onTriggered: searchData(pendingSearch)
+    }
 
     SilicaFlickable {
         id: mainPanel
@@ -39,14 +62,17 @@ Page {
         PullDownMenu {
             visible: utils.viewmode!=="flow"
             MenuItem {
-                text: showSearch? qsTr("Hide search field") : qsTr("Show search field")
+                text: showSearch? qsTr("Hide search") : qsTr("Search")
                 onClicked: {
-                    if (searchValue!="") {
-                        searchValue = ""
-                        misdatos.setFilter(searchValue)
-                    }
-                    showSearch = !showSearch
-                    enableSearch = false
+                    if (showSearch)
+                        closeSearch()
+                    else
+                        showSearch = true
+                }
+                // Focus can only be taken once the menu has closed
+                onDelayedClick: {
+                    if (showSearch)
+                        searchOpened()
                 }
             }
         }
@@ -62,11 +88,70 @@ Page {
         ViewPlaceholder {
             enabled: misdatos.count===0 && database.loaded
             flickable: mainPanel
-            text: qsTr("No music")
+            text: searchValue.trim()!=="" ? qsTr("No results") : qsTr("No music")
         }
 
     }
 
+
+    // Page title and search field of the list and grid views
+    Component {
+        id: libraryHeader
+
+        Item {
+            height: head.height + search.height
+            width: parent.width
+
+            Header {
+                id: head
+                title: lastGroup==="artists"? qsTr("Artists") : qsTr("Albums")
+            }
+
+            Item {
+                id: search
+                width: parent.width
+                anchors.top: head.bottom
+                height: showSearch? searchInput.height : 0
+                Behavior on height { NumberAnimation { duration: 200; easing.type: Easing.InOutQuad; property: "height" } }
+                onHeightChanged: {
+                    if (loaderpage.item)
+                        loaderpage.item.positionViewAtBeginning()
+                }
+                clip: true
+
+                SearchField {
+                    id: searchInput
+                    anchors.bottom: parent.bottom
+                    width: parent.width
+                    opacity: showSearch ? 1 : 0
+                    Behavior on opacity { FadeAnimation { duration: 200 } }
+                    onTextChanged: queueSearch(text)
+                    EnterKey.iconSource: "image://theme/icon-m-enter-close"
+                    EnterKey.onClicked: focus = false
+                }
+
+                Connections {
+                    target: misdatos
+                    // Don't overwrite what's still being typed
+                    onLoadChanged: {
+                        if (!searchTimer.running)
+                            searchInput.text = searchValue
+                    }
+                }
+
+                Connections {
+                    target: root
+                    onSearchOpened: searchInput.forceActiveFocus()
+                    onShowSearchChanged: {
+                        if (!showSearch) {
+                            searchInput.focus = false
+                            searchInput.text = ""
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     Component {
         id: viewmodeList
@@ -75,6 +160,8 @@ Page {
             id: listView
 
             anchors.fill: parent
+            // A current item would take focus from the search field on every model reset
+            currentIndex: -1
 
             enabled: database.loaded? 1 : 0
             opacity: enabled? 1 : 0
@@ -86,74 +173,15 @@ Page {
 
             model: misdatos
 
-            header: Item {
-                height: head2.height + search2.height
-                width: parent.width
-
-                Header {
-                    id: head2
-                    title: lastGroup==="artists"? qsTr("Artists") : qsTr("Albums")
-                }
-
-                Item {
-                    id: search2
-                    width: parent.width
-                    anchors.top: head2.bottom
-                    height: showSearch? searchInput2.height : 0
-                    Behavior on height { NumberAnimation { duration: 200; easing.type: Easing.InOutQuad; property: "height" } }
-                    onHeightChanged: listView.positionViewAtBeginning()
-                    clip: true
-
-                    TextField {
-                        id: searchInput2
-                        anchors.bottom: parent.bottom
-                        width: parent.width - sbutton2.width
-                        //placeholderText: qsTr("Search")
-                        inputMethodHints: Qt.ImhNoPredictiveText
-                        //enabled: showSearch
-                        //onEnabledChanged: text = ""
-                        //focus: enabled
-                        //visible: opacity > 0
-                        opacity: showSearch ? 1 : 0
-                        Behavior on opacity { FadeAnimation { duration: 200 } }
-                        onTextChanged: enableSearch = searchInput2.text!==searchValue
-                        EnterKey.enabled: enableSearch && searchInput2.text!==""
-                        EnterKey.onClicked: searchData(searchInput2.text)
-                    }
-
-                    Connections {
-                        target: misdatos
-                        onLoadChanged: searchInput2.text = searchValue
-                    }
-
-                    IconButton {
-                        id: sbutton2
-                        smooth: true
-                        anchors.top: parent.top
-                        anchors.right: parent.right
-                        anchors.rightMargin: Theme.paddingMedium
-                        height: Theme.itemSizeExtraSmall
-                        width: height
-                        icon.source: enableSearch && searchInput2.text!==""? "image://theme/icon-m-search" : "image://theme/icon-m-cancel"
-                        icon.height: height -Theme.paddingMedium
-                        icon.width: icon.height
-                        enabled: searchInput2.text!=="" || searchValue!==""
-                        onClicked: {
-                            if (!enableSearch)
-                                searchInput2.text = ""
-                            searchData(searchInput2.text)
-                        }
-                    }
-                }
-            }
+            header: libraryHeader
 
             delegate: AlbumDelegate {
                 contentHeight: Theme.itemSizeMedium
                 width: parent.width
 
                 myData: model
-                name: replaceText(model.title, searchValue)
-                desc: replaceText(lastGroup=="albums"? model.band : model.artist, searchValue)
+                name: replaceText(model.title, searchValue.trim())
+                desc: replaceText(lastGroup=="albums"? model.band : model.artist, searchValue.trim())
                 img: model.coverart
                 count: model.acount
                 time: model.songs
@@ -191,6 +219,8 @@ Page {
             id: gridView
 
             anchors.fill: parent
+            // A current item would take focus from the search field on every model reset
+            currentIndex: -1
 
             enabled: database.loaded? 1 : 0
             opacity: enabled? 1 : 0
@@ -202,66 +232,7 @@ Page {
 
             model: misdatos
 
-            header: Item {
-                height: head.height + search.height
-                width: parent.width
-
-                Header {
-                    id: head
-                    title: lastGroup==="artists"? qsTr("Artists") : qsTr("Albums")
-                }
-
-                Item {
-                    id: search
-                    anchors.top: head.bottom
-                    width: parent.width
-                    height: showSearch? searchInput.height : 0
-                    Behavior on height { NumberAnimation { duration: 200; easing.type: Easing.InOutQuad; property: "height" } }
-                    onHeightChanged: gridView.positionViewAtBeginning()
-                    clip: true
-
-                    TextField {
-                        id: searchInput
-                        anchors.bottom: parent.bottom
-                        width: parent.width - sbutton.width
-                        //placeholderText: qsTr("Search")
-                        inputMethodHints: Qt.ImhNoPredictiveText
-                        //enabled: showSearch
-                        //onEnabledChanged: text = ""
-                        //focus: enabled
-                        //visible: opacity > 0
-                        opacity: showSearch ? 1 : 0
-                        Behavior on opacity { FadeAnimation { duration: 200 } }
-                        onTextChanged: enableSearch = searchInput.text!==searchValue
-                        EnterKey.enabled: enableSearch && searchInput.text!==""
-                        EnterKey.onClicked: searchData(searchInput.text)
-                    }
-
-                    Connections {
-                        target: misdatos
-                        onLoadChanged: searchInput.text = searchValue
-                    }
-
-                    IconButton {
-                        id: sbutton
-                        smooth: true
-                        anchors.top: parent.top
-                        anchors.right: parent.right
-                        anchors.rightMargin: Theme.paddingMedium
-                        height: Theme.itemSizeExtraSmall
-                        width: height
-                        icon.source: enableSearch && searchInput.text!==""? "image://theme/icon-m-search" : "image://theme/icon-m-cancel"
-                        icon.height: height -Theme.paddingMedium
-                        icon.width: icon.height
-                        enabled: searchInput.text!=="" || searchValue!==""
-                        onClicked: {
-                            if (!enableSearch)
-                                searchInput.text = ""
-                            searchData(searchInput.text)
-                        }
-                    }
-                }
-            }
+            header: libraryHeader
 
             // GridItem pushes the rows below down when its menu opens
             delegate: GridItem {

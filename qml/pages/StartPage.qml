@@ -131,9 +131,7 @@ Page {
     function openGroup(group, immediate) {
         if (lastGroup!==group) {
             utils.setSettings("LastGroup", group)
-            mainPage.searchValue = ""
-            mainPage.showSearch = false
-            mainPage.enableSearch = false
+            mainPage.closeSearch()
             misdatos.clearList()
             if (group==="artists")
                 misdatos.loadArtists()
