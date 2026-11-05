@@ -19,6 +19,7 @@ See screenshots in next section.
 **High Prio**
 
 - [x] Omnisearch: search artists, albums and tracks at once, with filtering by type
+  - [x] Search-as-you-type in the albums, artists and tracks views
 - [x] New Home Layout
 - [x] Device notch handling 
 - [x] Better track management
@@ -31,11 +32,13 @@ See screenshots in next section.
   - [x] Draggable items, even multiple and non-contiguous
   - [x] Append items to end of queue or prepend to top of queue
   - [x] Play single or multiple items after now-playing track
+  - [x] "Edit queue" moved to the bottom of the pull-down menu for easier reach
 - [x] Album art loading from file first (prefer embedded, fallback to manual download)
 - [x] Bulk album art downloading now working
 - [x] Radio streaming now working and improved
   - [x] Change radio search backend to www.radio-browser.info
   - [x] Support ICECast metadata (Artist/Track title/Radio Name)
+  - [x] Save stations from the search results (long-press a station)
 - [x] implement headphones event (play/pause/next track) // this needs further testing, it seemed already implemented but doesn't always work
 - [x] dedicated favorites and queue buttons in home
 - [x] implement resume from last state/page opened
