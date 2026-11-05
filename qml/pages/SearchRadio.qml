@@ -19,6 +19,23 @@ Page {
 
     ListModel { id: searchModel }
 
+    // Stations saved from elsewhere may have no id, so also compare name and url
+    function isSaved(name, url, radioid) {
+        for (var i=0; i<radioModel.count; ++i) {
+            var radio = radioModel.get(i)
+            if ((radioid!=="" && radio.radioid===radioid) || (radio.name===name && radio.url===url))
+                return true
+        }
+        return false
+    }
+
+    function saveStation(name, url, radioid, image) {
+        radios.saveRadio(name, url, radioid, image)
+        radioModel.clear()
+        radios.loadRadios()
+        ibanner.displayMessage(qsTr("Station saved"), true)
+    }
+
     /*onStatusChanged: {
         if (status===PageStatus.Active) {
             if (!pageloaded) {
@@ -147,6 +164,19 @@ Page {
             contentHeight: Theme.itemSizeSmall
             width: parent.width
             clip: true
+
+            menu: stationMenu
+
+            Component {
+                id: stationMenu
+                ContextMenu {
+                    MenuItem {
+                        enabled: !isSaved(model.name, model.url, model.radioid)
+                        text: qsTr("Save station")
+                        onClicked: saveStation(model.name, model.url, model.radioid, model.image)
+                    }
+                }
+            }
 
             Column {
                 anchors.left: parent.left

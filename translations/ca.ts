@@ -1227,7 +1227,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="295"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="333"/>
         <source>Edit queue</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1257,55 +1257,55 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="332"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="339"/>
         <source>Select none</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="332"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="339"/>
         <source>Select all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="342"/>
-        <location filename="../qml/pages/PlaylistPage.qml" line="503"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="349"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="510"/>
         <source>Done</source>
         <translation type="unfinished">Fet</translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="348"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="355"/>
         <source>Undo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="372"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="379"/>
         <source>Deleting</source>
         <translation>S&apos;està eliminant</translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="391"/>
-        <location filename="../qml/pages/PlaylistPage.qml" line="496"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="398"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="503"/>
         <source>Remove</source>
         <translation>Elimina</translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="433"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="440"/>
         <source>Playlist is empty</source>
         <translation>La llista de reproducció està buida</translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="461"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="468"/>
         <source>Move to top</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/PlaylistPage.qml" line="473"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="480"/>
         <source>Move to bottom</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/pages/PlaylistPage.qml" line="322"/>
-        <location filename="../qml/pages/PlaylistPage.qml" line="487"/>
+        <location filename="../qml/pages/PlaylistPage.qml" line="494"/>
         <source>Play next</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1456,14 +1456,24 @@
 <context>
     <name>SearchRadio</name>
     <message>
-        <location filename="../qml/pages/SearchRadio.qml" line="62"/>
+        <location filename="../qml/pages/SearchRadio.qml" line="36"/>
+        <source>Station saved</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/SearchRadio.qml" line="79"/>
         <source>No stations found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/SearchRadio.qml" line="71"/>
+        <location filename="../qml/pages/SearchRadio.qml" line="88"/>
         <source>Search station</source>
         <translation>Cerca emissores</translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/SearchRadio.qml" line="175"/>
+        <source>Save station</source>
+        <translation type="unfinished">Desa l&apos;emissora</translation>
     </message>
 </context>
 <context>

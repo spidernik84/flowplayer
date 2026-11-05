@@ -154,7 +154,7 @@ void Radios::saveRadio(QString name, QString url, QString id, QString image)
     url = reemplazar1(url);
     image = reemplazar1(image);
 
-    bool res = executeQueryCheckCount(QString("select from radio where name='%1' and url='%2'")
+    bool res = executeQueryCheckCount(QString("select * from radio where name='%1' and url='%2'")
                                       .arg(name).arg(url));
 
     if (!res)
