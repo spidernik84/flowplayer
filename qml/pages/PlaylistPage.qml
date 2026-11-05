@@ -291,8 +291,8 @@ Page {
                 }
             }
             MenuItem {
-                visible: !songlist.editing && canEdit && songlist.count>0
-                text: isQueueList ? qsTr("Edit queue") : qsTr("Edit playlist")
+                visible: !songlist.editing && canEdit && !isQueueList && songlist.count>0
+                text: qsTr("Edit playlist")
                 // Changing which entries are visible while the menu is still
                 // open breaks the menu's positioning, so wait until it closes
                 onDelayedClick: songlist.editing = true
@@ -326,6 +326,13 @@ Page {
                 visible: !songlist.editing && canResume
                 text: qsTr("Resume")
                 onClicked: resumePlayback(currentPlaylist)
+            }
+            // Last, so it's the easiest entry to reach
+            MenuItem {
+                visible: !songlist.editing && canEdit && isQueueList && songlist.count>0
+                text: qsTr("Edit queue")
+                // As with "Edit playlist", wait until the menu closes
+                onDelayedClick: songlist.editing = true
             }
             MenuItem {
                 visible: songlist.editing
