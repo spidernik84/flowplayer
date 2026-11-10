@@ -325,7 +325,7 @@ Page {
 
             Button {
                 anchors.horizontalCenter: parent.horizontalCenter
-                text: qsTr("Update collection")
+                text: qsTr("Rescan collection")
                 onClicked: {
                     database.readMusic()
                     pageStack.pop()

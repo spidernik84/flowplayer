@@ -87,7 +87,8 @@ OTHER_FILES += \
     qml/pages/ManageFolders.qml \
     qml/pages/AddFolder.qml \
     qml/pages/FirstStart.qml \
-    qml/pages/PickFolder.qml \
+    qml/pages/StorageList.qml \
+    qml/pages/ChooseStorage.qml \
     qml/pages/AboutPage.qml \
     qml/pages/SelectPreset.qml \
     qml/pages/LastFM.qml \

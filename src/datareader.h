@@ -4,6 +4,7 @@
 #include <QThread>
 #include <QString>
 #include <QStringList>
+#include <QSet>
 
 #include "taglib/fileref.h"
 #include "taglib/tag.h"
@@ -48,6 +49,7 @@ private:
     // from the thread that opened it, so the UI's one can't be shared
     QSqlDatabase db;
     bool scanQuery(const QString &qr);
+    QSet<QString> scanColumn(const QString &column);
     void scan();
 
 public slots:
@@ -64,6 +66,9 @@ signals:
     void finished();
     void percent(int);
     void total(int);
+    // Collection totals after a completed scan, and how many of each are new
+    void summary(int tracks, int albums, int artists,
+                 int newTracks, int newAlbums, int newArtists);
 
 };
 

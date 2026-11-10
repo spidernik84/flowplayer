@@ -411,6 +411,20 @@ bool DataReader::scanQuery(const QString &qr)
     return res;
 }
 
+// Distinct non-empty values of a column of the tracks table
+QSet<QString> DataReader::scanColumn(const QString &column)
+{
+    QSet<QString> values;
+    QSqlQuery query(db);
+    query.exec(QString("select distinct %1 from tracks").arg(column));
+    while (query.next()) {
+        const QString value = query.value(0).toString();
+        if (!value.isEmpty())
+            values.insert(value);
+    }
+    return values;
+}
+
 void DataReader::run()
 {
     const QString connection = "flowplayer-reader";
@@ -495,6 +509,11 @@ void DataReader::scan()
         favFiles.append(query.value(0).toString());
     }
 
+    // Snapshot of the collection before the rescan, to report what is new
+    const QSet<QString> oldTracks = scanColumn("url");
+    const QSet<QString> oldAlbums = scanColumn("album");
+    const QSet<QString> oldArtists = scanColumn("artist");
+
     scanQuery("delete from tracks");
 
     if (forceFinish)
@@ -515,6 +534,19 @@ void DataReader::scan()
     scanQuery("drop table tracks");
     scanQuery("create table tracks as select * from tmp");
     scanQuery("drop table tmp");
+
+    // A cancelled scan leaves a partial collection: nothing to report
+    if (forceFinish)
+        return;
+
+    const QSet<QString> tracks = scanColumn("url");
+    const QSet<QString> albums = scanColumn("album");
+    const QSet<QString> artists = scanColumn("artist");
+
+    emit summary(tracks.count(), albums.count(), artists.count(),
+                 (tracks - oldTracks).count(),
+                 (albums - oldAlbums).count(),
+                 (artists - oldArtists).count());
 }
 
 void DataReader::clearFiles()

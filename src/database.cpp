@@ -8,6 +8,7 @@ Database::Database(QQuickItem *parent)
     connect (reader, SIGNAL(finished()), this, SLOT(readed()) );
     connect (reader, SIGNAL(percent(int)), this, SLOT(percent(int)) );
     connect (reader, SIGNAL(total(int)), this, SLOT(total(int)) );
+    connect (reader, &DataReader::summary, this, &Database::scanSummary);
     m_loaded = true;
     //emit loadChanged();
 }

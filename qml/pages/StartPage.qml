@@ -8,9 +8,22 @@ Page {
     property bool mainloaded: false
     property bool startup: true
 
+    // Set when a scan completes: the scan screen stays up to show its summary
+    property bool showSummary: false
+    property string summaryText: ""
+    property string newItemsText: ""
+
+    // True while the scan screen is shown: scanning, or its summary
+    readonly property bool scanScreen: !database.loaded || showSummary
+
+    // "1 track" or "5 tracks": the singular and plural are translated apart
+    function countText(count, one, many) {
+        return count===1 ? one : many.arg(count)
+    }
+
     allowedOrientations: appWindow.pagesOrientations
 
-    canNavigateForward: database.loaded
+    canNavigateForward: !scanScreen
 
 
     onStatusChanged: {
@@ -174,6 +187,23 @@ Page {
 
     Connections {
         target: database
+
+        // Sent before loadChanged, and only for a scan that was not cancelled
+        onScanSummary: {
+            summaryText = qsTr("%1, %2, %3")
+                .arg(countText(tracks, qsTr("1 track"), qsTr("%1 tracks")))
+                .arg(countText(albums, qsTr("1 album"), qsTr("%1 albums")))
+                .arg(countText(artists, qsTr("1 artist"), qsTr("%1 artists")))
+            if (newTracks>0 || newAlbums>0 || newArtists>0)
+                newItemsText = qsTr("New: %1, %2, %3")
+                    .arg(countText(newTracks, qsTr("1 track"), qsTr("%1 tracks")))
+                    .arg(countText(newAlbums, qsTr("1 album"), qsTr("%1 albums")))
+                    .arg(countText(newArtists, qsTr("1 artist"), qsTr("%1 artists")))
+            else
+                newItemsText = qsTr("No new items found")
+            showSummary = true
+        }
+
         onLoadChanged: {
             if (database.loaded) {
                 totals = misdatos.dataInfo()
@@ -192,10 +222,47 @@ Page {
 
 
     Header {
-        visible: !database.loaded
+        visible: scanScreen
         title: "FlowPlayer"
     }
 
+    // Shown once the scan completes, in place of the progress
+    Column {
+        visible: showSummary
+        anchors.centerIn: parent
+        width: parent.width - Theme.horizontalPageMargin*2
+        spacing: Theme.paddingLarge
+
+        Label {
+            width: parent.width
+            text: qsTr("Scan completed")
+            horizontalAlignment: Text.AlignHCenter
+            color: Theme.highlightColor
+            font.pixelSize: Theme.fontSizeLarge
+        }
+
+        Label {
+            width: parent.width
+            text: summaryText
+            horizontalAlignment: Text.AlignHCenter
+            wrapMode: Text.Wrap
+            color: Theme.highlightColor
+        }
+
+        Label {
+            width: parent.width
+            text: newItemsText
+            horizontalAlignment: Text.AlignHCenter
+            wrapMode: Text.Wrap
+            color: Theme.secondaryHighlightColor
+        }
+
+        Button {
+            anchors.horizontalCenter: parent.horizontalCenter
+            text: qsTr("Back to home")
+            onClicked: showSummary = false
+        }
+    }
 
     Column {
         visible: !database.loaded
@@ -251,7 +318,7 @@ Page {
         id: mainPanel
         anchors.fill: parent
         contentHeight: col1.height + Theme.paddingLarge
-        visible: database.loaded
+        visible: !scanScreen
 
         property int albumsCount: parseInt(totals.split(",")[0]) || 0
         property int artistsCount: parseInt(totals.split(",")[1]) || 0
@@ -286,10 +353,6 @@ Page {
                     mainloaded = false
                     pageStack.push("Settings.qml")
                 }
-            }
-            MenuItem {
-                text: qsTr("Rescan library")
-                onClicked: database.readMusic()
             }
         }
 

@@ -9,6 +9,9 @@ Page {
 
     property bool loaded: false
 
+    // Set once a folder is added or removed: the collection is out of date
+    property bool changed: false
+
     onStatusChanged: {
         if (status===PageStatus.Activating && !loaded) {
             foldersModel.clear()
@@ -27,6 +30,7 @@ Page {
         }
 
         onFoldersChanged: {
+            root.changed = true
             foldersModel.clear()
             utils.getFolders()
         }
@@ -36,13 +40,15 @@ Page {
     SilicaListView {
         id: flist
         anchors.fill: parent
+        anchors.bottomMargin: rescanBar.visible ? rescanBar.height : 0
+        clip: true
 
         model: foldersModel
 
         PullDownMenu {
             MenuItem {
                 text: qsTr("Add folder")
-                onClicked: pageStack.push(hasPickers ? "PickFolder.qml" : "AddFolder.qml")
+                onClicked: pageStack.push("ChooseStorage.qml", {"returnPage":root})
             }
         }
 
@@ -62,6 +68,7 @@ Page {
                 function() {
                     utils.removeFolder(model.path)
                     foldersModel.remove(model.index, 1)
+                    root.changed = true
                 })
             }
 
@@ -120,6 +127,39 @@ Page {
 
     }
 
+    // Offers to update the collection with the folder changes
+    Rectangle {
+        id: rescanBar
+        visible: root.changed
+        anchors.bottom: parent.bottom
+        width: parent.width
+        height: rescanCol.height + Theme.paddingLarge*2
+        color: Theme.rgba(Theme.highlightBackgroundColor, 0.15)
 
+        Column {
+            id: rescanCol
+            anchors.centerIn: parent
+            width: parent.width - Theme.horizontalPageMargin*2
+            spacing: Theme.paddingMedium
 
+            Label {
+                width: parent.width
+                text: qsTr("Folders changed. Rescan the collection to update it.")
+                wrapMode: Text.Wrap
+                horizontalAlignment: Text.AlignHCenter
+                color: Theme.highlightColor
+                font.pixelSize: Theme.fontSizeSmall
+            }
+
+            Button {
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: qsTr("Rescan now")
+                onClicked: {
+                    database.readMusic()
+                    // The start page shows the scan and its summary
+                    pageStack.pop(startPage)
+                }
+            }
+        }
+    }
 }

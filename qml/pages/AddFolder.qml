@@ -87,28 +87,6 @@ Dialog {
 
                 enabled: model.icon==="folder"
 
-                menu: firstStart ? null : contextMenu
-
-                function removeItem() {
-                    remorseAction(qsTr("Deleting"),
-                    function() {
-                        utils.removeFolder(model.location)
-                        foldersModel.remove(model.index, 1)
-                    })
-                }
-
-                Component {
-                    id: contextMenu
-                    ContextMenu {
-                        MenuItem {
-                            text: qsTr("Remove")
-                            onClicked: {
-                                removeItem()
-                            }
-                        }
-                    }
-                }
-
                 Image {
                     id: licon
                     anchors.left: parent.left

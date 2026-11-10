@@ -34,6 +34,8 @@ public slots:
 signals:
     void loadChanged();
     void percChanged();
+    void scanSummary(int tracks, int albums, int artists,
+                     int newTracks, int newAlbums, int newArtists);
 
 
 };
