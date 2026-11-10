@@ -119,8 +119,6 @@ void DataReader::saveData()
     if (map.count()==0)
         return;
 
-    if (!isDBOpened) openDatabase();
-
     // Name the columns explicitly: columns added by migrations are appended
     // at the end of the table, so positional inserts would misplace values.
     QString qr = "insert into tracks (url, artist, album, title, year, tracknum, "
@@ -160,7 +158,7 @@ void DataReader::saveData()
         }
     }
 
-    bool res = executeQuery(qr);
+    bool res = scanQuery(qr);
 
     qDebug() << "APPENDING ITEMS: " << res;
 }
@@ -404,7 +402,42 @@ void DataReader::addFile(QString file)
     files.append(file);
 }
 
+bool DataReader::scanQuery(const QString &qr)
+{
+    QSqlQuery query(db);
+    bool res = query.exec(qr);
+    if (!res)
+        qWarning() << "SCAN QUERY FAILED:" << query.lastError().text();
+    return res;
+}
+
 void DataReader::run()
+{
+    const QString connection = "flowplayer-reader";
+    {
+        db = QSqlDatabase::addDatabase("QSQLITE", connection);
+        db.setDatabaseName(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/flowplayer.db");
+        // The UI may be reading while the scan writes: wait instead of failing
+        db.setConnectOptions("QSQLITE_BUSY_TIMEOUT=5000");
+
+        if (db.open())
+            scan();
+        else
+            qWarning() << "SCAN: cannot open database" << db.lastError().text();
+
+        db.close();
+        db = QSqlDatabase();
+    }
+    QSqlDatabase::removeDatabase(connection);
+
+    files.clear();
+    favFiles.clear();
+    map.clear();
+
+    emit finished();
+}
+
+void DataReader::scan()
 {
     forceFinish = false;
 
@@ -433,71 +466,55 @@ void DataReader::run()
                      iterator.filePath().toLower().endsWith(".wav") )
                 {
                     files.append(iterator.filePath());
-                    if (forceFinish) {
-                        emit finished();
+                    if (forceFinish)
                         break;
-                    }
                 }
                 if ( (iterator.filePath().toLower().endsWith(".mod") ||
                      iterator.filePath().toLower().endsWith(".xm")) &&
                      QFileInfo("/usr/lib/libmodplug.so.1").exists() )
                 {
                     files.append(iterator.filePath());
-                    if (forceFinish) {
-                        emit finished();
+                    if (forceFinish)
                         break;
-                    }
                 }
             }
         }
 
-        if (forceFinish) {
-            emit finished();
+        if (forceFinish)
             break;
-        }
 
     }
 
     files.removeDuplicates();
     emit total(files.count());
 
-    QSqlQuery query = getQuery("select * from tracks where fav=1");
+    QSqlQuery query(db);
+    query.exec("select * from tracks where fav=1");
     while( query.next() )
     {
         favFiles.append(query.value(0).toString());
     }
 
-    executeQuery(QString("delete from tracks"));
+    scanQuery("delete from tracks");
 
-    if (forceFinish) {
-        emit finished();
+    if (forceFinish)
         return;
-    }
 
     for (int i=0; i<files.count(); ++i)
     {
         emit percent(i);
         readFile(files.at(i));
 
-        if (forceFinish) {
-            emit finished();
+        if (forceFinish)
             break;
-        }
 
     }
     saveData();
 
-    executeQuery("create table tmp as select * from tracks group by url");
-    executeQuery("drop table tracks");
-    executeQuery("create table tracks as select * from tmp");
-    executeQuery("drop table tmp");
-
-    files.clear();
-    favFiles.clear();
-    map.clear();
-
-    emit finished();
-
+    scanQuery("create table tmp as select * from tracks group by url");
+    scanQuery("drop table tracks");
+    scanQuery("create table tracks as select * from tmp");
+    scanQuery("drop table tmp");
 }
 
 void DataReader::clearFiles()

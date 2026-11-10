@@ -284,13 +284,13 @@
 <context>
     <name>DataReader</name>
     <message>
-        <location filename="../src/datareader.cpp" line="376"/>
+        <location filename="../src/datareader.cpp" line="374"/>
         <location filename="../src/missingartists.cpp" line="102"/>
         <source>Unknown artist</source>
         <translation>Artista desconegut</translation>
     </message>
     <message>
-        <location filename="../src/datareader.cpp" line="377"/>
+        <location filename="../src/datareader.cpp" line="375"/>
         <source>Unknown album</source>
         <translation>Àlbum desconegut</translation>
     </message>

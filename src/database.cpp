@@ -47,6 +47,8 @@ void Database::total(int val)
 
 void Database::percent(int val)
 {
+    if (totalfiles<=0)
+        return;
     int num = val* 100 / totalfiles;
     if (num>p_perc)
     {

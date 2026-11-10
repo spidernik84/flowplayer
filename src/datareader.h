@@ -43,7 +43,12 @@ public:
 private:
     TagLib::FileRef *tagFile;
     TagLib::File* getFileByMimeType(QString file);
+
+    // The scan thread's own connection: a connection may only be used
+    // from the thread that opened it, so the UI's one can't be shared
     QSqlDatabase db;
+    bool scanQuery(const QString &qr);
+    void scan();
 
 public slots:
     void openDB();
