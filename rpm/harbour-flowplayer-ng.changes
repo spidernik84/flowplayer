@@ -1,3 +1,7 @@
+* Tue Nov 10 2026 spidernik84 <spidernik84@users.noreply.github.com> - 2.7.0
+- Redesigned folder addition and scan steps
+- Fixed crash when scanning empty folder
+
 * Thu Nov 5 2026 spidernik84 <spidernik84@users.noreply.github.com> - 2.6.0
 - Instant search in Albums, Artists, Track view
 - Possibility to save searched radios
